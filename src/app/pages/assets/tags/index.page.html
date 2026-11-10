@@ -1,15 +1,15 @@
 <div class="mt-2 mb-4 flex justify-between align-items-center">
-  <h1 class="m-0">Tags</h1>
-  <p-button (onClick)="showAddTagDialog()" label="Add new Tag" icon="pi pi-plus" />
+  <h1 class="m-0">{{ 'UI.TAGS' | translate }}</h1>
+  <p-button (onClick)="showAddTagDialog()" [label]="'UI.ADD_NEW_TAG' | translate" icon="pi pi-plus" />
 </div>
 
 <p-table [value]="tags" [loading]="loading" styleClass="p-datatable-striped">
   <ng-template pTemplate="header">
     <tr>
-      <th>Tag Name</th>
-      <th>Description</th>
-      <th>Domain Count</th>
-      <th class="text-center">Actions</th>
+      <th>{{ 'UI.TAG_NAME' | translate }}</th>
+      <th>{{ 'UI.DESCRIPTION' | translate }}</th>
+      <th>{{ 'UI.DOMAIN_COUNT' | translate }}</th>
+      <th class="text-center">{{ 'UI.ACTIONS' | translate }}</th>
     </tr>
   </ng-template>
   <ng-template pTemplate="body" let-tag>
@@ -39,12 +39,12 @@
       <td>
         <div class="flex gap-2 justify-end whitespace-nowrap">
           <a [routerLink]="'/assets/tags/' + tag.name">
-            <p-button size="small" label="View" icon="pi pi-eye" styleClass="py-2 px-2" />
+            <p-button size="small" [label]="'UI.VIEW' | translate" icon="pi pi-eye" styleClass="py-2 px-2" />
           </a>
           <a [routerLink]="'/assets/tags/' + tag.name + '/edit'">
             <p-button
               size="small"
-              label="Edit"
+              [label]="'UI.EDIT' | translate"
               icon="pi pi-pencil"
               styleClass="py-2 px-2"
               severity="info"
@@ -53,7 +53,7 @@
           <a [routerLink]="'/assets/tags/' + tag.name + '/add-domains'">
             <p-button
               size="small"
-              label="Add Domains"
+              [label]="'UI.ADD_DOMAINS' | translate"
               icon="pi pi-check-square"
               styleClass="py-2 px-2"
               severity="success"
@@ -61,7 +61,7 @@
           </a>
           <p-button
             size="small"
-            label="Delete"
+            [label]="'UI.DELETE' | translate"
             icon="pi pi-trash"
             styleClass="py-2 px-2"
             severity="danger"
@@ -74,7 +74,7 @@
 </p-table>
 
 <p-dialog
-  header="Create new Tag"
+  [header]="'UI.CREATE_NEW_TAG' | translate"
   [modal]="true"
   [(visible)]="addTagDialogOpen"
   [style]="{ width: '50rem' }"

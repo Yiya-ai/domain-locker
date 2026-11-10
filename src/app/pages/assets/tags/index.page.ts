@@ -1,3 +1,4 @@
+import { TranslateModule } from '@ngx-translate/core';
 import { Component, OnInit, ChangeDetectorRef, inject } from '@angular/core';
 
 import { RouterModule } from '@angular/router';
@@ -12,7 +13,7 @@ import { TableModule } from 'primeng/table';
 @Component({
   standalone: true,
   selector: 'app-assets-tags-page',
-  imports: [RouterModule, PrimeNgModule, TagEditorComponent, TableModule],
+  imports: [TranslateModule, RouterModule, PrimeNgModule, TagEditorComponent, TableModule],
   templateUrl: './index.page.html',
   styleUrl: './tags.scss',
 })

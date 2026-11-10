@@ -1,3 +1,4 @@
+import { TranslateModule } from '@ngx-translate/core';
 import { DestroyRef, Component, OnInit, ChangeDetectorRef, inject } from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 
@@ -17,6 +18,7 @@ import { ErrorHandlerService } from '~/app/services/error-handler.service';
   standalone: true,
   selector: 'app-assets-tags-tag-page',
   imports: [
+    TranslateModule,
     PrimeNgModule,
     DomainCollectionComponent,
     TagEditorComponent,

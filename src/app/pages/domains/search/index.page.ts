@@ -1,3 +1,4 @@
+import { TranslateModule } from '@ngx-translate/core';
 import { ChangeDetectorRef, Component, OnDestroy, OnInit, inject } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { Subscription } from 'rxjs';
@@ -11,9 +12,9 @@ import { DbDomain } from '~/app/../types/Database';
 @Component({
   standalone: true,
   selector: 'app-domains-search-page',
-  imports: [PrimeNgModule, DomainCollectionComponent],
+  imports: [TranslateModule, PrimeNgModule, DomainCollectionComponent],
   template: `
-    <h1 class="text-2xl my-3">Search Domains</h1>
+    <h1 class="text-2xl my-3">{{ 'UI.SEARCH_DOMAINS' | translate }}</h1>
     @if (!loading) {
       <app-domain-view
         [domains]="domains"

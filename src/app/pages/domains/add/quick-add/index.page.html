@@ -1,9 +1,9 @@
 <div class="{{ isInModal ? '' : 'p-card p-3' }} max-w-96 mx-auto my-0">
   @if (!isInModal) {
-    <h2 class="text-2xl font-semibold">Add New Domain</h2>
+    <h2 class="text-2xl font-semibold">{{ 'UI.ADD_NEW_DOMAIN' | translate }}</h2>
   }
   <p class="m-0">
-    Enter the domain name you'd like to track, and we'll fetch the details automatically.
+    {{ 'UI.ENTER_THE_DOMAIN_NAME_YOU_D_LIKE_TO_TRACK_AND_WE_LL_FETCH_THE_DETAILS_AUTOMATICALLY' | translate }}
   </p>
 
   <form [formGroup]="domainForm" (ngSubmit)="onSubmit()">
@@ -15,11 +15,11 @@
           id="domainName"
           type="text"
           formControlName="domainName"
-          placeholder="e.g., example.com"
+          [placeholder]="'UI.E_G_EXAMPLE_COM' | translate"
           class="w-full"
           styleClass="text-lg"
         />
-        <label for="username">Domain Name</label>
+        <label for="username">{{ 'UI.DOMAIN_NAME' | translate }}</label>
       </p-floatLabel>
 
       @if (
@@ -37,8 +37,8 @@
 
     <button
       pButton
-      label="Add Domain"
-      aria-label="Add domain"
+      [label]="'UI.ADD_DOMAIN' | translate"
+      [attr.aria-label]="'UI.ADD_DOMAIN' | translate"
       type="submit"
       [disabled]="domainForm.invalid || isLoading"
       [loading]="isLoading"
@@ -46,8 +46,8 @@
     ></button>
     <button
       pButton
-      label="Add Extra Details"
-      aria-label="Add extra details"
+      [label]="'UI.ADD_EXTRA_DETAILS' | translate"
+      [attr.aria-label]="'UI.ADD_EXTRA_DETAILS' | translate"
       [outlined]="true"
       severity="secondary"
       (click)="navigateToDetailedAdd()"

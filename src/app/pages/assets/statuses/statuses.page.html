@@ -1,4 +1,4 @@
-<h1 class="mt-2 mb-4">Statuses</h1>
+<h1 class="mt-2 mb-4">{{ 'UI.STATUSES' | translate }}</h1>
 
 @if (loading) {
   <app-loading
@@ -52,7 +52,7 @@
             <a
               [routerLink]="['/assets/statuses', status.statusInfo.eppCode]"
               class="text-primary no-underline"
-              >(View)</a
+              >{{ 'UI.VIEW' | translate }}</a
             >
           </div>
         </div>
@@ -63,7 +63,7 @@
 
 <details class="mt-6">
   <summary class="text-surface-400 cursor-pointer hover:underline opacity-80">
-    View all Statuses
+    {{ 'UI.VIEW_ALL_STATUSES' | translate }}
   </summary>
   <div class="mt-4 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 wide-grid">
     @for (status of securityCategories; track status) {
@@ -105,7 +105,7 @@
             <p class="my-2 text-blue-400">{{ status.actionToTake }}</p>
           }
         </div>
-        <p class="my-2 font-bold">0 Domains</p>
+        <p class="my-2 font-bold">{{ 'UI.0_DOMAINS' | translate }}</p>
       </div>
     }
   </div>

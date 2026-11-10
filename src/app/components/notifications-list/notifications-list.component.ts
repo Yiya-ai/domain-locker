@@ -1,3 +1,4 @@
+import { TranslateModule } from '@ngx-translate/core';
 import { ChangeDetectorRef, Component, Input, OnInit, inject } from '@angular/core';
 import DatabaseService from '~/app/services/database.service';
 import { Notification } from '~/app/../types/Database';
@@ -10,7 +11,7 @@ import { ErrorHandlerService } from '~/app/services/error-handler.service';
 @Component({
   standalone: true,
   selector: 'app-notifications-list',
-  imports: [CommonModule, PrimeNgModule, DomainFaviconComponent, PaginatorModule],
+  imports: [TranslateModule, CommonModule, PrimeNgModule, DomainFaviconComponent, PaginatorModule],
   templateUrl: './notifications-list.component.html',
   styleUrls: ['./notifications-list.component.scss'],
 })

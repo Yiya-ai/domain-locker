@@ -6,7 +6,7 @@
   <!-- Light/Dark Mode Section -->
   <div class="mb-4 ui-settings-section {{ standAlone ? 'p-card' : '' }}">
     <h3 class="text-sm font-semibold mb-2">
-      <i class="pi pi-sun mr-2"></i>Light/Dark Mode
+      <i class="pi pi-sun mr-2"></i>{{ 'UI.LIGHT_DARK_MODE' | translate }}
     </h3>
     <p-selectButton
       [options]="darkModeOptions"
@@ -23,14 +23,14 @@
   </div>
   <!-- Theme Section -->
   <div class="mb-4 ui-settings-section {{ standAlone ? 'p-card' : '' }}">
-    <h3 class="text-sm font-semibold mb-2"><i class="pi pi-palette mr-2"></i>Theme</h3>
+    <h3 class="text-sm font-semibold mb-2"><i class="pi pi-palette mr-2"></i>{{ 'UI.THEME' | translate }}</h3>
     <div class="flex flex-column">
       @for (theme of themes; track theme) {
         <p-radioButton
           [value]="theme"
           [(ngModel)]="selectedTheme"
           (onClick)="onThemeChange(theme)"
-          [label]="theme.name"
+          [label]="languageService.menuLabel(theme.name)"
           styleClass="mb-2"
         >
         </p-radioButton>
@@ -40,7 +40,7 @@
   <!-- Scale (size) and wide mode options -->
   <div class="mb-4 ui-settings-section {{ standAlone ? 'p-card' : '' }}">
     <h3 class="text-sm font-semibold mb-2">
-      <i class="pi pi-arrow-up-right-and-arrow-down-left-from-center mr-2"></i>UI Scale
+      <i class="pi pi-arrow-up-right-and-arrow-down-left-from-center mr-2"></i>{{ 'UI.UI_SCALE' | translate }}
     </h3>
     <p-selectButton
       [options]="scaleOptions"
@@ -72,28 +72,22 @@
   <!-- Language Section -->
   <div class="mb-4 ui-settings-section {{ standAlone ? 'p-card' : '' }}">
     <h3 class="text-sm font-semibold mb-2">
-      <i class="pi pi-language mr-2"></i>Language
+      <i class="pi pi-language mr-2"></i>{{ 'UI.LANGUAGE' | translate }}
     </h3>
-    <p-selectButton
-      [options]="languages"
-      [(ngModel)]="selectedLanguage"
-      optionLabel="flag"
-      optionValue="code"
-      (onChange)="onLanguageChange($event.value)"
-      class="flex language-select {{ standAlone ? 'gappy-select' : '' }}"
-      styleClass="justify-center"
-    >
-      <ng-template let-option pTemplate="item">
-        <span [pTooltip]="option.name" class="text-xl px-1">{{ option.flag }}</span>
-        @if (standAlone) {
-          <span class="ml-2">{{ option.name }}</span>
-        }
-      </ng-template>
-    </p-selectButton>
+    <p-dropdown
+        [options]="languages"
+        [(ngModel)]="selectedLanguage"
+        optionLabel="name"
+        optionValue="code"
+        [ariaLabel]="'UI.LANGUAGE' | translate"
+        (onChange)="onLanguageChange($event.value)"
+        class="language-select"
+        styleClass="w-full"
+      />
   </div>
   <!-- Font Section -->
   <div class="mb-4 ui-settings-section {{ standAlone ? 'p-card' : '' }}">
-    <h3 class="text-sm font-semibold mb-2"><i class="pi pi-asterisk mr-2"></i>Font</h3>
+    <h3 class="text-sm font-semibold mb-2"><i class="pi pi-asterisk mr-2"></i>{{ 'UI.FONT' | translate }}</h3>
     <p-dropdown
       [options]="fonts"
       [(ngModel)]="selectedFont"
@@ -102,10 +96,10 @@
       styleClass="w-full"
     >
       <ng-template let-font pTemplate="selectedItem">
-        <span [style.font-family]="font.bodyFont">{{ font.name }}</span>
+        <span [style.font-family]="font.bodyFont">{{ languageService.menuLabel(font.name) }}</span>
       </ng-template>
       <ng-template let-font pTemplate="item">
-        <span [style.font-family]="font.bodyFont">{{ font.name }}</span>
+        <span [style.font-family]="font.bodyFont">{{ languageService.menuLabel(font.name) }}</span>
       </ng-template>
     </p-dropdown>
   </div>
@@ -114,13 +108,13 @@
   @if (!standAlone) {
     <div class="ui-settings-section">
       <h3 class="text-sm font-semibold mb-2">
-        <i class="pi pi-eye-slash mr-2"></i>Accessibility
+        <i class="pi pi-eye-slash mr-2"></i>{{ 'UI.ACCESSIBILITY' | translate }}
       </h3>
       <a
         routerLink="/settings/display-options"
         class="p-button px-2 py-1 text-center flex justify-center w-fit mx-auto no-underline p-button-outlined p-button-secondary"
       >
-        Accessibility Settings
+        {{ 'UI.ACCESSIBILITY_SETTINGS' | translate }}
       </a>
     </div>
   }
@@ -129,7 +123,7 @@
   @if (standAlone) {
     <div class="mb-4 ui-settings-section {{ standAlone ? 'p-card' : '' }}">
       <h3 class="text-sm font-semibold mb-2">
-        <i class="pi pi-eye-slash mr-2"></i>Accessibility
+        <i class="pi pi-eye-slash mr-2"></i>{{ 'UI.ACCESSIBILITY' | translate }}
       </h3>
       @for (item of accessibilityFields; track item) {
         <div class="flex justify-between items-center">

@@ -1,10 +1,10 @@
 @if (changeHistoryEnabled$ | async) {
   <div class="p-card p-4">
-    <h2 class="mb-3">Domain Update History</h2>
+    <h2 class="mb-3">{{ 'UI.DOMAIN_UPDATE_HISTORY' | translate }}</h2>
     <app-domain-updates />
   </div>
   <div class="p-card p-4 mt-4">
-    <h2 class="mb-3">Update Count Summary</h2>
+    <h2 class="mb-3">{{ 'UI.UPDATE_COUNT_SUMMARY' | translate }}</h2>
     <app-change-history-chart />
   </div>
 } @else {

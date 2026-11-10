@@ -1,3 +1,4 @@
+import { TranslateModule } from '@ngx-translate/core';
 import { Component, OnInit, inject } from '@angular/core';
 
 import { PrimeNgModule } from '~/app/prime-ng.module';
@@ -20,7 +21,7 @@ interface DomainWithRecords {
 @Component({
   standalone: true,
   selector: 'app-assets-dns-page',
-  imports: [PrimeNgModule, TabViewModule, TableModule],
+  imports: [TranslateModule, PrimeNgModule, TabViewModule, TableModule],
   templateUrl: './index.page.html',
   styleUrls: ['./index.page.scss'],
 })

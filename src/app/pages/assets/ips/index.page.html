@@ -1,4 +1,4 @@
-<h1 class="mt-2 mb-4">IP Addresses</h1>
+<h1 class="mt-2 mb-4">{{ 'UI.IP_ADDRESSES' | translate }}</h1>
 <p-tabView>
   <p-tabPanel header="IPv4">
     <p-table
@@ -13,9 +13,9 @@
       <ng-template pTemplate="header">
         <tr>
           <th pSortableColumn="ip_address" style="width: 300px">
-            IP Address <p-sortIcon field="ip_address"></p-sortIcon>
+            {{ 'UI.IP_ADDRESS' | translate }} <p-sortIcon field="ip_address"></p-sortIcon>
           </th>
-          <th>Associated Domains</th>
+          <th>{{ 'UI.ASSOCIATED_DOMAINS' | translate }}</th>
         </tr>
       </ng-template>
       <ng-template pTemplate="body" let-ip>
@@ -46,9 +46,9 @@
       <ng-template pTemplate="header">
         <tr>
           <th pSortableColumn="ip_address" style="width: 300px">
-            IP Address <p-sortIcon field="ip_address"></p-sortIcon>
+            {{ 'UI.IP_ADDRESS' | translate }} <p-sortIcon field="ip_address"></p-sortIcon>
           </th>
-          <th>Associated Domains</th>
+          <th>{{ 'UI.ASSOCIATED_DOMAINS' | translate }}</th>
         </tr>
       </ng-template>
       <ng-template pTemplate="body" let-ip>
@@ -69,7 +69,7 @@
     </p-table>
   </p-tabPanel>
 
-  <p-tabPanel header="Domains (IPv4)">
+  <p-tabPanel [header]="'UI.DOMAINS_IPV4' | translate">
     <p-table
       [value]="ipv4Domains"
       [loading]="loadingIpv4"
@@ -83,9 +83,9 @@
       <ng-template pTemplate="header">
         <tr>
           <th pSortableColumn="domain" style="width: 300px">
-            Domain <p-sortIcon field="domain"></p-sortIcon>
+            {{ 'UI.DOMAIN' | translate }} <p-sortIcon field="domain"></p-sortIcon>
           </th>
-          <th>IPs</th>
+          <th>{{ 'UI.IPS' | translate }}</th>
         </tr>
       </ng-template>
       <ng-template pTemplate="body" let-domain>
@@ -106,7 +106,7 @@
     </p-table>
   </p-tabPanel>
 
-  <p-tabPanel header="Domains (IPv6)">
+  <p-tabPanel [header]="'UI.DOMAINS_IPV6' | translate">
     <p-table
       [value]="ipv6Domains"
       [loading]="loadingIpv6"
@@ -120,9 +120,9 @@
       <ng-template pTemplate="header">
         <tr>
           <th pSortableColumn="domain" style="width: 300px">
-            Domain <p-sortIcon field="domain"></p-sortIcon>
+            {{ 'UI.DOMAIN' | translate }} <p-sortIcon field="domain"></p-sortIcon>
           </th>
-          <th>IPs</th>
+          <th>{{ 'UI.IPS' | translate }}</th>
         </tr>
       </ng-template>
       <ng-template pTemplate="body" let-domain>

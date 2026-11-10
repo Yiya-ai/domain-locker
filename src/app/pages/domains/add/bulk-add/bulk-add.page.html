@@ -1,10 +1,10 @@
 <div class="card bulk-add-wrap">
-  <h2>Bulk Add Domains</h2>
+  <h2>{{ 'UI.BULK_ADD_DOMAINS' | translate }}</h2>
   <p-steps
     [model]="[
-      { label: 'Domain List' },
-      { label: 'Domain Details' },
-      { label: 'Notifications' },
+      { label: ('UI.DOMAIN_LIST' | translate) },
+      { label: ('UI.DOMAIN_DETAILS' | translate) },
+      { label: ('UI.NOTIFICATIONS' | translate) },
       { label: 'Summary' },
     ]"
     [activeIndex]="step - 1"
@@ -17,10 +17,9 @@
           <div>
             <div class="field">
               <label for="domainList">
-                Domain List
+                {{ 'UI.DOMAIN_LIST' | translate }}
                 <small
-                  >Enter or paste a list of domains, separated by commas or new
-                  lines</small
+                  >{{ 'UI.ENTER_OR_PASTE_A_LIST_OF_DOMAINS_SEPARATED_BY_COMMAS_OR_NEW_LINES' | translate }}</small
                 >
               </label>
               <textarea
@@ -33,7 +32,7 @@
             </div>
             <div class="button-wrap single">
               <p-button
-                label="Process Domains"
+                [label]="'UI.PROCESS_DOMAINS' | translate"
                 (onClick)="processDomains()"
                 [disabled]="bulkAddForm.get('domainList')?.invalid || processingDomains"
                 [loading]="processingDomains"
@@ -55,7 +54,7 @@
                     <!-- Registrar -->
                     <div class="flex-1">
                       <label class="block font-semibold mb-2">
-                        Registrar
+                        {{ 'UI.REGISTRAR' | translate }}
                         <input
                           pInputText
                           formControlName="registrar"
@@ -66,7 +65,7 @@
                     <!-- Expiry Date -->
                     <div class="flex-1">
                       <label [for]="'expiryDate-' + i" class="block font-semibold mb-2"
-                        >Expiry Date</label
+                        >{{ 'UI.EXPIRY_DATE' | translate }}</label
                       >
                       <p-calendar
                         [inputId]="'expiryDate-' + i"
@@ -82,7 +81,7 @@
                     <!-- Tags -->
                     <div class="">
                       <label [for]="'tags-' + i" class="block font-semibold mb-2"
-                        >Tags</label
+                        >{{ 'UI.TAGS' | translate }}</label
                       >
                       <p-chips
                         [inputId]="'tags-' + i"
@@ -95,7 +94,7 @@
                     <!-- Notes -->
                     <div class="">
                       <label class="block font-semibold mb-2">
-                        Notes
+                        {{ 'UI.NOTES' | translate }}
                         <textarea
                           pInputTextarea
                           formControlName="notes"
@@ -109,21 +108,20 @@
             }
             <div class="button-wrap mt-4">
               <p-button
-                label="Previous"
+                [label]="'UI.PREVIOUS' | translate"
                 (onClick)="step = 1"
                 styleClass="p-button-secondary"
               ></p-button>
-              <p-button label="Next" (onClick)="goToNotifications()"></p-button>
+              <p-button [label]="'UI.NEXT' | translate" (onClick)="goToNotifications()"></p-button>
             </div>
           </div>
         }
         <!-- Step 3: Notifications -->
         @case (3) {
           <div>
-            <h3>Setup Notifications</h3>
+            <h3>{{ 'UI.SETUP_NOTIFICATIONS' | translate }}</h3>
             <p>
-              Choose the notifications you want to receive for all domains. You can always
-              change these settings later for individual domains.
+              {{ 'UI.CHOOSE_THE_NOTIFICATIONS_YOU_WANT_TO_RECEIVE_FOR_ALL_DOMAINS_YOU_CAN_ALWAYS_CHANGE_THESE_SETTINGS_LATER_FOR_INDIVIDUAL_DOMAINS' | translate }}
             </p>
             <div formGroupName="notifications">
               @for (option of notificationOptions; track option) {
@@ -141,12 +139,12 @@
             </div>
             <div class="button-wrap">
               <p-button
-                label="Previous"
+                [label]="'UI.PREVIOUS' | translate"
                 (onClick)="step = 2"
                 styleClass="p-button-secondary"
               ></p-button>
               <p-button
-                label="Save All Domains"
+                [label]="'UI.SAVE_ALL_DOMAINS' | translate"
                 (onClick)="saveDomains()"
                 [disabled]="bulkAddForm.invalid || savingDomains"
                 [loading]="savingDomains"
@@ -158,7 +156,7 @@
           <div>
             @if (savedDomains.length > 0) {
               <div>
-                <h4>Successfully Saved Domains</h4>
+                <h4>{{ 'UI.SUCCESSFULLY_SAVED_DOMAINS' | translate }}</h4>
                 <ul class="list-none p-0">
                   @for (domain of savedDomains; track domain) {
                     <li>
@@ -175,8 +173,8 @@
             }
             @if (skippedDomains.length > 0) {
               <div>
-                <h4>Already in your Collection</h4>
-                <p>These were left exactly as they were, nothing was overwritten.</p>
+                <h4>{{ 'UI.ALREADY_IN_YOUR_COLLECTION' | translate }}</h4>
+                <p>{{ 'UI.THESE_WERE_LEFT_EXACTLY_AS_THEY_WERE_NOTHING_WAS_OVERWRITTEN' | translate }}</p>
                 <ul class="list-none p-0">
                   @for (domain of skippedDomains; track domain) {
                     <li>
@@ -193,7 +191,7 @@
             }
             @if (failedDomains.length > 0) {
               <div>
-                <h4>Partial Failures</h4>
+                <h4>{{ 'UI.PARTIAL_FAILURES' | translate }}</h4>
                 <ul class="list-none p-0">
                   @for (domain of failedDomains; track domain) {
                     <li>
@@ -210,7 +208,7 @@
             }
             <div class="button-wrap mt-4">
               <p-button
-                label="Go to Homepage"
+                [label]="'UI.GO_TO_HOMEPAGE' | translate"
                 (onClick)="goToHomePage()"
                 styleClass="p-button-primary"
               ></p-button>

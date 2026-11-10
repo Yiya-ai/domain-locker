@@ -21,13 +21,13 @@
           severity="danger"
           icon="pi pi-trash"
           (click)="confirmDelete()"
-          pTooltip="Delete Subdomain"
+          [pTooltip]="'UI.DELETE_SUBDOMAIN' | translate"
           class="p-button-primary no-underline m-0 flex gap-2 w-fit ml-2 font-medium"
         />
         <p-button
           severity="info"
           icon="pi pi-pencil"
-          pTooltip="Edit Subdomain"
+          [pTooltip]="'UI.EDIT_SUBDOMAIN' | translate"
           class="p-button-primary no-underline m-0 flex gap-2 w-fit ml-2 font-medium"
         />
         <a
@@ -36,7 +36,7 @@
           [href]="'https://' + subdomain?.name + '.' + domain"
           target="_blank"
           rel="noopener noreferrer"
-          pTooltip="Visit Subdomain"
+          [pTooltip]="'UI.VISIT_SUBDOMAIN' | translate"
           class="p-button-secondary no-underline m-0 flex gap-2 w-fit ml-2 font-medium"
         >
           <i class="pi pi-external-link"></i>
@@ -45,7 +45,7 @@
           pButton
           severity="primary"
           [routerLink]="'/domains/' + domain"
-          pTooltip="View Parent Domain"
+          [pTooltip]="'UI.VIEW_PARENT_DOMAIN' | translate"
           class="p-button-primary no-underline m-0 flex gap-2 w-fit ml-2 font-medium"
         >
           <i class="pi pi-directions"></i>
@@ -77,7 +77,7 @@
 }
 
 @if (!loading && !subdomain) {
-  <p>Subdomain not found.</p>
+  <p>{{ 'UI.SUBDOMAIN_NOT_FOUND' | translate }}</p>
 }
 
 @if (!subdomain && !loading) {

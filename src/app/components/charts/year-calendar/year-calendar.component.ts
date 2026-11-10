@@ -1,3 +1,4 @@
+import { TranslateModule } from '@ngx-translate/core';
 import { Component, OnInit, inject } from '@angular/core';
 import DatabaseService from '~/app/services/database.service';
 import { Router } from '@angular/router';
@@ -22,7 +23,7 @@ interface MonthlyExpirations {
 @Component({
   standalone: true,
   selector: 'app-year-calendar',
-  imports: [CommonModule, PrimeNgModule],
+  imports: [TranslateModule, CommonModule, PrimeNgModule],
   templateUrl: './year-calendar.component.html',
   styleUrls: ['./year-calendar.component.scss'],
 })

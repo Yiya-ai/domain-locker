@@ -7,7 +7,7 @@
       <p-card>
         <ng-template pTemplate="header">
           <h4 class="text-surface-600 text-2xl font-bold m-0 block z-1 relative">
-            Registrar
+            {{ 'UI.REGISTRAR' | translate }}
           </h4>
           <div class="absolute top-4 right-4 h-16 w-16 opacity-70 mr-2">
             <app-dl-icon
@@ -53,7 +53,7 @@
       <p-card>
         <ng-template pTemplate="header">
           <h4 class="text-surface-600 text-2xl font-bold m-0 block z-1 relative">
-            Dates
+            {{ 'UI.DATES' | translate }}
           </h4>
           <div class="absolute top-4 right-4 h-16 w-16 opacity-70">
             <app-dl-icon
@@ -65,7 +65,7 @@
         </ng-template>
         @if (domain.expiry_date) {
           <div class="row">
-            <h5 class="mt-3 mb-1">Expiry</h5>
+            <h5 class="mt-3 mb-1">{{ 'UI.EXPIRY' | translate }}</h5>
             <p class="m-0">
               {{ domain.expiry_date | safeDate: 'medium' }}
               <p-tag
@@ -78,13 +78,13 @@
         }
         @if (domain.registration_date) {
           <div class="row">
-            <h5 class="mt-3 mb-1">Registration</h5>
+            <h5 class="mt-3 mb-1">{{ 'UI.REGISTRATION' | translate }}</h5>
             <p class="m-0">{{ domain.registration_date | safeDate: 'medium' }}</p>
           </div>
         }
         @if (domain.updated_date) {
           <div class="row">
-            <h5 class="mt-3 mb-1">Updated</h5>
+            <h5 class="mt-3 mb-1">{{ 'UI.UPDATED' | translate }}</h5>
             <p class="m-0">{{ domain.updated_date | safeDate: 'medium' }}</p>
           </div>
         }
@@ -95,7 +95,7 @@
       <p-card>
         <ng-template pTemplate="header">
           <h4 class="text-surface-600 text-2xl font-bold m-0 block z-1 relative">
-            Status
+            {{ 'UI.STATUS' | translate }}
           </h4>
           <div class="absolute top-4 right-4 h-16 w-16 opacity-70">
             <app-dl-icon
@@ -149,14 +149,14 @@
       </p-card>
     }
     @if (env.isSelfHostedDatabase() && domain.id) {
-      <a pButton class="p-button-outlined mb-3" routerLink="/domains/ledger" [queryParams]="{domain:domain.domain_name}">Edit ledger entry</a>
+      <a pButton class="p-button-outlined mb-3" routerLink="/domains/ledger" [queryParams]="{domain:domain.domain_name}">{{ 'UI.EDIT_LEDGER_ENTRY' | translate }}</a>
     }
     <!-- Valuation -->
     @if (domain.domain_costings) {
       <p-card class="mb-6">
         <ng-template pTemplate="header">
           <h4 class="text-surface-600 text-2xl font-bold m-0 block z-1 relative">
-            Value
+            {{ 'UI.VALUE' | translate }}
           </h4>
           <div class="absolute top-4 right-4 h-16 w-16 opacity-70">
             <app-dl-icon
@@ -168,28 +168,27 @@
         </ng-template>
         @if ((domain.domain_costings.renewal_cost ?? null) !== null) {
           <div class="row">
-            <h5>Renewal Cost</h5>
+            <h5>{{ 'UI.RENEWAL_COST' | translate }}</h5>
             <p>
-              Payment of
               {{
                 domain.domain_costings.renewal_cost
                   | currency: currencyService.getCurrencyCode() : 'symbol' : '1.0-2'
               }}
-              @if (domain.expiry_date) { is due on {{ domain.expiry_date | date: 'mediumDate' }} }
+              @if (domain.expiry_date) { · {{ 'UI.EXPIRY_DATE' | translate }} {{ domain.expiry_date | date: 'mediumDate' }} }
             </p>
           </div>
         }
         <div class="row">
-          <h5>Auto-Renew</h5>
+          <h5>{{ 'UI.AUTO_RENEW' | translate }}</h5>
           @if (domain.domain_costings.auto_renew) {
-            <span class="text-green-400"><i class="pi pi-check"></i> Enabled</span>
+            <span class="text-green-400"><i class="pi pi-check"></i> {{ 'UI.ENABLED' | translate }}</span>
           } @else {
-            <span class="text-red-400"><i class="pi pi-times"></i> Not Enabled</span>
+            <span class="text-red-400"><i class="pi pi-times"></i> {{ 'UI.NOT_ENABLED' | translate }}</span>
           }
         </div>
         @if ((domain.domain_costings.purchase_price ?? null) !== null) {
           <div class="row">
-            <h5>Purchase Price</h5>
+            <h5>{{ 'UI.PURCHASE_PRICE' | translate }}</h5>
             <p>
               {{
                 domain.domain_costings.purchase_price
@@ -199,14 +198,14 @@
           </div>
         }
         @if ((domain.domain_costings.target_price ?? null) !== null) {
-          <div class="row"><h5>Asking Price</h5><p>{{domain.domain_costings.target_price | currency: currencyService.getCurrencyCode()}}</p></div>
+          <div class="row"><h5>{{ 'UI.ASKING_PRICE' | translate }}</h5><p>{{domain.domain_costings.target_price | currency: currencyService.getCurrencyCode()}}</p></div>
         }
         @if ((domain.domain_costings.actual_price ?? null) !== null) {
-          <div class="row"><h5>Sale Price</h5><p>{{domain.domain_costings.actual_price | currency: currencyService.getCurrencyCode()}}</p></div>
+          <div class="row"><h5>{{ 'UI.SALE_PRICE' | translate }}</h5><p>{{domain.domain_costings.actual_price | currency: currencyService.getCurrencyCode()}}</p></div>
         }
         @if ((domain.domain_costings.current_value ?? null) !== null) {
           <div class="row">
-            <h5>Current Value</h5>
+            <h5>{{ 'UI.CURRENT_VALUE' | translate }}</h5>
             <p>
               {{
                 domain.domain_costings.current_value
@@ -222,7 +221,7 @@
       <p-card class="mb-6">
         <ng-template pTemplate="header">
           <h4 class="text-surface-600 text-2xl font-bold m-0 block z-1 relative">
-            IP Addresses
+            {{ 'UI.IP_ADDRESSES' | translate }}
           </h4>
           <div class="absolute top-4 right-4 h-16 w-16 opacity-70">
             <app-dl-icon
@@ -263,7 +262,7 @@
       <p-card class="mb-6">
         <ng-template pTemplate="header">
           <h4 class="text-surface-600 text-2xl font-bold m-0 block z-1 relative">
-            SSL Certificate
+            {{ 'UI.SSL_CERTIFICATE' | translate }}
           </h4>
           <div class="absolute top-4 right-4 h-16 w-16 opacity-70">
             <app-dl-icon
@@ -276,7 +275,7 @@
         <div>
           @if (domain.ssl.issuer) {
             <div class="row">
-              <h5>Issuer</h5>
+              <h5>{{ 'UI.ISSUER' | translate }}</h5>
               <a
                 [routerLink]="'/assets/certs/' + domain.ssl.issuer"
                 class="text-default no-underline hover:underline"
@@ -287,43 +286,43 @@
           }
           @if (domain.ssl.issuer_country) {
             <div class="row">
-              <h5>Issuer Country</h5>
+              <h5>{{ 'UI.ISSUER_COUNTRY' | translate }}</h5>
               <p>{{ domain.ssl.issuer_country }}</p>
             </div>
           }
           @if (domain.ssl.subject) {
             <div class="row">
-              <h5>Subject</h5>
+              <h5>{{ 'UI.SUBJECT' | translate }}</h5>
               <p>{{ domain.ssl.subject }}</p>
             </div>
           }
           @if (domain.ssl.valid_from) {
             <div class="row">
-              <h5>Valid From</h5>
+              <h5>{{ 'UI.VALID_FROM' | translate }}</h5>
               <p>{{ domain.ssl.valid_from | safeDate: 'medium' }}</p>
             </div>
           }
           @if (domain.ssl.valid_to) {
             <div class="row">
-              <h5>Valid To</h5>
+              <h5>{{ 'UI.VALID_TO' | translate }}</h5>
               <p>{{ domain.ssl.valid_to | safeDate: 'medium' }}</p>
             </div>
           }
           @if (domain.ssl.key_size) {
             <div class="row">
-              <h5>Key Size</h5>
+              <h5>{{ 'UI.KEY_SIZE' | translate }}</h5>
               <p>{{ domain.ssl.key_size }}</p>
             </div>
           }
           @if (domain.ssl.signature_algorithm) {
             <div class="row">
-              <h5>Signature Algorithm</h5>
+              <h5>{{ 'UI.SIGNATURE_ALGORITHM' | translate }}</h5>
               <p>{{ domain.ssl.signature_algorithm }}</p>
             </div>
           }
           @if (domain.ssl.fingerprint) {
             <div class="row">
-              <h5>Fingerprint</h5>
+              <h5>{{ 'UI.FINGERPRINT' | translate }}</h5>
               <p class="truncate">{{ domain.ssl.fingerprint }}</p>
             </div>
           }
@@ -338,7 +337,7 @@
       <p-card class="mb-6">
         <ng-template pTemplate="header">
           <h4 class="text-surface-600 text-2xl font-bold m-0 block z-1 relative">
-            Whois Records
+            {{ 'UI.WHOIS_RECORDS' | translate }}
           </h4>
           <div class="absolute top-4 right-4 h-16 w-16 opacity-70 mr-2">
             <app-dl-icon
@@ -352,13 +351,13 @@
         <div>
           @if (domain.whois.name) {
             <div class="row">
-              <h5>Name</h5>
+              <h5>{{ 'UI.NAME' | translate }}</h5>
               <p>{{ domain.whois.name }}</p>
             </div>
           }
           @if (domain.whois.organization) {
             <div class="row">
-              <h5>Organization</h5>
+              <h5>{{ 'UI.ORGANIZATION' | translate }}</h5>
               <p>{{ domain.whois.organization }}</p>
             </div>
           }
@@ -369,7 +368,7 @@
             domain.whois.postal_code
           ) {
             <div class="row">
-              <h5>Address</h5>
+              <h5>{{ 'UI.ADDRESS' | translate }}</h5>
               <p>
                 {{ domain.whois.street }}, {{ domain.whois.city }},
                 {{ domain.whois.state }}
@@ -379,7 +378,7 @@
           }
           @if (domain.whois.country) {
             <div class="row">
-              <h5>Country</h5>
+              <h5>{{ 'UI.COUNTRY' | translate }}</h5>
               <p>{{ domain.whois.country }}</p>
             </div>
           }
@@ -390,7 +389,7 @@
     @if (domain.host) {
       <p-card class="mb-6">
         <ng-template pTemplate="header">
-          <h4 class="text-surface-600 text-2xl font-bold m-0 block z-1 relative">Host</h4>
+          <h4 class="text-surface-600 text-2xl font-bold m-0 block z-1 relative">{{ 'UI.HOST' | translate }}</h4>
           <div class="absolute top-4 right-4 h-16 w-16 opacity-70">
             <app-dl-icon
               icon="host"
@@ -402,7 +401,7 @@
         <div>
           @if (domain.host.isp) {
             <div class="row">
-              <h5>ISP</h5>
+              <h5>{{ 'UI.ISP' | translate }}</h5>
               <a
                 [routerLink]="'/assets/hosts/' + domain.host.isp"
                 class="text-default no-underline hover:underline"
@@ -413,19 +412,19 @@
           }
           @if (domain.host.org) {
             <div class="row">
-              <h5>Organization</h5>
+              <h5>{{ 'UI.ORGANIZATION' | translate }}</h5>
               <p>{{ domain.host.org }}</p>
             </div>
           }
           @if (domain.host.asNumber) {
             <div class="row">
-              <h5>AS Number</h5>
+              <h5>{{ 'UI.AS_NUMBER' | translate }}</h5>
               <p>{{ domain.host.asNumber }}</p>
             </div>
           }
           @if (domain.host.city || domain.host.region || domain.host.country) {
             <div class="row">
-              <h5>Address</h5>
+              <h5>{{ 'UI.ADDRESS' | translate }}</h5>
               <p>
                 {{ domain.host.city }}, {{ domain.host.region }},
                 {{ domain.host.country }}
@@ -445,7 +444,7 @@
       <p-card class="mb-6">
         <ng-template pTemplate="header">
           <h4 class="text-surface-600 text-2xl font-bold m-0 block z-1 relative">
-            DNS Records
+            {{ 'UI.DNS_RECORDS' | translate }}
           </h4>
           <div class="absolute top-4 right-4 h-16 w-16 opacity-70 mr-2">
             <app-dl-icon
@@ -486,7 +485,7 @@
           }
         </p-tabView>
         @if (domain.dns.dnssec) {
-          <p><strong>DNSSEC:</strong> {{ domain.dns.dnssec }}</p>
+          <p><strong>{{ 'UI.DNSSEC' | translate }}</strong> {{ domain.dns.dnssec }}</p>
         }
       </p-card>
     }
@@ -495,7 +494,7 @@
       <p-card class="mb-6 relative">
         <ng-template pTemplate="header">
           <h4 class="text-surface-600 text-2xl font-bold m-0 block z-1 relative">
-            Subdomains
+            {{ 'UI.SUBDOMAINS' | translate }}
           </h4>
           <div class="absolute top-4 right-4 h-16 w-16 opacity-70">
             <app-dl-icon
@@ -532,7 +531,7 @@
       <p-card class="mb-6">
         <ng-template pTemplate="header">
           <h4 class="text-surface-600 text-2xl font-bold m-0 block z-1 relative">
-            Notes
+            {{ 'UI.NOTES' | translate }}
           </h4>
           <div class="absolute top-4 right-4 h-16 w-16 opacity-70">
             <app-dl-icon
@@ -549,7 +548,7 @@
     @if (domain.tags?.length) {
       <p-card class="mb-6">
         <ng-template pTemplate="header">
-          <h4 class="text-surface-600 text-2xl font-bold m-0 block z-1 relative">Tags</h4>
+          <h4 class="text-surface-600 text-2xl font-bold m-0 block z-1 relative">{{ 'UI.TAGS' | translate }}</h4>
           <div class="absolute top-4 right-4 h-16 w-16 opacity-70">
             <app-dl-icon
               icon="tags"
@@ -575,7 +574,7 @@
       <p-card class="mb-6">
         <ng-template pTemplate="header">
           <h4 class="text-surface-600 text-2xl font-bold m-0 block z-1 relative">
-            Links
+            {{ 'UI.LINKS' | translate }}
           </h4>
           <div class="absolute top-4 right-4 h-16 w-16 opacity-70">
             <app-dl-icon

@@ -12,14 +12,14 @@
         class="no-underline text-default transition-all hover:text-primary"
       >
         @if (!hideTextLabels) {
-          <h3 class="m-3">Domain Statistics</h3>
+          <h3 class="m-3">{{ 'UI.DOMAIN_STATISTICS' | translate }}</h3>
         } @else {
           <a
             routerLink="/stats"
             class="flex gap-2 align-items-center no-underline text-inherit text-md
               rounded-lg py-2 px-3 transition-all ease-in-out hover:surface-50
               {{ isActive('/stats') ? 'font-bold text-primary' : 'text-default' }}"
-            pTooltip="Domain Statistics: Index Page"
+            [pTooltip]="'UI.DOMAIN_STATISTICS_INDEX_PAGE' | translate"
           >
             <i class="pi pi-sparkles opacity-70"></i>
           </a>

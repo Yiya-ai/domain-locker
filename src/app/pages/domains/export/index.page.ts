@@ -1,3 +1,4 @@
+import { TranslateModule } from '@ngx-translate/core';
 import { spreadsheetText } from '../../../../shared/portfolio';
 import { Component, inject } from '@angular/core';
 import DatabaseService from '~/app/services/database.service';
@@ -10,7 +11,7 @@ import { ReactiveFormsModule, FormBuilder, FormGroup } from '@angular/forms';
   standalone: true,
   selector: 'app-domains-export-page',
   templateUrl: './export.page.html',
-  imports: [PrimeNgModule, ReactiveFormsModule],
+  imports: [TranslateModule, PrimeNgModule, ReactiveFormsModule],
 })
 export default class ExportPageComponent {
   private fb = inject(FormBuilder);

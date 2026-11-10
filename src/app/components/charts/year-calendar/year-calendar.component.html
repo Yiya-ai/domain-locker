@@ -4,7 +4,7 @@
       <button
         pButton
         icon="pi pi-chevron-left"
-        aria-label="Previous year"
+        [attr.aria-label]="'UI.PREVIOUS_YEAR' | translate"
         (click)="navigateYear(-1)"
       ></button>
     } @else {
@@ -14,7 +14,7 @@
     <button
       pButton
       icon="pi pi-chevron-right"
-      aria-label="Next year"
+      [attr.aria-label]="'UI.NEXT_YEAR' | translate"
       (click)="navigateYear(1)"
     ></button>
   </div>

@@ -1,3 +1,4 @@
+import { TranslateModule } from '@ngx-translate/core';
 import { Component, OnInit, inject } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 
@@ -20,6 +21,7 @@ import { EnvService } from '~/app/services/environment.service';
   standalone: true,
   selector: 'app-assets-subdomains-domain-page',
   imports: [
+    TranslateModule,
     SubdomainListComponent,
     PrimeNgModule,
     NotFoundComponent,

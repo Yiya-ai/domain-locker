@@ -1,3 +1,4 @@
+import { TranslateModule } from '@ngx-translate/core';
 import { Component, OnInit, inject } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 
@@ -18,7 +19,7 @@ import { EnvService } from '~/app/services/environment.service';
 @Component({
   standalone: true,
   selector: 'app-assets-subdomains-domain-subdomain-page',
-  imports: [PrimeNgModule, DomainInfoComponent, NotFoundComponent],
+  imports: [TranslateModule, PrimeNgModule, DomainInfoComponent, NotFoundComponent],
   templateUrl: './[subdomain].page.html',
 })
 export default class SubdomainDetailPageComponent implements OnInit {

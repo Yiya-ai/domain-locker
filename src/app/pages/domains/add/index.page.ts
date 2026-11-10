@@ -1,3 +1,5 @@
+import { TranslateService } from '@ngx-translate/core';
+import { TranslateModule } from '@ngx-translate/core';
 import { Component, OnInit, OnDestroy, ChangeDetectorRef, inject } from '@angular/core';
 import {
   AbstractControl,
@@ -30,12 +32,13 @@ import { RegistrarAutocompleteService } from '~/app/services/registrar-autocompl
 @Component({
   selector: 'app-domains-add-page',
   standalone: true,
-  imports: [PrimeNgModule, ReactiveFormsModule, CommonModule, TableModule],
+  imports: [TranslateModule, PrimeNgModule, ReactiveFormsModule, CommonModule, TableModule],
   providers: [ConfirmationService],
   templateUrl: './add.page.html',
   styleUrls: ['./add.page.scss'],
 })
 export default class AddDomainComponent implements OnInit, OnDestroy {
+  private translator = inject(TranslateService);
   private fb = inject(FormBuilder);
   private http = inject(HttpClient);
   private confirmationService = inject(ConfirmationService);
@@ -507,13 +510,13 @@ export default class AddDomainComponent implements OnInit, OnDestroy {
   public getDomainErrorMessage(): string {
     const domainControl = this.domainForm.get('domainName');
     if (domainControl?.errors?.['domainExists']) {
-      return 'This domain has already been added.';
+      return this.translator.instant('UI.THIS_DOMAIN_HAS_ALREADY_BEEN_ADDED');
     }
     if (domainControl?.errors?.['required']) {
-      return 'Domain name is required.';
+      return this.translator.instant('UI.DOMAIN_NAME_IS_REQUIRED');
     }
     if (domainControl?.errors?.['pattern']) {
-      return 'Please enter a valid domain name.';
+      return this.translator.instant('UI.PLEASE_ENTER_A_VALID_DOMAIN_NAME');
     }
     return '';
   }
@@ -525,10 +528,10 @@ export default class AddDomainComponent implements OnInit, OnDestroy {
     const tagsControl = this.domainForm.get('tags');
     if (tagsControl?.errors) {
       if (tagsControl.errors['maxTags']) {
-        return 'Maximum of 8 tags allowed.';
+        return this.translator.instant('UI.MAXIMUM_OF_8_TAGS_ALLOWED');
       }
       if (tagsControl.errors['duplicateTags']) {
-        return 'Duplicate tags are not allowed.';
+        return this.translator.instant('UI.DUPLICATE_TAGS_ARE_NOT_ALLOWED');
       }
       if (tagsControl.errors['invalidTags']) {
         return `Invalid tags: ${tagsControl.errors['invalidTags'].join(', ')}. Tags can only contain letters and numbers.`;
@@ -557,7 +560,7 @@ export default class AddDomainComponent implements OnInit, OnDestroy {
         return `Notes cannot exceed 255 characters (currently ${notesControl.errors['maxlength'].actualLength}).`;
       }
       if (notesControl.errors['pattern']) {
-        return 'Notes can only contain letters, numbers, and basic punctuation.';
+        return this.translator.instant('UI.NOTES_CAN_ONLY_CONTAIN_LETTERS_NUMBERS_AND_BASIC_PUNCTUATION');
       }
     }
     return '';

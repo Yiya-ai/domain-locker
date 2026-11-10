@@ -1,17 +1,17 @@
 <!-- src/app/pages/domains/add.page.html -->
 <div class="card add-domain-wrap">
   <h2>
-    Add New Domain
+    {{ 'UI.ADD_NEW_DOMAIN' | translate }}
     @if (initialDomain) {
       : {{ initialDomain }}
     }
   </h2>
   <p-steps
     [model]="[
-      { label: 'Domain Name' },
-      { label: 'Domain Details' },
-      { label: 'Notifications' },
-      { label: 'Confirm' },
+      { label: ('UI.DOMAIN_NAME' | translate) },
+      { label: ('UI.DOMAIN_DETAILS' | translate) },
+      { label: ('UI.NOTIFICATIONS' | translate) },
+      { label: ('UI.CONFIRM' | translate) },
     ]"
     [activeIndex]="activeIndex"
   ></p-steps>
@@ -32,8 +32,8 @@
           <div>
             <div class="field">
               <label for="domainName">
-                Domain Name
-                <small>Enter the domain name you want to track</small>
+                {{ 'UI.DOMAIN_NAME' | translate }}
+                <small>{{ 'UI.ENTER_THE_DOMAIN_NAME_YOU_WANT_TO_TRACK' | translate }}</small>
               </label>
               <div class="input-wrap">
                 <input
@@ -48,7 +48,7 @@
                   domainForm.get('domainName')?.touched
                 ) {
                   <small class="p-error">
-                    {{ getDomainErrorMessage() || 'Please enter a valid domain name.' }}
+                    {{ getDomainErrorMessage() || ('UI.PLEASE_ENTER_A_VALID_DOMAIN_NAME' | translate) }}
                   </small>
                 }
                 @if (
@@ -56,18 +56,18 @@
                   domainForm.get('domainName')?.touched
                 ) {
                   <small class="p-success text-green-400">
-                    Looks good! Click Next to continue.
+                    {{ 'UI.LOOKS_GOOD_CLICK_NEXT_TO_CONTINUE' | translate }}
                   </small>
                 }
               </div>
             </div>
             <div class="button-wrap">
               <div class="flex flex-col fit-content w-fit">
-                <p class="m-0 text-xs">Looking to import many domains?</p>
+                <p class="m-0 text-xs">{{ 'UI.LOOKING_TO_IMPORT_MANY_DOMAINS' | translate }}</p>
                 <a
                   pButton
                   routerLink="/domains/add/bulk-add"
-                  label="Bulk Add"
+                  [label]="'UI.BULK_ADD' | translate"
                   class="p-button-link text-xs w-fit p-1 mt-1 no-underline"
                   icon="pi pi-file-import"
                   [outlined]="true"
@@ -79,8 +79,8 @@
               <button
                 pButton
                 type="button"
-                label="Next"
-                aria-label="Next"
+                [label]="'UI.NEXT' | translate"
+                [attr.aria-label]="'UI.NEXT' | translate"
                 (click)="onNextStep()"
                 [disabled]="domainForm.get('domainName')?.invalid"
                 [loading]="isLoading"
@@ -100,8 +100,8 @@
             }
             <div class="field">
               <label for="registrar">
-                Registrar
-                <small>The company that the domain was registered with</small>
+                {{ 'UI.REGISTRAR' | translate }}
+                <small>{{ 'UI.THE_COMPANY_THAT_THE_DOMAIN_WAS_REGISTERED_WITH' | translate }}</small>
               </label>
               <div class="input-wrap">
                 @if (!registrarLoadFailed) {
@@ -112,7 +112,7 @@
                     (completeMethod)="filterRegistrars($event)"
                     [dropdown]="true"
                     [forceSelection]="false"
-                    placeholder="Select or type registrar name..."
+                    [placeholder]="'UI.SELECT_OR_TYPE_REGISTRAR_NAME' | translate"
                     styleClass="w-full"
                     [inputStyle]="{ width: '100%' }"
                   ></p-autoComplete>
@@ -124,15 +124,15 @@
                     pInputText
                     formControlName="registrar"
                     class="w-full"
-                    placeholder="Enter registrar name"
+                    [placeholder]="'UI.ENTER_REGISTRAR_NAME' | translate"
                   />
                 }
               </div>
             </div>
             <div class="field">
               <label for="expiryDate">
-                Expiry Date
-                <small>This is the date when the domain must be renewed by</small>
+                {{ 'UI.EXPIRY_DATE' | translate }}
+                <small>{{ 'UI.THIS_IS_THE_DATE_WHEN_THE_DOMAIN_MUST_BE_RENEWED_BY' | translate }}</small>
               </label>
               <div class="input-wrap">
                 <p-calendar
@@ -147,8 +147,8 @@
             </div>
             <div class="field">
               <label for="tags">
-                Tags
-                <small>Comma separated list of tags to categorise the domain</small>
+                {{ 'UI.TAGS' | translate }}
+                <small>{{ 'UI.COMMA_SEPARATED_LIST_OF_TAGS_TO_CATEGORISE_THE_DOMAIN' | translate }}</small>
               </label>
               <div class="input-wrap">
                 <p-chips
@@ -164,8 +164,8 @@
             </div>
             <div class="field">
               <label for="notes">
-                Notes
-                <small>Any additional notes you want to add</small>
+                {{ 'UI.NOTES' | translate }}
+                <small>{{ 'UI.ANY_ADDITIONAL_NOTES_YOU_WANT_TO_ADD' | translate }}</small>
               </label>
               <div class="input-wrap">
                 <textarea
@@ -183,7 +183,7 @@
               </div>
             </div>
             <div class="field">
-              <label for="subdomains">Subdomains</label>
+              <label for="subdomains">{{ 'UI.SUBDOMAINS' | translate }}</label>
               <div class="input-wrap">
                 <p-chips
                   id="subdomains"
@@ -198,7 +198,7 @@
               <ng-template pTemplate="display">
                 <div class="inline-flex items-center my-4">
                   <span class="pi pi-paperclip align-middle"></span>
-                  <span class="ml-2">View Domain Data</span>
+                  <span class="ml-2">{{ 'UI.VIEW_DOMAIN_DATA' | translate }}</span>
                 </div>
               </ng-template>
               <ng-template pTemplate="content">
@@ -206,7 +206,7 @@
                   class="p-2 rounded-sm p-0.5 mb-4"
                   style="background: var(--surface-100)"
                 >
-                  <h3 class="text-lg font-semibold m-0 mb-4">Domain Information</h3>
+                  <h3 class="text-lg font-semibold m-0 mb-4">{{ 'UI.DOMAIN_INFORMATION' | translate }}</h3>
                   <p-table
                     [value]="tableData"
                     styleClass="p-datatable-sm p-datatable-gridlines w-full"
@@ -215,8 +215,8 @@
                   >
                     <ng-template pTemplate="header">
                       <tr>
-                        <th class="w-1/3 p-2 font-semibold text-sm">Property</th>
-                        <th class="w-2/3 p-2 font-semibold text-sm">Value</th>
+                        <th class="w-1/3 p-2 font-semibold text-sm">{{ 'UI.PROPERTY' | translate }}</th>
+                        <th class="w-2/3 p-2 font-semibold text-sm">{{ 'UI.VALUE' | translate }}</th>
                       </tr>
                     </ng-template>
                     <ng-template pTemplate="body" let-item>
@@ -239,16 +239,16 @@
               <button
                 pButton
                 type="button"
-                label="Previous"
-                aria-label="Previous"
+                [label]="'UI.PREVIOUS' | translate"
+                [attr.aria-label]="'UI.PREVIOUS' | translate"
                 (click)="onPreviousStep()"
                 class="p-button-secondary"
               ></button>
               <button
                 pButton
                 type="button"
-                label="Next"
-                aria-label="Next"
+                [label]="'UI.NEXT' | translate"
+                [attr.aria-label]="'UI.NEXT' | translate"
                 (click)="onNextStep()"
                 [disabled]="domainForm.invalid"
               ></button>
@@ -258,10 +258,9 @@
         <!-- Step 3: Notifications -->
         @case (2) {
           <div>
-            <h3>Setup Notifications</h3>
+            <h3>{{ 'UI.SETUP_NOTIFICATIONS' | translate }}</h3>
             <p class="mb-4 opacity-70 text-sm">
-              Choose the notifications you want to receive for this domain. You can always
-              change these settings later.
+              {{ 'UI.CHOOSE_THE_NOTIFICATIONS_YOU_WANT_TO_RECEIVE_FOR_THIS_DOMAIN_YOU_CAN_ALWAYS_CHANGE_THESE_SETTINGS_LATER' | translate }}
             </p>
             <div formGroupName="notifications">
               @for (option of notificationOptions; track option) {
@@ -283,16 +282,16 @@
               <button
                 pButton
                 type="button"
-                label="Previous"
-                aria-label="Previous"
+                [label]="'UI.PREVIOUS' | translate"
+                [attr.aria-label]="'UI.PREVIOUS' | translate"
                 (click)="onPreviousStep()"
                 class="p-button-secondary"
               ></button>
               <button
                 pButton
                 type="button"
-                label="Next"
-                aria-label="Next"
+                [label]="'UI.NEXT' | translate"
+                [attr.aria-label]="'UI.NEXT' | translate"
                 (click)="onNextStep()"
               ></button>
             </div>
@@ -302,18 +301,18 @@
         <!-- Step 4: Confirm -->
         @case (3) {
           <div class="space-y-6">
-            <h3 class="text-2xl font-semibold">Confirm & Save</h3>
+            <h3 class="text-2xl font-semibold">{{ 'UI.CONFIRM_SAVE' | translate }}</h3>
             <div class="flex justify-center items-center flex-col mt-0">
               <p class="mb-2 mt-0 text-lg">
                 {{ domainForm.get('domainName')?.value }} is ready to add!
               </p>
             </div>
             <p-accordion [multiple]="true" styleClass="w-full">
-              <p-accordionTab header="Review Domain Details">
+              <p-accordionTab [header]="'UI.REVIEW_DOMAIN_DETAILS' | translate">
                 <div class="grid grid-cols-2 gap-2 md:grid-cols-1 sm:grid-cols-1">
                   <div>
                     <p class="text-sm text-neutral-500 dark:text-neutral-400">
-                      Domain Name
+                      {{ 'UI.DOMAIN_NAME' | translate }}
                     </p>
                     <p class="text-lg m-2 font-medium">
                       {{ domainForm.get('domainName')?.value }}
@@ -322,7 +321,7 @@
                   @if (domainForm.get('registrar')?.value) {
                     <div>
                       <p class="text-sm text-neutral-500 dark:text-neutral-400">
-                        Registrar
+                        {{ 'UI.REGISTRAR' | translate }}
                       </p>
                       <p class="text-lg m-2 font-medium">
                         {{ domainForm.get('registrar')?.value }}
@@ -332,7 +331,7 @@
                   @if (domainForm.get('expiryDate')?.value) {
                     <div>
                       <p class="text-sm text-neutral-500 dark:text-neutral-400">
-                        Expiry Date
+                        {{ 'UI.EXPIRY_DATE' | translate }}
                       </p>
                       <p class="text-lg m-2 font-medium">
                         {{ domainForm.get('expiryDate')?.value | date: 'mediumDate' }}
@@ -343,7 +342,7 @@
                 @if (domainForm.get('tags')?.value?.length) {
                   <div>
                     <p class="text-sm text-neutral-500 dark:text-neutral-400 mb-2">
-                      Tags
+                      {{ 'UI.TAGS' | translate }}
                     </p>
                     <div class="flex flex-wrap gap-2">
                       @for (tag of domainForm.get('tags')?.value; track tag) {
@@ -360,7 +359,7 @@
                 @if (domainForm.get('notes')?.value) {
                   <div>
                     <p class="text-sm text-neutral-500 dark:text-neutral-400 mb-2">
-                      Notes
+                      {{ 'UI.NOTES' | translate }}
                     </p>
                     <p class="text-base p-3 rounded" style="background: var(--surface-0)">
                       {{ domainForm.get('notes')?.value }}
@@ -369,7 +368,7 @@
                 }
                 <div>
                   <p class="text-sm text-neutral-500 dark:text-neutral-400 mb-2">
-                    Notifications
+                    {{ 'UI.NOTIFICATIONS' | translate }}
                   </p>
                   <ul class="list-disc list-inside space-y-1 m-2">
                     @for (option of notificationOptions; track option) {
@@ -382,7 +381,7 @@
                   </ul>
                   @if (!hasEnabledNotifications()) {
                     <p class="text-neutral-500 dark:text-neutral-400 italic">
-                      No notifications enabled
+                      {{ 'UI.NO_NOTIFICATIONS_ENABLED' | translate }}
                     </p>
                   }
                 </div>
@@ -392,13 +391,13 @@
               <button
                 pButton
                 type="button"
-                label="Previous"
-                aria-label="Previous"
+                [label]="'UI.PREVIOUS' | translate"
+                [attr.aria-label]="'UI.PREVIOUS' | translate"
                 (click)="onPreviousStep()"
                 class="p-button-secondary"
               ></button>
               <p-splitButton
-                label="Save"
+                [label]="'UI.SAVE' | translate"
                 (onClick)="onSubmit()"
                 [model]="saveOptions"
                 styleClass="p-button-primary"

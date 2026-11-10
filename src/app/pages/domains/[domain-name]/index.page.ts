@@ -1,3 +1,4 @@
+import { TranslateModule } from '@ngx-translate/core';
 import { Component, OnInit, ChangeDetectorRef, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { ActivatedRoute, Router } from '@angular/router';
@@ -26,6 +27,7 @@ import { SubdomainListComponent } from '~/app/pages/assets/subdomains/subdomain-
   standalone: true,
   selector: 'app-domains-domain-name-page',
   imports: [
+    TranslateModule,
     CommonModule,
     PrimeNgModule,
     DomainFaviconComponent,

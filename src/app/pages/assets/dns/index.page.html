@@ -1,4 +1,4 @@
-<h1 class="mt-2 mb-4">DNS Records</h1>
+<h1 class="mt-2 mb-4">{{ 'UI.DNS_RECORDS' | translate }}</h1>
 <p-tabView>
   <!-- TXT Records Tab -->
   <p-tabPanel header="TXT">
@@ -14,9 +14,9 @@
       <ng-template pTemplate="header">
         <tr>
           <th pSortableColumn="record_value" style="width: 300px">
-            Record Value <p-sortIcon field="record_value"></p-sortIcon>
+            {{ 'UI.RECORD_VALUE' | translate }} <p-sortIcon field="record_value"></p-sortIcon>
           </th>
-          <th>Associated Domains</th>
+          <th>{{ 'UI.ASSOCIATED_DOMAINS' | translate }}</th>
         </tr>
       </ng-template>
       <ng-template pTemplate="body" let-record>
@@ -51,9 +51,9 @@
       <ng-template pTemplate="header">
         <tr>
           <th pSortableColumn="record_value" style="width: 300px">
-            Record Value <p-sortIcon field="record_value"></p-sortIcon>
+            {{ 'UI.RECORD_VALUE' | translate }} <p-sortIcon field="record_value"></p-sortIcon>
           </th>
-          <th>Associated Domains</th>
+          <th>{{ 'UI.ASSOCIATED_DOMAINS' | translate }}</th>
         </tr>
       </ng-template>
       <ng-template pTemplate="body" let-record>
@@ -88,9 +88,9 @@
       <ng-template pTemplate="header">
         <tr>
           <th pSortableColumn="record_value" style="width: 300px">
-            Record Value <p-sortIcon field="record_value"></p-sortIcon>
+            {{ 'UI.RECORD_VALUE' | translate }} <p-sortIcon field="record_value"></p-sortIcon>
           </th>
-          <th>Associated Domains</th>
+          <th>{{ 'UI.ASSOCIATED_DOMAINS' | translate }}</th>
         </tr>
       </ng-template>
       <ng-template pTemplate="body" let-record>
@@ -112,7 +112,7 @@
   </p-tabPanel>
 
   <!-- Domains (TXT) -->
-  <p-tabPanel header="Domains (TXT)">
+  <p-tabPanel [header]="'UI.DOMAINS_TXT' | translate">
     <p-table
       [value]="txtDomains"
       [loading]="loadingTxt"
@@ -126,9 +126,9 @@
       <ng-template pTemplate="header">
         <tr>
           <th pSortableColumn="domain" style="width: 300px">
-            Domain <p-sortIcon field="domain"></p-sortIcon>
+            {{ 'UI.DOMAIN' | translate }} <p-sortIcon field="domain"></p-sortIcon>
           </th>
-          <th>TXT Records</th>
+          <th>{{ 'UI.TXT_RECORDS' | translate }}</th>
         </tr>
       </ng-template>
       <ng-template pTemplate="body" let-domain>
@@ -150,7 +150,7 @@
   </p-tabPanel>
 
   <!-- Domains (NS) -->
-  <p-tabPanel header="Domains (NS)">
+  <p-tabPanel [header]="'UI.DOMAINS_NS' | translate">
     <p-table
       [value]="nsDomains"
       [loading]="loadingNs"
@@ -164,9 +164,9 @@
       <ng-template pTemplate="header">
         <tr>
           <th pSortableColumn="domain" style="width: 300px">
-            Domain <p-sortIcon field="domain"></p-sortIcon>
+            {{ 'UI.DOMAIN' | translate }} <p-sortIcon field="domain"></p-sortIcon>
           </th>
-          <th>NS Records</th>
+          <th>{{ 'UI.NS_RECORDS' | translate }}</th>
         </tr>
       </ng-template>
       <ng-template pTemplate="body" let-domain>
@@ -188,7 +188,7 @@
   </p-tabPanel>
 
   <!-- Domains (MX) -->
-  <p-tabPanel header="Domains (MX)">
+  <p-tabPanel [header]="'UI.DOMAINS_MX' | translate">
     <p-table
       [value]="mxDomains"
       [loading]="loadingMx"
@@ -202,9 +202,9 @@
       <ng-template pTemplate="header">
         <tr>
           <th pSortableColumn="domain" style="width: 300px">
-            Domain <p-sortIcon field="domain"></p-sortIcon>
+            {{ 'UI.DOMAIN' | translate }} <p-sortIcon field="domain"></p-sortIcon>
           </th>
-          <th>MX Records</th>
+          <th>{{ 'UI.MX_RECORDS' | translate }}</th>
         </tr>
       </ng-template>
       <ng-template pTemplate="body" let-domain>

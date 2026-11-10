@@ -1,3 +1,4 @@
+import { TranslateModule } from '@ngx-translate/core';
 import { Component, OnInit, inject } from '@angular/core';
 
 import { RouterModule } from '@angular/router';
@@ -11,17 +12,17 @@ import { TableModule } from 'primeng/table';
 @Component({
   standalone: true,
   selector: 'app-assets-hosts-page',
-  imports: [RouterModule, PrimeNgModule, TableModule],
+  imports: [TranslateModule, RouterModule, PrimeNgModule, TableModule],
   template: `
-    <h1 class="mt-2 mb-4">Hosts</h1>
+    <h1 class="mt-2 mb-4">{{ 'UI.HOSTS' | translate }}</h1>
     <p-table [value]="hosts" [loading]="loading" styleClass="p-datatable-striped">
       <ng-template pTemplate="header">
         <tr>
-          <th>ISP</th>
-          <th>IP Addresses</th>
-          <th>Organization</th>
-          <th>Country</th>
-          <th>Domain Count</th>
+          <th>{{ 'UI.ISP' | translate }}</th>
+          <th>{{ 'UI.IP_ADDRESSES' | translate }}</th>
+          <th>{{ 'UI.ORGANIZATION' | translate }}</th>
+          <th>{{ 'UI.COUNTRY' | translate }}</th>
+          <th>{{ 'UI.DOMAIN_COUNT' | translate }}</th>
         </tr>
       </ng-template>
       <ng-template pTemplate="body" let-host>

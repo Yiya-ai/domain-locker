@@ -1,3 +1,4 @@
+import { TranslateModule } from '@ngx-translate/core';
 import {
   DestroyRef,
   Component,
@@ -20,7 +21,7 @@ import { FeatureNotEnabledComponent } from '~/app/components/misc/feature-not-en
 
 @Component({
   standalone: true,
-  imports: [CommonModule, PrimeNgModule, FeatureNotEnabledComponent],
+  imports: [TranslateModule, CommonModule, PrimeNgModule, FeatureNotEnabledComponent],
   selector: 'app-stats-layout-page',
   templateUrl: './stats/index.page.html',
   styles: [

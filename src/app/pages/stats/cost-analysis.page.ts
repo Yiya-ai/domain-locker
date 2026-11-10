@@ -1,3 +1,4 @@
+import { TranslateModule } from '@ngx-translate/core';
 import { Component } from '@angular/core';
 import { DomainValuationChartComponent } from '~/app/components/charts/domain-valuation/domain-valuation.component';
 
@@ -5,13 +6,13 @@ import { DomainValuationChartComponent } from '~/app/components/charts/domain-va
   standalone: true,
   selector: 'app-stats-cost-analysis-page',
   template: `
-    <h1>Cost Analysis</h1>
+    <h1>{{ 'UI.COST_ANALYSIS' | translate }}</h1>
     <app-domain-valuation-chart />
     <!-- <div class="flex flex-col gap-8">
       <app-tag-cloud />
     </div> -->
   `,
-  imports: [DomainValuationChartComponent],
+  imports: [TranslateModule, DomainValuationChartComponent],
   styles: [],
 })
 export default class CostAnalysisPage {}

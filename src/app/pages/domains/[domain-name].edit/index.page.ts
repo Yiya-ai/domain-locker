@@ -1,3 +1,4 @@
+import { TranslateModule } from '@ngx-translate/core';
 import { Component, OnInit, OnDestroy, ChangeDetectorRef, inject } from '@angular/core';
 import { FormArray, FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
@@ -19,7 +20,7 @@ import { Subject, takeUntil } from 'rxjs';
   templateUrl: './edit-domain.page.html',
   styleUrls: ['./edit-domain.page.scss'],
   standalone: true,
-  imports: [ReactiveFormsModule, PrimeNgModule],
+  imports: [TranslateModule, ReactiveFormsModule, PrimeNgModule],
   providers: [MessageService],
 })
 export default class EditDomainComponent implements OnInit, OnDestroy {

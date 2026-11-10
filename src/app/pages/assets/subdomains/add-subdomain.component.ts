@@ -1,3 +1,4 @@
+import { TranslateModule } from '@ngx-translate/core';
 import { Component, Input, inject } from '@angular/core';
 
 import { FormsModule } from '@angular/forms';
@@ -12,22 +13,22 @@ import { Observable } from 'rxjs';
 @Component({
   standalone: true,
   selector: 'app-add-subdomain-dialog',
-  imports: [FormsModule, PrimeNgModule],
+  imports: [TranslateModule, FormsModule, PrimeNgModule],
   template: `
     <p-dialog
-      header="Add Subdomain"
+      [header]="'UI.ADD_SUBDOMAIN' | translate"
       [(visible)]="display"
       [modal]="true"
       [closable]="true"
       (onHide)="onDialogHide()"
     >
       <div class="p-field">
-        <label for="subdomainInput" class="block mb-2">Subdomain Name</label>
+        <label for="subdomainInput" class="block mb-2">{{ 'UI.SUBDOMAIN_NAME' | translate }}</label>
         <input
           id="subdomainInput"
           pInputText
           [(ngModel)]="subdomainInput"
-          placeholder="Enter subdomain (e.g. 'api' or 'subdomain.example.com')"
+          [placeholder]="'UI.ENTER_SUBDOMAIN_E_G_API_OR_SUBDOMAIN_EXAMPLE_COM' | translate"
           style="width: 100%"
         />
       </div>
@@ -35,16 +36,16 @@ import { Observable } from 'rxjs';
       <p-footer>
         <button
           pButton
-          label="Cancel"
-          aria-label="Cancel"
+          [label]="'UI.CANCEL' | translate"
+          [attr.aria-label]="'UI.CANCEL' | translate"
           icon="pi pi-times"
           class="p-button-text mr-2"
           (click)="display = false"
         ></button>
         <button
           pButton
-          label="Save"
-          aria-label="Save"
+          [label]="'UI.SAVE' | translate"
+          [attr.aria-label]="'UI.SAVE' | translate"
           icon="pi pi-check"
           (click)="saveSubdomain()"
           [disabled]="!subdomainInput"

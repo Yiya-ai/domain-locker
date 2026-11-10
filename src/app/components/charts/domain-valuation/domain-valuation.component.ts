@@ -1,3 +1,4 @@
+import { TranslateModule } from '@ngx-translate/core';
 import { Component, OnInit, inject } from '@angular/core';
 import { ApexOptions, ApexAxisChartSeries, ApexYAxis } from 'ng-apexcharts';
 import DatabaseService from '~/app/services/database.service';
@@ -27,7 +28,7 @@ type DomainCostingPoints = DomainCostingPoint[];
 @Component({
   standalone: true,
   selector: 'app-domain-valuation-chart',
-  imports: [PrimeNgModule, NgApexchartsModule],
+  imports: [TranslateModule, PrimeNgModule, NgApexchartsModule],
   templateUrl: './domain-valuation.component.html',
   styleUrls: ['./domain-valuation.component.scss'],
 })

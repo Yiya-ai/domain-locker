@@ -1,3 +1,4 @@
+import { TranslateModule } from '@ngx-translate/core';
 import { Component, OnDestroy, inject } from '@angular/core';
 import {
   AbstractControl,
@@ -40,7 +41,7 @@ import { EnvService } from '~/app/services/environment.service';
 @Component({
   standalone: true,
   selector: 'app-domains-add-bulk-add-page',
-  imports: [PrimeNgModule, ReactiveFormsModule],
+  imports: [TranslateModule, PrimeNgModule, ReactiveFormsModule],
   templateUrl: './bulk-add.page.html',
   styleUrls: ['./bulk-add.page.scss'],
 })

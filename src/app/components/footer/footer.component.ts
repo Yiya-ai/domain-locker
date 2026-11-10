@@ -1,3 +1,4 @@
+import { TranslateModule } from '@ngx-translate/core';
 import { Component, Input, inject } from '@angular/core';
 
 import { PrimeNgModule } from '~/app/prime-ng.module';
@@ -35,7 +36,7 @@ interface FooterContent {
 @Component({
   standalone: true,
   selector: 'app-footer',
-  imports: [PrimeNgModule, LogoComponent],
+  imports: [TranslateModule, PrimeNgModule, LogoComponent],
   templateUrl: './footer.component.html',
   styleUrls: ['./footer.component.scss'],
   styles: [],

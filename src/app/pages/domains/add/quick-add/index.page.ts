@@ -1,3 +1,4 @@
+import { TranslateModule } from '@ngx-translate/core';
 import { Component, EventEmitter, Input, Output, inject } from '@angular/core';
 
 import { ReactiveFormsModule, FormBuilder, Validators } from '@angular/forms';
@@ -31,7 +32,7 @@ import { FeatureService } from '~/app/services/features.service';
 @Component({
   selector: 'app-quick-add-domain',
   standalone: true,
-  imports: [ReactiveFormsModule, PrimeNgModule],
+  imports: [TranslateModule, ReactiveFormsModule, PrimeNgModule],
   templateUrl: './index.page.html',
 })
 export default class QuickAddDomain {

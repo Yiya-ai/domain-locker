@@ -1,3 +1,4 @@
+import { TranslateModule } from '@ngx-translate/core';
 import {
   ChangeDetectorRef,
   Component,
@@ -22,14 +23,14 @@ import {
 @Component({
   standalone: true,
   selector: 'app-ui-settings',
-  imports: [PrimeNgModule],
+  imports: [TranslateModule, PrimeNgModule],
   templateUrl: './ui-options.component.html',
   styleUrls: ['./ui-options.component.scss'],
 })
 export class UiSettingsComponent implements OnInit, OnDestroy {
   private authService = inject(AuthService);
   private themeService = inject(ThemeService);
-  private languageService = inject(TranslationService);
+  readonly languageService = inject(TranslationService);
   private accessibilityService = inject(AccessibilityService);
   private cdr = inject(ChangeDetectorRef);
 

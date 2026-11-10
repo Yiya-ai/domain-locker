@@ -1,9 +1,10 @@
+import { browserUiLanguage } from '../../shared/ui-language';
 import * as fs from 'fs';
 import * as path from 'path';
 import { inject, Injectable, PLATFORM_ID } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { isPlatformBrowser, isPlatformServer } from '@angular/common';
-import { Observable, of } from 'rxjs';
+import { firstValueFrom, Observable, of } from 'rxjs';
 import { catchError } from 'rxjs/operators';
 import {
   TranslateLoader,
@@ -73,13 +74,14 @@ export function languageInitializerFactory(
   platformId: object,
 ) {
   return () => {
-    const defaultLang = 'en';
+    const lang = isPlatformBrowser(platformId) ? browserUiLanguage() : 'en';
+    translate.setDefaultLang('en');
     if (isPlatformBrowser(platformId)) {
-      const savedLanguage = localStorage?.getItem('language') || defaultLang;
-      translate.setDefaultLang(defaultLang);
-      translate.use(savedLanguage);
-    } else {
-      translate.setDefaultLang(defaultLang);
+      document.documentElement.lang = lang;
+      if (new URLSearchParams(location.search).has('lang')) {
+        try { localStorage.setItem('domain-locker.language', lang); } catch { /* Storage is optional. */ }
+      }
     }
+    return firstValueFrom(translate.use(lang));
   };
 }

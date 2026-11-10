@@ -6,14 +6,14 @@
     </h2>
     <div class="flex gap-2 flex-wrap">
       <p-button
-        label="Edit Notification Events"
+        [label]="'UI.EDIT_NOTIFICATION_EVENTS' | translate"
         icon="pi pi-check-square"
         severity="secondary"
         routerLink="/notifications/edit-events"
         styleClass="min-w-72"
       />
       <p-button
-        label="Edit Notification Channels"
+        [label]="'UI.EDIT_NOTIFICATION_CHANNELS' | translate"
         icon="pi pi-telegram"
         severity="secondary"
         routerLink="/settings/notification-preferences"
@@ -21,7 +21,7 @@
       />
       @if (!isInModal) {
         <p-button
-          label="View Full Change History"
+          [label]="'UI.VIEW_FULL_CHANGE_HISTORY' | translate"
           icon="pi pi-history"
           routerLink="/domains/change-history"
           severity="success"
@@ -30,7 +30,7 @@
       }
       @if (unreadNotificationsCount && !isInModal) {
         <p-button
-          label="Mark All as Read"
+          [label]="'UI.MARK_ALL_AS_READ' | translate"
           icon="pi pi-check"
           (click)="markAllAsRead()"
           severity="info"
@@ -41,7 +41,7 @@
         />
       } @else if (notifications.length && !isInModal) {
         <p-button
-          label="Mark All as Unread"
+          [label]="'UI.MARK_ALL_AS_UNREAD' | translate"
           icon="pi pi-eye-slash"
           (click)="markAllAsRead(false)"
           severity="warning"
@@ -90,7 +90,7 @@
               [text]="true"
               icon="pi pi-eye"
               (click)="markAsRead(notification.id)"
-              pTooltip="Mark as read"
+              [pTooltip]="'UI.MARK_AS_READ' | translate"
             ></p-button>
           }
           @if (notification.read) {
@@ -98,7 +98,7 @@
               [text]="true"
               icon="pi pi-eye-slash"
               (click)="markAsUnread(notification.id)"
-              pTooltip="Mark as unread"
+              [pTooltip]="'UI.MARK_AS_UNREAD' | translate"
             ></p-button>
           }
         </div>
@@ -108,7 +108,7 @@
     @if (isInModal) {
       <div class="text-center mt-2">
         <p-button
-          label="View All"
+          [label]="'UI.VIEW_ALL' | translate"
           icon="pi pi-arrow-up-right"
           routerLink="/notifications"
           [text]="true"
@@ -128,5 +128,5 @@
     }
   </div>
 } @else {
-  <p class="text-center mt-4 opacity-70">You have no notifications.</p>
+  <p class="text-center mt-4 opacity-70">{{ 'UI.YOU_HAVE_NO_NOTIFICATIONS' | translate }}</p>
 }

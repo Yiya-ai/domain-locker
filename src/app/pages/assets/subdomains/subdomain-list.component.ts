@@ -1,3 +1,4 @@
+import { TranslateModule } from '@ngx-translate/core';
 import { Component, Input, OnChanges, ViewChild, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { Router, RouterModule } from '@angular/router';
@@ -24,7 +25,7 @@ type SubdomainRow = SubdomainView & { kvList: { key: string; value: string }[] }
 @Component({
   standalone: true,
   selector: 'app-subdomain-list',
-  imports: [CommonModule, RouterModule, PrimeNgModule, DomainFaviconComponent],
+  imports: [TranslateModule, CommonModule, RouterModule, PrimeNgModule, DomainFaviconComponent],
   template: `
     <ul
       [class]="
@@ -77,7 +78,7 @@ type SubdomainRow = SubdomainView & { kvList: { key: string; value: string }[] }
             class="flex gap-2 items-center px-3 py-2 cursor-pointer hover:text-primary bg-highlight rounded"
           >
             <i class="pi pi-angle-double-down"></i>
-            <span>Expand List</span>
+            <span>{{ 'UI.EXPAND_LIST' | translate }}</span>
             <i class="pi pi-angle-double-down"></i>
           </div>
         } @else {
@@ -85,7 +86,7 @@ type SubdomainRow = SubdomainView & { kvList: { key: string; value: string }[] }
             class="flex gap-2 items-center px-1 py-1 cursor-pointer hover:text-primary text-xs opacity-70 bg-highlight rounded-sm"
           >
             <i class="pi pi-angle-double-up"></i>
-            <span>Show Less</span>
+            <span>{{ 'UI.SHOW_LESS' | translate }}</span>
             <i class="pi pi-angle-double-up"></i>
           </div>
         }

@@ -8,7 +8,7 @@ import {
   ErrorHandler,
   inject,
 } from '@angular/core';
-import { RouterOutlet, Router, NavigationEnd } from '@angular/router';
+import { RouterOutlet, Router, NavigationStart, NavigationCancel, NavigationError, NavigationEnd } from '@angular/router';
 import { CommonModule, isPlatformBrowser } from '@angular/common';
 
 // Dependencies
@@ -21,7 +21,6 @@ import { PrimeNgModule } from '~/app/prime-ng.module';
 // Furniture Components
 import { NavbarComponent } from '~/app/components/navbar/navbar.component';
 import { FooterComponent } from '~/app/components/footer/footer.component';
-import { LoadingComponent } from '~/app/components/misc/loading.component';
 import { BreadcrumbsComponent } from '~/app/components/misc/breadcrumbs.component';
 
 // Services
@@ -47,7 +46,6 @@ import { MetaTagsService } from '~/app/services/meta-tags.service';
     CommonModule,
     NavbarComponent,
     FooterComponent,
-    LoadingComponent,
     BreadcrumbsComponent,
   ],
   providers: [
@@ -56,31 +54,23 @@ import { MetaTagsService } from '~/app/services/meta-tags.service';
     { provide: ErrorHandler, useClass: GlobalErrorHandler },
   ],
   template: `
-    <!-- Navbar -->
-    <app-navbar />
-    <div class="main-container">
-      <!-- Main content container -->
-      <div class="content-container" [ngClass]="{ full: isFullWidth }">
-        <!-- Create router outlet -->
-        @if (pagePath) {
-          <app-breadcrumbs [pagePath]="pagePath" />
-        }
-        <!-- Router outlet for main content -->
-        @if (!loading || publicPath) {
-          <router-outlet />
-        }
-        <!-- Global components -->
-        <p-scrollTop />
-        <p-toast />
-        <p-confirmDialog />
-      </div>
-      <!-- Footer -->
-      <app-footer [big]="isBigFooter" />
-      <!-- While initializing, show loading spinner (not on public pages) -->
-      @if (showInitLoader) {
-        <app-loading [isAbsolute]="true" />
+    @if (!loading) {
+      @if (loginPage) {
+        <main class="flex flex-1 items-center justify-center p-4"><router-outlet /></main>
+      } @else {
+        <app-navbar />
+        <div class="main-container">
+          <div class="content-container" [ngClass]="{ full: isFullWidth }">
+            @if (pagePath) { <app-breadcrumbs [pagePath]="pagePath" /> }
+            <router-outlet />
+            <p-scrollTop />
+          </div>
+          <app-footer [big]="isBigFooter" />
+        </div>
       }
-    </div>
+      <p-toast />
+      <p-confirmDialog />
+    }
   `,
   styles: [
     `
@@ -140,60 +130,56 @@ export class AppComponent implements OnInit, OnDestroy {
         this.metaTagsService.setRouteMeta(navEndEvent.urlAfterRedirects);
       });
 
-    // Check auth state
-    if (isPlatformBrowser(this.platformId)) {
-      // Listen for route changes (on browser only)
-      this.router.events.subscribe((event) => {
-        if (event instanceof NavigationEnd) {
-          const currentRoute = event.urlAfterRedirects || event.url;
-          this.pagePath = currentRoute;
-
-          // Configuration for docs pages (at /about)
-          if (currentRoute.startsWith('/about')) {
-            this.checkIfDocsDisabled(currentRoute);
-            this.isBigFooter = true;
-          } else {
-            this.isBigFooter = false;
-          }
-
-          // Some pages should be full wider (like /settings or /stats), we add a class if they are active
-          this.isFullWidth = this.fullWidthRoutes.some((route) =>
-            currentRoute.includes(route),
-          );
-
-          // Public route: no auth, set meta tags, and show the outlet
-          if (this.isPublicRoute(currentRoute, false)) {
-            this.loading = false;
-            this.metaTagsService.allowRobots(true);
-            return; // No auth needed for public routes
-          }
-
-          // Private route (auth required and bot no index)
-          this.metaTagsService.allowRobots(false);
-
-          // Auth needed for current route, check if user authenticated
-          this.checkAuthentication()
-            .then((isAuthenticated) => {
-              if (!isAuthenticated && this.router.url === currentRoute) {
-                this.redirectToLogin(currentRoute);
-                return;
-              }
-            })
-            .catch(async (error) => {
-              this.errorHandler.handleError({
-                error,
-                message: 'Unable to validate auth state',
-                showToast: true,
-                location: 'app.component',
-              });
-            })
-            .finally(() => {
-              this.loading = false;
-              this.cdr.detectChanges();
-            });
+    let navigation = 0;
+    let approvedRoute = '';
+    this.router.events.subscribe((event) => {
+      if (event instanceof NavigationStart) {
+        navigation = event.id;
+        if (!this.loading && !this.isPublicRoute(event.url)) {
+          this.loading = true;
+          this.cdr.detectChanges();
         }
+        return;
+      }
+      if (event instanceof NavigationCancel || event instanceof NavigationError) {
+        if (event.id === navigation && approvedRoute && this.router.url === approvedRoute) {
+          this.loading = false;
+          this.cdr.markForCheck();
+        }
+        return;
+      }
+      if (!(event instanceof NavigationEnd)) return;
+      navigation = event.id;
+      const route = event.urlAfterRedirects;
+      this.pagePath = route;
+      this.isBigFooter = route.startsWith('/about');
+      this.isFullWidth = this.fullWidthRoutes.some((path) => route.includes(path));
+      const isPublic = this.isPublicRoute(route);
+      this.metaTagsService.allowRobots(isPublic);
+      if (isPublic) {
+        if (this.isBigFooter && isPlatformBrowser(this.platformId)) void this.checkIfDocsDisabled(route);
+        approvedRoute = route;
+        this.loading = false;
+        this.cdr.markForCheck();
+        return;
+      }
+      this.loading = true;
+      approvedRoute = '';
+      if (!isPlatformBrowser(this.platformId)) return;
+      const current = () => navigation === event.id && this.router.url === route;
+      void this.checkAuthentication().then((authorized) => {
+        if (!current()) return;
+        if (!authorized) {
+          void this.redirectToLogin(route);
+          return;
+        }
+        approvedRoute = route;
+        this.loading = false;
+        this.cdr.markForCheck();
+      }).catch(() => {
+        if (current()) void this.redirectToLogin(route);
       });
-    }
+    });
     // Initialize the global message service for showing toasts
     this.subscription = this.globalMessageService.getMessage().subscribe((message) => {
       if (message) {
@@ -215,32 +201,17 @@ export class AppComponent implements OnInit, OnDestroy {
     }
   }
 
-  get publicPath(): boolean {
-    return this.isPublicRoute(this.pagePath, true);
+  get loginPage(): boolean {
+    return this.pagePath.split(/[?#]/, 1)[0] === '/login';
   }
 
-  // Init loader is only for awaiting user data, so hide it on public pages (home, about, etc)
-  get showInitLoader(): boolean {
-    return this.loading && !this.isPublicRoute(this.pagePath || this.router.url, true);
+  private isPublicRoute(route: string): boolean {
+    const path = route.split(/[?#]/, 1)[0].replace(/[/]$/, '') || '/';
+    return path === '/' || this.publicRoutes.has(path) ||
+      path.startsWith('/about/') || path.startsWith('/preview/');
   }
 
-  private isPublicRoute(route: string, allowHome = false): boolean {
-    if (!route) return true;
-    if (route === '/' && allowHome) return true;
-    if (this.publicRoutes.has(route)) return true;
-    if (route.startsWith('/about')) return true;
-    if (route.startsWith('/preview')) return true;
-    if (route.startsWith('/login')) return true;
-    return false;
-  }
-
-  /* Check if user is authenticated, and take appropriate action */
   private async checkAuthentication(): Promise<boolean> {
-    // No need to continue if visiting homepage or public route
-    if (this.isPublicRoute(this.pagePath, true)) {
-      return Promise.resolve(true);
-    }
-
     // Without Supabase, the instance password is the only gate, if one is set
     if (!this.environmentService.isSupabaseEnabled()) {
       return this.authService.isAuthenticated();
@@ -263,6 +234,7 @@ export class AppComponent implements OnInit, OnDestroy {
           await this.router.navigate(['/login'], {
             queryParams: { requireMFA: 'true' },
           });
+          return false;
         }
       }
       return Promise.resolve(true);
@@ -278,9 +250,7 @@ export class AppComponent implements OnInit, OnDestroy {
   }
 
   private redirectToLogin(returnUrl: string) {
-    this.router.navigate(['/login'], { queryParams: { returnUrl }, replaceUrl: true }).then(() => {
-      this.loading = false;
-    });
+    return this.router.navigate(['/login'], { queryParams: { returnUrl }, replaceUrl: true });
   }
 
   /* Check if documentation enabled before navigating to any /about page */

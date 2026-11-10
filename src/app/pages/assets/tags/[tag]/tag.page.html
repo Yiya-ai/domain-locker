@@ -13,11 +13,11 @@
   <div class="flex gap-2">
     <p-button
       (onClick)="showAddDomainsDialog()"
-      label="Add/Remove Domains"
+      [label]="'UI.ADD_REMOVE_DOMAINS' | translate"
       icon="pi pi-check-square"
       severity="secondary"
     />
-    <p-button (onClick)="showEditDialog()" label="Edit Tag" icon="pi pi-pencil" />
+    <p-button (onClick)="showEditDialog()" [label]="'UI.EDIT_TAG' | translate" icon="pi pi-pencil" />
     <p-button
       (onClick)="deleteTag()"
       pTooltip="Delete tag: {{ tag.name }}"
@@ -50,7 +50,7 @@
 }
 
 <p-dialog
-  header="Edit Tag"
+  [header]="'UI.EDIT_TAG' | translate"
   [modal]="true"
   [(visible)]="editDialogOpen"
   [style]="{ width: '50rem' }"
@@ -61,7 +61,7 @@
 </p-dialog>
 
 <p-dialog
-  header="Add Domains"
+  [header]="'UI.ADD_DOMAINS' | translate"
   [modal]="true"
   [(visible)]="addDomainsDialogOpen"
   (onHide)="refreshDomainsAfterDialogClose()"

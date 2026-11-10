@@ -1,3 +1,4 @@
+import { TranslateModule } from '@ngx-translate/core';
 import { ChangeDetectorRef, Component, OnInit, inject } from '@angular/core';
 
 import { RouterModule } from '@angular/router';
@@ -11,7 +12,7 @@ import { ErrorHandlerService } from '~/app/services/error-handler.service';
 @Component({
   standalone: true,
   selector: 'app-assets-registrars-page',
-  imports: [RouterModule, PrimeNgModule, DomainFaviconComponent],
+  imports: [TranslateModule, RouterModule, PrimeNgModule, DomainFaviconComponent],
   templateUrl: './index.page.html',
 })
 export default class RegistrarsIndexPageComponent implements OnInit {

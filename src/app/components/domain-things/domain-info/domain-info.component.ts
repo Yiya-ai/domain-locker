@@ -1,3 +1,4 @@
+import { TranslateModule } from '@ngx-translate/core';
 import { Component, Input, OnInit, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { PrimeNgModule } from '~/app/prime-ng.module';
@@ -18,6 +19,7 @@ import { CurrencyService } from '~/app/services/currency.service';
   standalone: true,
   selector: 'app-domain-info',
   imports: [
+    TranslateModule,
     RouterModule, CommonModule,
     PrimeNgModule,
     DlIconComponent,

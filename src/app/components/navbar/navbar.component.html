@@ -2,14 +2,14 @@
   <button
     pButton
     icon="pi pi-bars"
-    aria-label="Open menu"
+    [attr.aria-label]="'UI.OPEN_MENU' | translate"
     (click)="toggleSidebar()"
     class="p-button-text p-button-rounded mr-2 sm:hidden"
   ></button>
   <a
     routerLink="/"
     class="flex items-center no-underline"
-    aria-label="Domain Locker Home"
+    [attr.aria-label]="'UI.DOMAIN_LOCKER_HOME' | translate"
   >
     <app-logo />
     <h1 class="text-xl font-bold ml-2 text-primary relative">
@@ -21,7 +21,7 @@
             planColor || 'primary'
           }}-400 text-surface-50 px-1 rounded opacity-90 capitalize"
         >
-          {{ userPlanName }}
+          {{ userPlanName === 'selfHosted' ? ('UI.SELFHOSTED' | translate) : userPlanName }}
         </p>
       }
     </h1>
@@ -38,11 +38,11 @@
       <p-button
         routerLink="/login"
         [queryParams]="{ newUser: 'true' }"
-        label="Sign Up"
+        [label]="'UI.SIGN_UP' | translate"
         size="small"
         icon="pi pi-face-smile"
         class="ml-1"
-        aria-label="Login"
+        [attr.aria-label]="'UI.LOGIN' | translate"
       />
     }
 
@@ -50,22 +50,22 @@
       pButton
       icon="pi pi-palette"
       (click)="toggleSettings($event)"
-      pTooltip="Display Options"
+      [pTooltip]="'UI.DISPLAY_OPTIONS' | translate"
       tooltipPosition="bottom"
       showDelay="500"
-      aria-label="Open Display Settings"
+      [attr.aria-label]="'UI.OPEN_DISPLAY_SETTINGS' | translate"
       class="p-button-rounded p-button-text text-default hover:text-primary"
     ></button>
     @if (isAuthenticated) {
       <p-button
         icon="pi pi-bell"
         (click)="toggleNotifications($event)"
-        pTooltip="Notifications"
+        [pTooltip]="'UI.NOTIFICATIONS' | translate"
         tooltipPosition="bottom"
         showDelay="500"
         [text]="true"
         severity="contrast"
-        aria-label="Open Notifications"
+        [attr.aria-label]="'UI.OPEN_NOTIFICATIONS' | translate"
         class="notification-button text-default hover:text-primary"
       >
         @if (unreadNotificationsCount) {
@@ -95,10 +95,10 @@
         <button
           pButton
           icon="pi pi-cog"
-          pTooltip="Settings"
+          [pTooltip]="'UI.SETTINGS' | translate"
           tooltipPosition="bottom"
           showDelay="500"
-          aria-label="Settings"
+          [attr.aria-label]="'UI.SETTINGS' | translate"
           class="p-button-rounded p-button-text text-default hover:text-primary"
         ></button>
       </a>
@@ -136,7 +136,7 @@
           icon="pi pi-palette"
           severity="contrast"
           [text]="true"
-          aria-label="Display Options"
+          [attr.aria-label]="'UI.DISPLAY_OPTIONS' | translate"
           class="text-default hover:text-primary"
         >
         </p-button>
@@ -145,7 +145,7 @@
           icon="pi pi-cog"
           severity="contrast"
           [text]="true"
-          aria-label="Settings"
+          [attr.aria-label]="'UI.SETTINGS' | translate"
           class="text-default hover:text-primary"
         >
         </p-button>
@@ -155,7 +155,7 @@
             icon="pi pi-bell"
             [text]="true"
             severity="contrast"
-            aria-label="Notifications"
+            [attr.aria-label]="'UI.NOTIFICATIONS' | translate"
             class="notification-button text-default hover:text-primary"
           >
             @if (unreadNotificationsCount) {

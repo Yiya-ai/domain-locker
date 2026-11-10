@@ -1,3 +1,4 @@
+import { TranslateModule } from '@ngx-translate/core';
 import { Component, OnInit, PLATFORM_ID, ChangeDetectorRef, inject } from '@angular/core';
 import DatabaseService from '~/app/services/database.service';
 import { MessageService } from 'primeng/api';
@@ -14,7 +15,7 @@ import { DbDomain } from '~/app/../types/Database';
   standalone: true,
   selector: 'app-value-page',
   templateUrl: './index.page.html',
-  imports: [PrimeNgModule, CommonModule, RouterModule, TableModule],
+  imports: [TranslateModule, PrimeNgModule, CommonModule, RouterModule, TableModule],
 })
 export default class ValuationPageComponent implements OnInit {
   private databaseService = inject(DatabaseService);

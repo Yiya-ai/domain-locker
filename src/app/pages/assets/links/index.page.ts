@@ -1,3 +1,4 @@
+import { TranslateModule } from '@ngx-translate/core';
 import { Component, OnInit, ViewChild, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RouterModule } from '@angular/router';
@@ -30,7 +31,7 @@ type CustomSections = Record<string, Record<string, Omit<Link, 'id'>[]>>;
 @Component({
   standalone: true,
   selector: 'app-assets-links-page',
-  imports: [CommonModule, RouterModule, PrimeNgModule, DomainLinkComponent],
+  imports: [TranslateModule, CommonModule, RouterModule, PrimeNgModule, DomainLinkComponent],
   templateUrl: './index.page.html',
   providers: [DialogService],
   // styleUrl: './tags.scss'

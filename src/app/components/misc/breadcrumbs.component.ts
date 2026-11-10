@@ -1,3 +1,4 @@
+import { TranslationService } from '~/app/services/translation.service';
 import {
   Component,
   Input,
@@ -47,11 +48,11 @@ import {
                 />
               }
               <app-dl-icon icon="webHook" classNames="w-full h-full text-primary" />
-              <span class="text-primary font-semibold">{{ item.label }}</span>
+              <span class="text-primary font-semibold">{{ isDomainPage(item.label) ? item.label : language.menuLabel(item.label) }}</span>
             </a>
           } @else {
             <a [href]="item.url">
-              <span class="text-color">{{ item.label }}</span>
+              <span class="text-color">{{ isDomainPage(item.label) ? item.label : language.menuLabel(item.label) }}</span>
             </a>
           }
         </ng-template>
@@ -107,6 +108,7 @@ export class BreadcrumbsComponent implements OnInit, OnChanges {
     return domainPattern.test(path);
   }
 
+  language = inject(TranslationService);
   private updateBreadcrumbs(): void {
     // Check that we're on a page which isn't excluded from breadcrumbs
     this.shouldShowBreadcrumbs = this.determineIfBreadcrumbsShouldBeShown();

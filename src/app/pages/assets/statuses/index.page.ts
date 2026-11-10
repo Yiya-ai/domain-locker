@@ -1,3 +1,4 @@
+import { TranslateModule } from '@ngx-translate/core';
 import { Component, OnInit, inject } from '@angular/core';
 
 import { RouterModule } from '@angular/router';
@@ -14,7 +15,7 @@ import { ErrorHandlerService } from '~/app/services/error-handler.service';
 @Component({
   standalone: true,
   selector: 'app-statuses-index',
-  imports: [RouterModule, LoadingComponent, PrimeNgModule],
+  imports: [TranslateModule, RouterModule, LoadingComponent, PrimeNgModule],
   templateUrl: './statuses.page.html',
   styleUrls: ['./statuses.page.scss'],
 })

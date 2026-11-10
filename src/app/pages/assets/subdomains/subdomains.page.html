@@ -1,4 +1,4 @@
-<h1>All Subdomains</h1>
+<h1>{{ 'UI.ALL_SUBDOMAINS' | translate }}</h1>
 @if (loading) {
   <p-progressSpinner></p-progressSpinner>
 }
@@ -37,7 +37,7 @@
                 No subdomains configured {{ d.name }} yet
               </p>
               <p-button
-                label="Manage Subdomains"
+                [label]="'UI.MANAGE_SUBDOMAINS' | translate"
                 icon="pi pi-file-import"
                 [routerLink]="'/assets/subdomains/' + d.name"
                 size="small"
@@ -55,5 +55,5 @@
 }
 
 @if (!loading && !domains.length) {
-  <p>No domains found.</p>
+  <p>{{ 'UI.NO_DOMAINS_FOUND' | translate }}</p>
 }

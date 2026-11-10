@@ -1,3 +1,4 @@
+import { TranslateModule } from '@ngx-translate/core';
 import { Component } from '@angular/core';
 import { PrimeNgModule } from '../../prime-ng.module';
 
@@ -5,17 +6,15 @@ import { ExtendedMenuItem, statsLinks } from '~/app/constants/navigation-links';
 
 @Component({
   standalone: true,
-  imports: [PrimeNgModule],
+  imports: [TranslateModule, PrimeNgModule],
   selector: 'app-stats-page',
   // templateUrl: './index.page.html',
   template: `
     <div class="mx-auto mt-6 w-4/5">
       <!-- Intro -->
-      <h2 class="text-4xl">Domain Statistics</h2>
+      <h2 class="text-4xl">{{ 'UI.DOMAIN_STATISTICS' | translate }}</h2>
       <p class="italic text-xl opacity-70">
-        Explore an in-depth view of your domain data with interactive charts and insights.
-        Use the options on the left to visualize everything from domain providers and
-        security profiles to SSL lifespans and upcoming expirations.
+        {{ 'UI.EXPLORE_AN_IN_DEPTH_VIEW_OF_YOUR_DOMAIN_DATA_WITH_INTERACTIVE_CHARTS_AND_INSIGHTS_USE_THE_OPTIONS_ON_THE_LEFT_TO_VISUALIZE_EVERYTHING_FROM_DOMAIN_PROVIDERS_AND_SECURITY_PROFILES_TO_SSL_LIFESPANS_AND_UPCOMING_EXPIRATIONS' | translate }}
       </p>
       <!-- List of stats pages -->
       <ul

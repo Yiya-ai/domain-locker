@@ -1,3 +1,4 @@
+import { TranslateModule } from '@ngx-translate/core';
 import { Component, OnInit, ChangeDetectorRef, OnDestroy, inject } from '@angular/core';
 
 import { PrimeNgModule } from '../../prime-ng.module';
@@ -12,10 +13,10 @@ import { Subscription } from 'rxjs';
 @Component({
   standalone: true,
   selector: 'app-domains-page',
-  imports: [DomainCollectionComponent, PrimeNgModule, RouterLink],
+  imports: [TranslateModule, DomainCollectionComponent, PrimeNgModule, RouterLink],
   template: `
     @if (env.isSelfHostedDatabase()) {
-      <a pButton class="p-button-outlined mb-3" routerLink="/domains/ledger">Domain ledger · 域名台账</a>
+      <a pButton class="p-button-outlined mb-3" routerLink="/domains/ledger">{{ 'UI.DOMAIN_LEDGER' | translate }}</a>
     }
     @if (!loading) {
       <app-domain-view

@@ -1,3 +1,4 @@
+import { TranslateModule } from '@ngx-translate/core';
 import { Component, OnInit, inject } from '@angular/core';
 
 import { RouterModule } from '@angular/router';
@@ -26,6 +27,7 @@ interface DomainGroup {
   standalone: true,
   selector: 'app-assets-subdomains-page',
   imports: [
+    TranslateModule,
     RouterModule,
     PrimeNgModule,
     SubdomainListComponent,

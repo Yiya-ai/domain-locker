@@ -1,10 +1,10 @@
 <div class="w-full flex justify-between flex-wrap">
-  <h1>Domain Valuation: Edit</h1>
+  <h1>{{ 'UI.DOMAIN_VALUATION_EDIT' | translate }}</h1>
   @if (!loading) {
     <button
       pButton
-      label="Save"
-      aria-label="Save"
+      [label]="'UI.SAVE' | translate"
+      [attr.aria-label]="'UI.SAVE' | translate"
       icon="pi pi-check"
       (click)="saveChanges()"
     ></button>
@@ -12,9 +12,7 @@
 </div>
 
 <p class="text-surface-400">
-  Add or update the costings for each domain here. The purchase price is the one-off fee
-  you paid for the domain, the current value is the estimated value of the domain now, the
-  annual renewal cost is the cost to renew the domain each year.
+  {{ 'UI.ADD_OR_UPDATE_THE_COSTINGS_FOR_EACH_DOMAIN_HERE_THE_PURCHASE_PRICE_IS_THE_ONE_OFF_FEE_YOU_PAID_FOR_THE_DOMAIN_THE_CURRENT_VALUE_IS_THE_ESTIMATED_VALUE_OF_THE_DOMAIN_NOW_THE_ANNUAL_RENEWAL_COST_IS_THE_COST_TO_RENEW_THE_DOMAIN_EACH_YEAR' | translate }}
 </p>
 
 <p-table
@@ -25,11 +23,11 @@
 >
   <ng-template pTemplate="header">
     <tr>
-      <th>Domain Name</th>
-      <th [pTooltip]="'The one-off fee you paid for the domain'">Purchase Price</th>
-      <th [pTooltip]="'The current sell-value of the domain'">Current Value</th>
-      <th [pTooltip]="'The annual cost to renew the domain'">Annual Renewal Cost</th>
-      <th [pTooltip]="'Weather or not the domain auto-renews'">Auto Renew</th>
+      <th>{{ 'UI.DOMAIN_NAME' | translate }}</th>
+      <th [pTooltip]="'The one-off fee you paid for the domain'">{{ 'UI.PURCHASE_PRICE' | translate }}</th>
+      <th [pTooltip]="'The current sell-value of the domain'">{{ 'UI.CURRENT_VALUE' | translate }}</th>
+      <th [pTooltip]="'The annual cost to renew the domain'">{{ 'UI.ANNUAL_RENEWAL_COST' | translate }}</th>
+      <th [pTooltip]="'Weather or not the domain auto-renews'">{{ 'UI.AUTO_RENEW' | translate }}</th>
     </tr>
   </ng-template>
   <ng-template pTemplate="body" let-domain>
@@ -75,8 +73,8 @@
 <div class="w-full flex justify-end">
   <button
     pButton
-    label="Save"
-    aria-label="Save"
+    [label]="'UI.SAVE' | translate"
+    [attr.aria-label]="'UI.SAVE' | translate"
     icon="pi pi-check"
     (click)="saveChanges()"
     class="mt-4"

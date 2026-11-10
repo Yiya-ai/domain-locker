@@ -1,13 +1,12 @@
 <div class="p-card p-4">
-  <h1>Export Domain Data</h1>
-  <p>Select filters and export your domain data in the desired format.</p>
+  <h1>{{ 'UI.EXPORT_DOMAIN_DATA' | translate }}</h1>
+  <p>{{ 'UI.SELECT_FILTERS_AND_EXPORT_YOUR_DOMAIN_DATA_IN_THE_DESIRED_FORMAT' | translate }}</p>
 
   <p-messages severity="info">
     <ng-template pTemplate>
       <i class="pi pi-check-circle"></i>
       <div class="ml-2">
-        With Domain Locker, you always own your data. Export at anytime, to migrate to an
-        alternative platform.
+        {{ 'UI.WITH_DOMAIN_LOCKER_YOU_ALWAYS_OWN_YOUR_DATA_EXPORT_AT_ANYTIME_TO_MIGRATE_TO_AN_ALTERNATIVE_PLATFORM' | translate }}
       </div>
     </ng-template>
   </p-messages>
@@ -18,7 +17,7 @@
       <input
         pInputText
         formControlName="domains"
-        placeholder="Domain (leave blank for all domains)"
+        [placeholder]="'UI.DOMAIN_LEAVE_BLANK_FOR_ALL_DOMAINS' | translate"
         styleClass="w-full md:w-2/6 flex-1"
       />
 
@@ -27,7 +26,7 @@
         formControlName="fields"
         [options]="availableFields"
         optionLabel="label"
-        placeholder="Select Fields"
+        [placeholder]="'UI.SELECT_FIELDS' | translate"
         styleClass="w-full md:w-2/6 flex-1"
       ></p-multiSelect>
 
@@ -39,14 +38,14 @@
           { label: 'JSON', value: 'json' },
           { label: 'TXT', value: 'txt' },
         ]"
-        placeholder="Select Format"
+        [placeholder]="'UI.SELECT_FORMAT' | translate"
         styleClass="w-full md:w-2/6 flex-1"
       ></p-dropdown>
 
       <button
         pButton
-        label="Export"
-        aria-label="Export"
+        [label]="'UI.EXPORT' | translate"
+        [attr.aria-label]="'UI.EXPORT' | translate"
         icon="pi pi-download"
         [disabled]="loading"
       ></button>

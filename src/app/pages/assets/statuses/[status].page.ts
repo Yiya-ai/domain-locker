@@ -1,3 +1,4 @@
+import { TranslateModule } from '@ngx-translate/core';
 import { DestroyRef, Component, OnInit, inject } from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 
@@ -13,7 +14,7 @@ import { ErrorHandlerService } from '~/app/services/error-handler.service';
 @Component({
   standalone: true,
   selector: 'app-assets-statuses-status-page',
-  imports: [PrimeNgModule, DomainCollectionComponent],
+  imports: [TranslateModule, PrimeNgModule, DomainCollectionComponent],
   template: `
     <h1>Domains with status "{{ statusInfo ? statusInfo.label : statusCode }}"</h1>
 
@@ -35,7 +36,7 @@ import { ErrorHandlerService } from '~/app/services/error-handler.service';
       } @else if (statusInfo.actionToTake) {
         <p class="my-0 text-blue-400">{{ statusInfo.actionToTake }}</p>
       } @else {
-        <p class="my-0 text-green-400">This is a good status, no action is needed</p>
+        <p class="my-0 text-green-400">{{ 'UI.THIS_IS_A_GOOD_STATUS_NO_ACTION_IS_NEEDED' | translate }}</p>
       }
     }
 

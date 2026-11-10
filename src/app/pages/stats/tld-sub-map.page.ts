@@ -1,3 +1,4 @@
+import { TranslateModule } from '@ngx-translate/core';
 import { Component } from '@angular/core';
 import { TldOrganizationChartComponent } from '~/app/components/charts/domain-hierarchy/domain-hierarchy.component';
 
@@ -5,10 +6,10 @@ import { TldOrganizationChartComponent } from '~/app/components/charts/domain-hi
   standalone: true,
   selector: 'app-stats-tld-sub-map-page',
   template: `
-    <h1 class="mt-2 mb-4">TLD and Subdomain Hierarchy</h1>
+    <h1 class="mt-2 mb-4">{{ 'UI.TLD_AND_SUBDOMAIN_HIERARCHY' | translate }}</h1>
     <app-tld-organization-chart />
   `,
-  imports: [TldOrganizationChartComponent],
+  imports: [TranslateModule, TldOrganizationChartComponent],
   styles: [
     `
       ::ng-deep app-tld-organization-chart {

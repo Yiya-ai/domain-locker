@@ -26,7 +26,7 @@
       <div class="flex">
         <p-button
           severity="danger"
-          label="Delete"
+          [label]="'UI.DELETE' | translate"
           icon="pi pi-trash"
           (click)="confirmDelete($event)"
           class="p-button-primary no-underline m-0 flex gap-2 w-fit ml-2 font-medium"
@@ -38,7 +38,7 @@
           class="p-button-secondary no-underline m-0 flex gap-2 w-fit ml-2 font-medium"
         >
           <i class="pi pi-external-link"></i>
-          Visit
+          {{ 'UI.VISIT' | translate }}
         </a>
         <a
           pButton
@@ -46,7 +46,7 @@
           class="p-button-primary no-underline m-0 flex gap-2 w-fit ml-2 font-medium"
         >
           <i class="pi pi-pencil"></i>
-          Edit
+          {{ 'UI.EDIT' | translate }}
         </a>
       </div>
     </div>
@@ -56,7 +56,7 @@
     <p-card styleClass="mt-4">
       <ng-template pTemplate="header">
         <h4 class="text-surface-600 text-2xl font-bold m-0 pt-4 pl-4 block z-1 relative">
-          Change History
+          {{ 'UI.CHANGE_HISTORY' | translate }}
         </h4>
         <div class="absolute top-4 right-4 h-16 w-16 opacity-70">
           <app-dl-icon
@@ -70,7 +70,7 @@
         @if (shouldMountHistory) {
           <app-domain-updates [domainName]="name"></app-domain-updates>
         } @else {
-          <p-progressSpinner class="flex mx-auto" ariaLabel="loading" />
+          <p-progressSpinner class="flex mx-auto" [ariaLabel]="'UI.LOADING' | translate" />
         }
         <div appLazyLoad (visible)="onHistoryVisible()"></div>
       }
@@ -82,7 +82,7 @@
           <h4
             class="text-surface-600 text-2xl font-bold m-0 pt-4 pl-4 block z-1 relative"
           >
-            Monitor
+            {{ 'UI.MONITOR' | translate }}
           </h4>
           <div class="absolute top-4 right-4 h-16 w-16 opacity-70">
             <app-dl-icon
@@ -105,16 +105,15 @@
             <div class="text-center">
               <p class="my-4 text-2xl italic text-surface-400">
                 <i class="pi pi-info-circle text-2xl mr-2"></i>
-                Not enough monitoring data yet
+                {{ 'UI.NOT_ENOUGH_MONITORING_DATA_YET' | translate }}
               </p>
               <p class="mt-0 text-surface-400">
-                Uptime and performance charts appear once a domain has at least 2 days of
-                monitoring history
+                {{ 'UI.UPTIME_AND_PERFORMANCE_CHARTS_APPEAR_ONCE_A_DOMAIN_HAS_AT_LEAST_2_DAYS_OF_MONITORING_HISTORY' | translate }}
               </p>
             </div>
           }
         } @else {
-          <p-progressSpinner class="flex mx-auto" ariaLabel="loading" />
+          <p-progressSpinner class="flex mx-auto" [ariaLabel]="'UI.LOADING' | translate" />
         }
       </p-card>
     }
@@ -123,7 +122,7 @@
     <p-card styleClass="mt-4">
       <ng-template pTemplate="header">
         <h4 class="text-surface-600 text-2xl font-bold m-0 pt-4 pl-4 block z-1 relative">
-          Subdomains
+          {{ 'UI.SUBDOMAINS' | translate }}
         </h4>
         <div class="absolute top-4 right-4 h-16 w-16 opacity-70">
           <app-dl-icon
@@ -137,10 +136,10 @@
         <div class="flex flex-col text-center items-center">
           <p class="my-4 text-2xl text-center italic text-surface-400">
             <i class="pi pi-info-circle text-2xl mr-2"></i>
-            No subdomains configured yet
+            {{ 'UI.NO_SUBDOMAINS_CONFIGURED_YET' | translate }}
           </p>
           <p-button
-            label="Manage Subdomains"
+            [label]="'UI.MANAGE_SUBDOMAINS' | translate"
             icon="pi pi-file-import"
             [routerLink]="'/assets/subdomains/' + domain.domain_name"
             class="p-button-primary no-underline m-0 flex gap-2 w-fit ml-2 font-medium"
@@ -159,7 +158,7 @@
     <p-card styleClass="mt-4">
       <ng-template pTemplate="header">
         <h4 class="text-surface-600 text-2xl font-bold m-0 pt-4 pl-4 block z-1 relative">
-          External Tools
+          {{ 'UI.EXTERNAL_TOOLS' | translate }}
         </h4>
         <div class="absolute top-4 right-4 h-16 w-16 opacity-70">
           <app-dl-icon

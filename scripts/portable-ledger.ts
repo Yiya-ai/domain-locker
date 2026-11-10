@@ -1,3 +1,4 @@
+import { browserUiLanguage } from '../src/shared/ui-language';
 import 'zone.js';
 import '@angular/compiler';
 import { bootstrapApplication } from '@angular/platform-browser';
@@ -6,6 +7,7 @@ import { PortfolioComponent } from '../src/app/components/portfolio/portfolio.co
 import { PORTFOLIO_STORE } from '../src/app/components/portfolio/store';
 import { unlock } from './portable-vault';
 
+document.documentElement.lang = browserUiLanguage();
 const form = document.querySelector<HTMLFormElement>('#unlock')!;
 unlock(form, (store) =>
   bootstrapApplication(PortfolioComponent, {

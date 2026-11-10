@@ -1,3 +1,4 @@
+import { TranslateModule } from '@ngx-translate/core';
 import { Component, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { PrimeNgModule } from '~/app/prime-ng.module';
@@ -10,6 +11,7 @@ import { FeatureNotEnabledComponent } from '~/app/components/misc/feature-not-en
   standalone: true,
   selector: 'app-domains-change-history-page',
   imports: [
+    TranslateModule,
     CommonModule,
     PrimeNgModule,
     DomainUpdatesComponent,

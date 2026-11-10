@@ -1,3 +1,5 @@
+import { TranslationService } from '~/app/services/translation.service';
+import { TranslateModule } from '@ngx-translate/core';
 import {
   Component,
   OnInit,
@@ -36,6 +38,7 @@ import { FeatureService } from '~/app/services/features.service';
   selector: 'app-navbar',
   standalone: true,
   imports: [
+    TranslateModule,
     CommonModule,
     RouterModule,
     PrimeNgModule,
@@ -78,7 +81,18 @@ export class NavbarComponent implements OnInit, AfterViewInit {
 
   public isSupabaseEnabled = this.databaseService.serviceType === 'supabase';
 
+  private language = inject(TranslationService);
+  private translatedItems(items: MenuItem[]): MenuItem[] {
+    return items.map(item => ({ ...item,
+      label: item.label ? this.language.menuLabel(item.label) : item.label,
+      items: item.items ? this.translatedItems(item.items) : item.items,
+    }));
+  }
+
   ngOnInit() {
+    this.subscriptions.add(this.language.translateService.onLangChange.subscribe(() => {
+      void this.initializeMenuItems();
+    }));
     void this.setAuthState().then(() => {
       this.initializeMenuItems();
       this.loadUnreadNotificationCount();
@@ -179,20 +193,20 @@ export class NavbarComponent implements OnInit, AfterViewInit {
     }
     if (this.isAuthenticated) {
       // User is logged in, show authenticated nav links
-      this.items = authenticatedNavLinks as MenuItem[];
+      this.items = this.translatedItems(authenticatedNavLinks as MenuItem[]);
       this.itemsWithSettings = [
-        ...(authenticatedNavLinks as MenuItem[]),
+        ...this.items,
         {
-          label: 'Settings',
+          label: this.language.menuLabel('Settings'),
           routerLink: '/settings',
           icon: 'pi pi-cog',
-          items: settingsLinks as MenuItem[],
+          items: this.translatedItems(settingsLinks as MenuItem[]),
         },
       ];
     } else {
       // User is not logged in, show docs links
-      this.items = unauthenticatedNavLinks;
-      this.itemsWithSettings = unauthenticatedNavLinks;
+      this.items = this.translatedItems(unauthenticatedNavLinks);
+      this.itemsWithSettings = this.items;
       if (!(await this.featureService.isFeatureEnabledPromise('enableDocs'))) {
         // Docs is disabled, don't show docs links
         this.items = [];

@@ -10,7 +10,7 @@
 >
   <form [formGroup]="domainForm" (ngSubmit)="onSubmit()">
     <div class="field">
-      <label for="registrar">Registrar</label>
+      <label for="registrar">{{ 'UI.REGISTRAR' | translate }}</label>
       <div class="input-wrap">
         @if (!registrarLoadFailed) {
           <p-autoComplete
@@ -20,7 +20,7 @@
             (completeMethod)="filterRegistrars($event)"
             [dropdown]="true"
             [forceSelection]="false"
-            placeholder="Select or type registrar name..."
+            [placeholder]="'UI.SELECT_OR_TYPE_REGISTRAR_NAME' | translate"
             styleClass="w-full"
             [inputStyle]="{ width: '100%' }"
           ></p-autoComplete>
@@ -32,14 +32,14 @@
             pInputText
             formControlName="registrar"
             class="w-full"
-            placeholder="Enter registrar name"
+            [placeholder]="'UI.ENTER_REGISTRAR_NAME' | translate"
           />
         }
       </div>
     </div>
 
     <div class="field">
-      <label for="expiryDate">Expiry Date</label>
+      <label for="expiryDate">{{ 'UI.EXPIRY_DATE' | translate }}</label>
       <div class="input-wrap">
         <p-calendar
           id="expiryDate"
@@ -53,7 +53,7 @@
     </div>
 
     <div class="field">
-      <label for="tags">Tags</label>
+      <label for="tags">{{ 'UI.TAGS' | translate }}</label>
       <div class="input-wrap">
         <p-chips
           id="tags"
@@ -66,7 +66,7 @@
     </div>
 
     <div class="field">
-      <label for="notes">Notes</label>
+      <label for="notes">{{ 'UI.NOTES' | translate }}</label>
       <div class="input-wrap">
         <textarea
           id="notes"
@@ -80,7 +80,7 @@
     </div>
 
     <div class="field">
-      <label for="subdomains">Subdomains</label>
+      <label for="subdomains">{{ 'UI.SUBDOMAINS' | translate }}</label>
       <div class="input-wrap">
         <p-chips
           id="subdomains"
@@ -95,7 +95,7 @@
 
     <!-- Links Section -->
     <fieldset class="field border-none p-0 m-0">
-      <legend class="p-0">Links</legend>
+      <legend class="p-0">{{ 'UI.LINKS' | translate }}</legend>
       <div class="flex flex-col mr-2">
         @for (link of links.controls; track link; let i = $index) {
           <div formArrayName="links">
@@ -105,20 +105,20 @@
                   type="text"
                   pInputText
                   formControlName="link_name"
-                  placeholder="Link Name"
+                  [placeholder]="'UI.LINK_NAME' | translate"
                   class="w-1/3"
                 />
                 <input
                   type="text"
                   pInputText
                   formControlName="link_url"
-                  placeholder="Link URL"
+                  [placeholder]="'UI.LINK_URL' | translate"
                   class="w-2/3"
                 />
                 <button
                   pButton
                   icon="pi pi-trash"
-                  aria-label="Remove link"
+                  [attr.aria-label]="'UI.REMOVE_LINK' | translate"
                   class="p-button-danger"
                   (click)="removeLink(i)"
                   type="button"
@@ -130,7 +130,7 @@
                 [rows]="2"
                 [cols]="30"
                 class="w-full"
-                placeholder="Description (optional)"
+                [placeholder]="'UI.DESCRIPTION_OPTIONAL' | translate"
               ></textarea>
             </div>
           </div>
@@ -138,8 +138,8 @@
       </div>
       <button
         pButton
-        label="Add Link"
-        aria-label="Add link"
+        [label]="'UI.ADD_LINK' | translate"
+        [attr.aria-label]="'UI.ADD_LINK' | translate"
         class="mt-2"
         (click)="addLink()"
         type="button"
@@ -147,7 +147,7 @@
     </fieldset>
 
     <fieldset formGroupName="notifications" class="border-none p-0 m-0">
-      <legend class="p-0">Notifications</legend>
+      <legend class="p-0">{{ 'UI.NOTIFICATIONS' | translate }}</legend>
       @for (type of notificationTypes; track type) {
         <div class="flex align-items-center gap-1 pb-0 mb-0 field">
           <label [for]="type.key" class="ml-2">
@@ -165,11 +165,11 @@
     <div class="flex justify-content-between mt-4">
       <p-button
         type="button"
-        label="Cancel"
+        [label]="'UI.CANCEL' | translate"
         styleClass="p-button-secondary mr-2"
         [routerLink]="'/domains/' + (domain?.domain_name || '')"
       ></p-button>
-      <p-button type="submit" label="Save Changes" [loading]="isLoading"></p-button>
+      <p-button type="submit" [label]="'UI.SAVE_CHANGES' | translate" [loading]="isLoading"></p-button>
     </div>
   </form>
 </p-panel>

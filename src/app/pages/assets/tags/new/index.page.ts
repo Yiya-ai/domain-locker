@@ -1,3 +1,4 @@
+import { TranslateModule } from '@ngx-translate/core';
 import { Component, inject } from '@angular/core';
 
 import { PrimeNgModule } from '~/app/prime-ng.module';
@@ -8,8 +9,8 @@ import { Router } from '@angular/router';
 @Component({
   standalone: true,
   selector: 'app-assets-tags-new-page',
-  imports: [PrimeNgModule, DomainCollectionComponent, TagEditorComponent],
-  template: ` <h2 class="mb-4 ml-4">Add New Tag</h2>
+  imports: [TranslateModule, PrimeNgModule, DomainCollectionComponent, TagEditorComponent],
+  template: ` <h2 class="mb-4 ml-4">{{ 'UI.ADD_NEW_TAG' | translate }}</h2>
     <div class="p-card p-4 m-4">
       <app-tag-editor [isAddNew]="true" ($afterSave)="afterSave($event)" />
     </div>`,

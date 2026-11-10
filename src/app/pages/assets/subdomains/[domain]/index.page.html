@@ -3,21 +3,21 @@
   <h2 class="m-0">Subdomains for {{ domain }}</h2>
   <div class="flex gap-2">
     <p-button
-      label="Refresh"
+      [label]="'UI.REFRESH' | translate"
       icon="pi pi-refresh"
       severity="secondary"
       (click)="searchForSubdomains()"
       size="small"
     ></p-button>
     <p-button
-      label="Add Subdomain"
+      [label]="'UI.ADD_SUBDOMAIN' | translate"
       icon="pi pi-plus"
       size="small"
       severity="secondary"
       (click)="addSubdomainDialog.showDialog()"
     ></p-button>
     <p-button
-      label="View Parent Domain"
+      [label]="'UI.VIEW_PARENT_DOMAIN' | translate"
       icon="pi pi-arrow-up-right"
       severity="secondary"
       [routerLink]="['/domains', domain]"
@@ -39,14 +39,14 @@
 <!-- Not found message -->
 @if (!loading && !subdomains.length) {
   <app-not-found
-    title="No Subdomains Found"
+    [title]="'UI.NO_SUBDOMAINS_FOUND' | translate"
     [name]="this.domain"
     message="either doesn't exist or hasn't yet got any associated subdomains"
     [actionLink]="false"
   >
     @if (validDomain) {
       <p-button
-        label="Search for Subdomains"
+        [label]="'UI.SEARCH_FOR_SUBDOMAINS' | translate"
         icon="pi pi-search"
         class="p-button-secondary mt-4"
         (click)="searchForSubdomains()"

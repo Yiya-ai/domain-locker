@@ -1,3 +1,4 @@
+import { TranslateModule } from '@ngx-translate/core';
 import { Component, OnInit, inject } from '@angular/core';
 
 import { RouterModule } from '@angular/router';
@@ -15,17 +16,17 @@ interface SslIssuer {
 @Component({
   standalone: true,
   selector: 'app-assets-certs-page',
-  imports: [RouterModule, PrimeNgModule, TableModule],
+  imports: [TranslateModule, RouterModule, PrimeNgModule, TableModule],
   template: `
-    <h1 class="mt-2 mb-4">SSL Certificate Issuers</h1>
+    <h1 class="mt-2 mb-4">{{ 'UI.SSL_CERTIFICATE_ISSUERS' | translate }}</h1>
     <p-table [value]="sslIssuers" [loading]="loading" styleClass="p-datatable-striped">
       <ng-template pTemplate="header">
         <tr>
           <th pSortableColumn="issuer">
-            Issuer <p-sortIcon field="issuer"></p-sortIcon>
+            {{ 'UI.ISSUER' | translate }} <p-sortIcon field="issuer"></p-sortIcon>
           </th>
           <th pSortableColumn="domainCount">
-            Domain Count <p-sortIcon field="domainCount"></p-sortIcon>
+            {{ 'UI.DOMAIN_COUNT' | translate }} <p-sortIcon field="domainCount"></p-sortIcon>
           </th>
         </tr>
       </ng-template>

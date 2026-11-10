@@ -38,8 +38,7 @@ export class PortfolioComponent implements OnInit {
   readonly store = inject(PORTFOLIO_STORE);
   private cd = inject(ChangeDetectorRef);
   private platform = inject(PLATFORM_ID);
-  readonly zh =
-    typeof navigator !== 'undefined' && navigator.language.toLowerCase().startsWith('zh');
+  get zh() { return typeof document !== 'undefined' && document.documentElement.lang.startsWith('zh'); }
   t(en: string, zh: string) {
     return this.zh ? zh : en;
   }
@@ -59,20 +58,24 @@ export class PortfolioComponent implements OnInit {
   batch: Entry[] = [];
   rate: number | null = 1;
   readonly prices = prices;
-  readonly moneyLabels = {
+  get moneyLabels() {
+    return {
     registerPrice: this.t('Purchase price', '注册价'),
     renewPrice: this.t('Annual renewal', '年续费'),
     targetPrice: this.t('Asking price', '意向售价'),
     actualPrice: this.t('Sale price', '实际售价'),
-  };
+    };
+  }
   readonly states = ['Active', 'Due within 30 days', 'Expired', 'Unknown'];
-  readonly stateLabels: Record<string, string> = {
+  get stateLabels(): Record<string, string> {
+    return {
     Active: this.t('Active', '正常'),
     'Due within 30 days': this.t('Due within 30 days', '30 天内到期'),
     Expired: this.t('Expired', '已过期'),
     Unknown: this.t('No expiry date', '未设到期日'),
-  };
-  readonly numberFormat = new Intl.NumberFormat(undefined, {
+    };
+  }
+  readonly numberFormat = new Intl.NumberFormat(typeof document !== 'undefined' ? document.documentElement.lang : undefined, {
     style: 'currency',
     currency: this.store.currency,
   });
@@ -135,7 +138,7 @@ export class PortfolioComponent implements OnInit {
   }
   async save() {
     await this.run(async () => {
-      const record = validateEntry(this.entry);
+      const record = validateEntry(this.entry, this.zh);
       if (this.selected) await this.store.edit(this.selected.id, record);
       else if (!(await this.store.add([record])).added)
         throw new Error(this.t('Domain already exists.', '该域名已存在。'));
@@ -157,7 +160,7 @@ export class PortfolioComponent implements OnInit {
     await this.run(async () => {
       if (file.size > 8 * 1024 * 1024)
         throw new Error(this.t('Maximum CSV size is 8 MiB.', 'CSV 文件上限为 8 MiB。'));
-      this.batch = importCsv(await file.text());
+      this.batch = importCsv(await file.text(), this.zh);
       this.rate = this.store.currency === 'CNY' ? 1 : null;
       this.dialog = 'import';
     });
@@ -215,7 +218,7 @@ export class PortfolioComponent implements OnInit {
         if (value !== null && multiplier !== 1)
           copy[key] = Math.round(value * multiplier * 100) / 100;
       }
-      return validateEntry(copy);
+      return validateEntry(copy, this.zh);
     });
   }
   private async finish(message: string) {

@@ -1,3 +1,5 @@
+import { TranslateService } from '@ngx-translate/core';
+import { TranslateModule } from '@ngx-translate/core';
 import { isPlatformBrowser } from '@angular/common';
 import { ChangeDetectorRef, Component, OnInit, PLATFORM_ID, inject } from '@angular/core';
 import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
@@ -13,28 +15,28 @@ import { loginDestination } from '~/shared/login-destination';
 @Component({
   standalone: true,
   selector: 'app-self-hosted-login',
-  imports: [ReactiveFormsModule, RouterLink, PrimeNgModule, LogoComponent],
+  imports: [TranslateModule, ReactiveFormsModule, RouterLink, PrimeNgModule, LogoComponent],
   template: `
     <p-card styleClass="max-w-[500px] w-[calc(100%-0.5rem)]">
       <ng-template pTemplate="header">
         <div class="flex gap-2 items-center p-4 pb-0">
           <app-logo />
-          <h2 class="m-0">Sign In</h2>
+          <h2 class="m-0">{{ 'UI.SIGN_IN' | translate }}</h2>
         </div>
       </ng-template>
 
       @if (checking) {
-        <p class="m-0 opacity-70">Checking whether this instance needs a password...</p>
+        <p class="m-0 opacity-70">{{ 'UI.CHECKING_WHETHER_THIS_INSTANCE_NEEDS_A_PASSWORD' | translate }}</p>
       } @else if (authenticated) {
-        <p class="m-0">You're signed in.</p>
+        <p class="m-0">{{ 'UI.YOU_RE_SIGNED_IN' | translate }}</p>
         <div class="flex gap-2 mt-3">
           <p-button
-            label="Go to my domains"
+            [label]="'UI.GO_TO_MY_DOMAINS' | translate"
             icon="pi pi-arrow-right"
             routerLink="/domains"
           />
           <p-button
-            label="Sign out"
+            [label]="'UI.SIGN_OUT' | translate"
             icon="pi pi-sign-out"
             severity="secondary"
             [outlined]="true"
@@ -44,7 +46,7 @@ import { loginDestination } from '~/shared/login-destination';
       } @else {
         <form [formGroup]="form" (ngSubmit)="signIn()" class="flex flex-col gap-3">
           <label for="instance-password" class="text-sm opacity-70">
-            This instance is password protected
+            {{ 'UI.THIS_INSTANCE_IS_PASSWORD_PROTECTED' | translate }}
           </label>
           <input
             id="instance-password"
@@ -52,7 +54,7 @@ import { loginDestination } from '~/shared/login-destination';
             type="password"
             formControlName="password"
             autocomplete="current-password"
-            placeholder="Password"
+            [placeholder]="'UI.PASSWORD' | translate"
             class="w-full"
           />
           @if (errorMessage) {
@@ -60,7 +62,7 @@ import { loginDestination } from '~/shared/login-destination';
           }
           <p-button
             type="submit"
-            label="Sign In"
+            [label]="'UI.SIGN_IN' | translate"
             icon="pi pi-sign-in"
             [loading]="submitting"
             [disabled]="form.invalid"
@@ -72,6 +74,7 @@ import { loginDestination } from '~/shared/login-destination';
   `,
 })
 export class SelfHostedLoginComponent implements OnInit {
+  private translator = inject(TranslateService);
   private fb = inject(FormBuilder);
   private platform = inject(PLATFORM_ID);
   private auth = inject(AuthService);
@@ -118,8 +121,8 @@ export class SelfHostedLoginComponent implements OnInit {
         this.submitting = false;
         this.errorMessage =
           error instanceof ApiRequestError && error.code === 'unauthorized'
-            ? 'Incorrect password'
-            : 'Could not sign in, please try again';
+            ? this.translator.instant('UI.INCORRECT_PASSWORD')
+            : this.translator.instant('UI.COULD_NOT_SIGN_IN_PLEASE_TRY_AGAIN');
         this.cdr.detectChanges();
       },
     });
