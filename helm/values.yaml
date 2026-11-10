@@ -7,7 +7,6 @@ app:
     DL_PG_PORT: 5432
     DL_PG_USER: postgres
     DL_AUTH_PASSWORD: ""
-    DL_ENABLE_EXTERNAL_QUERIES: "false"
     DL_PG_PASSWORD: ""
     DL_PG_NAME: domain_locker
     TZ: UTC

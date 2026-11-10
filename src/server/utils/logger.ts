@@ -11,16 +11,10 @@ const COLORS: Record<LogLevel, string> = {
   misc: '⚪',
 };
 
-const DL_DISABLE_LOGGING = process.env['DL_DISABLE_LOGGING'] === 'true';
+const DL_DISABLE_LOGGING = process.env['DL_DISABLE_LOGGING'] !== 'false';
 const DL_DEBUG = process.env['DL_DEBUG'] === 'true';
-const CENTRAL_LOG_URL = process.env['DL_CENTRAL_LOG_URL'];
-
-// Loggers are long-lived, so the in-memory buffer must not grow without bound
-const MAX_BUFFERED_LOGS = 500;
-
 class Logger {
   private prefix: string;
-  private logs: { level: LogLevel; message: string; timestamp: string }[] = [];
 
   constructor(prefix = '') {
     this.prefix = prefix ? `[${prefix}]` : '';
@@ -32,16 +26,11 @@ class Logger {
     return true;
   }
 
-  private write(level: LogLevel, msg: string) {
+  private write(level: LogLevel, _msg: string) {
+    // Never write free-form messages containing user data, even when logging is enabled.
     // Lookup diagnostics may contain domain names, IPs or provider URLs.
     if (['[whois]', '[domain-info]', '[domain-subs]'].includes(this.prefix)) return;
-    const timestamp = new Date().toISOString();
-    const line = `${COLORS[level]} ${this.prefix} ${msg}`;
-    this.logs.push({ level, message: msg, timestamp });
-    if (this.logs.length > MAX_BUFFERED_LOGS) {
-      this.logs.splice(0, this.logs.length - MAX_BUFFERED_LOGS);
-    }
-
+    const line = `${COLORS[level]} ${this.prefix} ${level}`;
     if (!this.shouldLog(level)) return;
 
     try {
@@ -85,26 +74,7 @@ class Logger {
     this.write('misc', msg);
   }
 
-  getLogs() {
-    return this.logs;
-  }
 
-  async flushToRemote() {
-    if (!CENTRAL_LOG_URL || this.logs.length === 0) return;
-    try {
-      await fetch(CENTRAL_LOG_URL, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          timestamp: new Date().toISOString(),
-          prefix: this.prefix,
-          logs: this.logs,
-        }),
-      });
-    } catch (err) {
-      this.warn('Flush to remote failed: ' + (err as Error)?.message);
-    }
-  }
 }
 
 /** Error text for a log line, with the cause that fetch otherwise hides */

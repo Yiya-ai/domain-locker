@@ -15,7 +15,7 @@ import { TranslateModule } from '@ngx-translate/core';
         <h4>{{ 'HOME.DEMO.LIVE_DEMO_TITLE' | translate }}</h4>
         <p>
           {{ 'HOME.DEMO.LIVE_DEMO_DESC' | translate }}
-          <a href="https://demo.domain-locker.com" class="text-primary">{{
+          <a class="text-primary">{{
             'HOME.DEMO.DEMO_DOMAIN' | translate
           }}</a
           >.
@@ -25,7 +25,7 @@ import { TranslateModule } from '@ngx-translate/core';
           <li>{{ 'HOME.DEMO.USERNAME' | translate }}</li>
           <li>{{ 'HOME.DEMO.PASSWORD' | translate }}</li>
         </ul>
-        <a href="https://demo.domain-locker.com">
+        <a>
           <p-button
             [label]="'HOME.DEMO.VISIT_DEMO' | translate"
             class="float-right"

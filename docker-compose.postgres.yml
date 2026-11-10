@@ -41,7 +41,6 @@ services:
     #   - dl_pg_password
     environment:
       DL_AUTH_PASSWORD: ${DL_AUTH_PASSWORD:?Set the instance login password}
-      DL_ENABLE_EXTERNAL_QUERIES: ${DL_ENABLE_EXTERNAL_QUERIES:-false}
       DL_ENV_TYPE: ${DL_ENV_TYPE:-selfHosted}
       # Where the postgres service above lives. Note compose also reads a .env
       # here, so don't leave a source-build one next to this file

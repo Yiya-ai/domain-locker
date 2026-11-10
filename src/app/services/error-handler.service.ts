@@ -1,42 +1,11 @@
-import { ErrorHandler, Injectable, PLATFORM_ID, inject } from '@angular/core';
-import { isPlatformBrowser } from '@angular/common';
-import { EnvService } from '~/app/services/environment.service';
-
+import { ErrorHandler, Injectable, inject } from '@angular/core';
 import { GlobalMessageService } from '~/app/services/messaging.service';
-
-declare const __APP_VERSION__: string;
 
 @Injectable()
 export class GlobalErrorHandler implements ErrorHandler {
-  private printToConsole = printToConsole;
-  handleError(error: unknown): void {
-    this.printToConsole('Something unexpected happened', 'the core app', error);
+  handleError(): void {
+    console.error('Domain Locker encountered an unexpected error.');
   }
-}
-
-/* Logs an error to the console (when in dev or debug mode) */
-const printToConsole = (message?: string, location?: string, error?: unknown): void => {
-  console.groupCollapsed(
-    `%cError: ${message} in ${location || 'unknown location'}`,
-    'background:#f93939;color:#fff;padding:0.1rem 0.25rem;border-radius:4px',
-  );
-  console.error(error);
-  const d = new Date();
-  const date = `at ${d.getHours()}:${d.getMinutes()}:${d.getSeconds()} on ${d.toDateString()}`;
-  console.log(
-    `%cThis occurred ${date}, in ${location || 'an unknown location'}\n` +
-      'Please reference the debugging documentation for next steps: ' +
-      'http://domain-locker.com/about/developing/debugging',
-    'font-size:10px; color:#f9a939;',
-  );
-  console.groupEnd();
-};
-
-export interface ErrorLogEntry {
-  date: string;
-  message: string;
-  location: string;
-  error: unknown;
 }
 
 interface ErrorParams {
@@ -47,132 +16,13 @@ interface ErrorParams {
   date?: Date; // Date of error (if not now)
 }
 
-/**
- * Global error handler service.
- * Called whenever an error is caught in the app.
- * If running in dev or debug mode, logs to console.
- * If user-triggered, shows a toast message to the user.
- */
-@Injectable({
-  providedIn: 'root',
-})
+@Injectable({ providedIn: 'root' })
 export class ErrorHandlerService {
-  private platformId = inject<object>(PLATFORM_ID);
-  private globalMessageService = inject(GlobalMessageService);
-  private envService = inject(EnvService);
+  private messages = inject(GlobalMessageService);
 
-  private printToConsole = printToConsole;
-
-  /* Shows a popup toast message to the user (if user-triggered) */
-  private showToast(title: string, message: string): void {
-    this.globalMessageService.showMessage({
-      severity: 'error',
-      summary: title,
-      detail: message,
-    });
-  }
-
-  private saveToLocalStorage(message: string, location: string, error: unknown): void {
-    if (!isPlatformBrowser(this.platformId) || !localStorage) return;
-    const key = 'DL_error_log';
-    const lsErrorLog = JSON.parse(localStorage.getItem(key) || '[]');
-    lsErrorLog.push({ message, location, error, date: new Date().toISOString() });
-    localStorage.setItem(key, JSON.stringify(lsErrorLog));
-  }
-
-  /* Entry point for error handler, takes appropriate logging action */
-  public handleError(params: ErrorParams): void {
-    if (!isPlatformBrowser(this.platformId)) return;
-    const { error, message, location, showToast } = params;
-    if (!error && !message) return; // Not much I can do without an error or message!
-
-    // Log to console in development mode
-    this.printToConsole(message, location, error);
-
-    // Show error toast if showError is true
-    if (showToast && message && error) {
-      const errMessage = (error as { message?: string })?.message;
-      if (errMessage) {
-        this.showToast(message, errMessage);
-      } else {
-        this.showToast('Error', message);
-      }
+  handleError({ message, showToast }: ErrorParams): void {
+    if (showToast && message) {
+      this.messages.showMessage({ severity: 'error', summary: 'Error', detail: message });
     }
-
-    // Save to recent error log in localstorage
-    this.saveToLocalStorage(message || 'mystery error', location || '-', error);
-  }
-
-  public getRecentErrorLog(): ErrorLogEntry[] {
-    if (!isPlatformBrowser(this.platformId) || !(typeof window !== 'undefined')) {
-      return [];
-    }
-    return JSON.parse(localStorage.getItem('DL_error_log') || '[]').reverse();
-  }
-
-  public initializeWindowCatching() {
-    if (isPlatformBrowser(this.platformId) && typeof window !== 'undefined') {
-      window.onerror = (message, source, lineno, colno, error) => {
-        this.handleError({
-          message: String(message),
-          location: `window (${source}:${lineno}:${colno})`,
-          error,
-          showToast: false,
-        });
-      };
-
-      window.onunhandledrejection = (event) => {
-        this.handleError({
-          message: 'Unhandled Promise Rejection',
-          location: 'window.onunhandledrejection',
-          error: event.reason,
-          showToast: false,
-        });
-      };
-    }
-  }
-
-  public printInitialDetails(): void {
-    if (!isPlatformBrowser(this.platformId)) return;
-    const environment = this.envService.getEnvironmentType();
-    const appVersion = typeof __APP_VERSION__ !== 'undefined' ? __APP_VERSION__ : '0.0.0';
-    const enabledDb = this.envService.isSelfHostedDatabase()
-      ? (this.envService.getDatabaseBackend() ?? 'self-hosted')
-      : this.envService.isSupabaseEnabled()
-        ? 'Supabase'
-        : 'None';
-
-    console.log(
-      `\n%c🔐 Domain Locker V${appVersion}` +
-        '%c\nLicensed under MIT, © Alicia Sykes 2025.\nSource: github.com/lissy93/domain-locker\n',
-      'color:#a78bfa; background:#0b1021; font-size:1.5rem; padding:0.15rem 0.25rem; ' +
-        'margin: 1rem auto 0.5rem auto; font-family: Helvetica; border: 2px solid #a78bfa; ' +
-        'border-radius: 4px;font-weight: bold; text-shadow: 1px 1px 1px #a78bfabf;',
-      'color: #a78bfa; font-size:10px; font-family: Helvetica; margin: 0;',
-    );
-    const s = 'color:#1fe3f1; font-weight: bold;';
-    console.group('🐛 %cDebug Info', 'color:#a78bfa;');
-    console.groupCollapsed('🏗️ %cEnvironment', 'color:#dc8bfa;');
-    console.log('%cType', s, environment);
-    console.log('%cApp Version', s, appVersion);
-    console.log('%cDatabase', s, enabledDb);
-    console.groupEnd();
-    console.groupCollapsed('🌍 %cOrigin', 'color:#dc8bfa;');
-    console.log('%cProtocol', s, window.location.protocol);
-    console.log('%cHost', s, window.origin);
-    console.log('%cPath', s, window.location.pathname);
-    console.groupEnd();
-    console.groupCollapsed('📱 %cDevice', 'color:#dc8bfa;');
-    console.log('%cDate Fetched', s, new Date().getTime());
-    console.log('%cOS', s, navigator['platform']);
-    console.log('%cBrowser', s, navigator['appCodeName']);
-    console.log('%cLanguage', s, navigator['language']);
-    console.groupEnd();
-    console.groupCollapsed('🔗 %cHelp Links', 'color:#dc8bfa;');
-    console.log('%cDebug Tools', s, `${window.origin}/advanced`);
-    console.log('%cSupport Docs', s, `${window.origin}/about/support`);
-    console.log('%cGitHub', s, `https://github.com/lissy93/domain-locker`);
-    console.groupEnd();
-    console.groupEnd();
   }
 }

@@ -4,14 +4,14 @@
   "description": "Track, monitor, and manage your domains effortlessly with Domain Locker.",
   "theme_color": "#a78bfa",
   "background_color": "#111827",
-  "display_override": ["fullscreen", "standalone", "minimal-ui"],
+  "display_override": [
+    "fullscreen",
+    "standalone",
+    "minimal-ui"
+  ],
   "orientation": "portrait",
   "start_url": "/",
   "scope": "/",
-  "scope_extensions": [
-    "https://demo.domain-locker.com/",
-    "https://domain-locker.as93.net"
-  ],
   "icons": [
     {
       "src": "/icons/android-chrome-192x192.png",
@@ -32,10 +32,17 @@
       "purpose": "maskable"
     }
   ],
-  "categories": ["utilities", "productivity", "business"],
+  "categories": [
+    "utilities",
+    "productivity",
+    "business"
+  ],
   "lang": "en",
   "dir": "auto",
-  "permissions": ["notifications", "push"],
+  "permissions": [
+    "notifications",
+    "push"
+  ],
   "screenshots": [
     {
       "src": "/screenshots/homepage.png",

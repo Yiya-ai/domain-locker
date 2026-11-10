@@ -1,8 +1,10 @@
 <!DOCTYPE html>
 <html lang="en">
   <head>
-    <!-- Character Set -->
+    <meta name="referrer" content="no-referrer" />
     <meta charset="utf-8" />
+
+    <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self'; style-src 'self' 'unsafe-inline'; img-src 'self' data: blob:; font-src 'self' data:; connect-src 'self'; frame-src 'none'; object-src 'none'; base-uri 'self'; form-action 'self'" />
 
     <!-- Page Title -->
     <title>Domain Locker | The Central Hub for all your Domain Names: Smart, simple and secure domain management</title>
@@ -23,7 +25,7 @@
     <meta name="author" content="Alicia Sykes" />
 
     <!-- Robots -->
-    <meta name="robots" content="index, follow" />
+    <meta name="robots" content="noindex, nofollow" />
 
     <!-- Theme Color -->
     <meta name="theme-color" content="#a78bfa" />
@@ -39,25 +41,6 @@
     <!-- PWA Manifest -->
     <link rel="manifest" href="/manifest.json" />
 
-    <!-- Open Graph -->
-    <meta property="og:title" content="Domain Locker | The all-in-one domain portfolio app" />
-    <meta property="og:description" content="Domain Locker helps you track, monitor, and manage your domains effortlessly." />
-    <meta property="og:image" content="https://domain-locker.com/og.png" />
-    <meta property="og:url" content="https://domain-locker.com" />
-    <meta property="og:type" content="website" />
-    <meta property="og:image:alt" content="Domain Locker - The ultimate tool for domain tracking and alerts" />
-    <meta property="og:image:width" content="1200" />
-    <meta property="og:image:height" content="630" />
-
-    <!-- Twitter Cards -->
-    <meta name="twitter:card" content="summary_large_image" />
-    <meta name="twitter:title" content="Domain Locker" />
-    <meta name="twitter:description" content="Domain Locker helps you track, monitor, and manage your domains effortlessly." />
-    <meta name="twitter:image" content="https://domain-locker.com/og.png" />
-
-    <!-- Canonical URL -->
-    <link rel="canonical" href="https://domain-locker.com/" />
-
     <!-- Preload critical resources -->
     <link rel="stylesheet" href="/src/styles.css" />
     <link rel="preload" as="script" href="/src/main.ts" />
@@ -67,9 +50,6 @@
     <meta name="screen-reader-support" content="true" />
 
 
-    <!-- SEO Alternate Links for Language -->
-    <link rel="alternate" hreflang="en" href="https://domain-locker.com">
-    <link rel="alternate" hreflang="es" href="https://domain-locker.com?lang=es" />
   </head>
   <body>
     <!-- Angular App Root -->

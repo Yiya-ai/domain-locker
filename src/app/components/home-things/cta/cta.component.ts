@@ -27,7 +27,6 @@ import { RouterModule } from '@angular/router';
           <!-- View on GitHub GitHub -->
           @if (!hideGhLink) {
             <a
-              href="https://github.com/lissy93/domain-locker"
               target="_blank"
               rel="noopener noreferrer"
             >
@@ -42,7 +41,7 @@ import { RouterModule } from '@angular/router';
           }
           <!-- Get Started -->
           @if (isDemo) {
-            <a href="https://domain-locker.com/login?newUser=true">
+            <a>
               <p-button
                 label="Get Started"
                 class="min-w-48"
@@ -97,7 +96,6 @@ import { RouterModule } from '@angular/router';
         </div>
         <div class="w-fit">
           <img
-            src="https://storage.googleapis.com/as93-screenshots/domain-locker/home_viz.png"
             alt="Domain Locker Preview"
             width="320px"
             class="flex w-[22rem] h-auto rounded-sm shadow-md"

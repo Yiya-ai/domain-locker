@@ -232,35 +232,8 @@ export class DocsViewerComponent
         this.doc = doc;
         // If doc has attributes, then get them for meta and JSON-LD content
         if (doc?.attributes) {
-          const {
-            title,
-            description,
-            coverImage,
-            author,
-            publishedDate,
-            modifiedDate,
-            slug,
-          } = doc.attributes;
-
-          // Set meta tags
-          this.metaTagsService.setCustomMeta(
-            title,
-            description,
-            undefined,
-            coverImage || this.getFallbackImage(title),
-          );
-
-          // Set JSON-LD structured data
-          this.metaTagsService.addStructuredData('article', {
-            title: title,
-            description: description,
-            coverImage: coverImage || this.getFallbackImage(title),
-            author: author || 'Domain Locker Team',
-            publishedDate: publishedDate || new Date().toISOString(),
-            modifiedDate: modifiedDate || publishedDate || new Date().toISOString(),
-            slug: slug,
-            category: this.categoryName,
-          });
+          const { title, description } = doc.attributes;
+          this.metaTagsService.setCustomMeta(title, description);
         }
         if (isPlatformBrowser(this.platformId)) {
           setTimeout(() => {
@@ -376,29 +349,6 @@ export class DocsViewerComponent
     }
   }
 
-  getFallbackImage(title: string) {
-    try {
-      const encodedTitle = encodeURIComponent(title);
-      return (
-        `https://dynamic-og-image-generator.vercel.app/api/generate?title=${encodedTitle}` +
-        ' &author=Domain+Locker&websiteUrl=domain-locker.com&avatar=https%3A%2F%2Fdomain-locker' +
-        '.com%2Ficons%2Fandroid-chrome-maskable-192x192.png&theme=dracula'
-      );
-    } catch (err) {
-      this.errorHandler.handleError({
-        error: err,
-        message: 'Fallback image error',
-        location: 'doc-viewer',
-      });
-      return 'https://domain-locker.com/og.png';
-    }
-  }
-
-  /**
-   * 1) Checks for any <pre class="mermaid"> blocks
-   * 2) If found, dynamically load mermaid from a CDN
-   * 3) Then call mermaid.initialize + mermaid.run
-   */
   private loadAndRenderMermaid() {
     try {
       const mermaidBlocks = document.querySelectorAll('pre.mermaid');
@@ -411,14 +361,7 @@ export class DocsViewerComponent
       if (existingScript) {
         this.runMermaid();
       } else {
-        const script = document.createElement('script');
-        script.id = 'mermaidScript';
-        script.src = 'https://cdn.jsdelivr.net/npm/mermaid@10/dist/mermaid.min.js';
-        script.async = true;
-        script.onload = () => {
-          this.runMermaid();
-        };
-        document.head.appendChild(script);
+        return; // Leave diagram source readable without loading third-party scripts.
       }
     } catch (err) {
       this.errorHandler.handleError({

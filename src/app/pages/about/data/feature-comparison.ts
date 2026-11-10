@@ -6,7 +6,7 @@ export const features = [
       'We auto-fetch assets like SSL, hosts, registrars, IPs, DNS, subdomains.',
       'You can add additional context, like costs, tags, notes, and more.',
     ],
-    screenshot: 'https://i.postimg.cc/9XBvJr7k/assets.png',
+    screenshot: 'screenshots/assets.png',
   },
   {
     featureTitle: 'Domain Data',
@@ -15,7 +15,7 @@ export const features = [
       'Dive into a detailed analysis of each of your domains.',
       'Security insights and recommended actions for each domain.',
     ],
-    screenshot: 'https://i.postimg.cc/Bnvsx27N/domain.png',
+    screenshot: 'screenshots/homepage.png',
   },
 
   {
@@ -25,7 +25,7 @@ export const features = [
       'Visualize domain data with charts and analytics.',
       'Exportable maps, change timelines, provider breakdowns, and more.',
     ],
-    screenshot: 'https://i.postimg.cc/T1mhvnvn/home-viz.png',
+    screenshot: 'screenshots/stats.png',
   },
   {
     featureTitle: 'Notifications',
@@ -34,7 +34,7 @@ export const features = [
       'Alerts for expirations and configurable domain change notifications.',
       'Choose your method: email, webhook, push, Telegram, Signal, etc.',
     ],
-    screenshot: 'https://i.postimg.cc/wxs1NYR3/settings-notifications.png',
+    screenshot: 'screenshots/expirations.png',
   },
   {
     featureTitle: 'Data',
@@ -43,7 +43,7 @@ export const features = [
       'Access via API, Prometheus, iCal, RSS, or embeddable widgets (coming soon).',
       'Export your data anytime for migration or backup.',
     ],
-    screenshot: 'https://i.postimg.cc/y6XztLwv/domain-grid-open.png',
+    screenshot: 'screenshots/assets.png',
   },
   {
     featureTitle: 'Track Changes',
@@ -52,7 +52,7 @@ export const features = [
       'View audit logs for all domain changes.',
       'Track updates to security, host, SSL, DNS, WHOIS, and more.',
     ],
-    screenshot: 'https://i.postimg.cc/52GcLTCN/vis-changes.png',
+    screenshot: 'screenshots/monitor.png',
   },
   {
     featureTitle: 'Renewal Alerts',
@@ -61,7 +61,7 @@ export const features = [
       'View timeline of upcoming expirations.',
       'Never miss a renewal deadline, with smart alerts.',
     ],
-    screenshot: 'https://i.postimg.cc/wjFMz6Z4/notificiations.png',
+    screenshot: 'screenshots/homepage.png',
   },
   {
     featureTitle: 'Monitor',
@@ -70,7 +70,7 @@ export const features = [
       'Monitor website health and performance.',
       'Track uptime, ping times, response codes and availability.',
     ],
-    screenshot: 'https://i.postimg.cc/jddB9t6S/monitor.png',
+    screenshot: 'screenshots/homepage.png',
   },
   {
     featureTitle: 'Security Check',
@@ -79,7 +79,7 @@ export const features = [
       'Security insights and recommended actions for each domain',
       'Ensure your websites and domains have the correct security controls.',
     ],
-    screenshot: 'https://i.postimg.cc/mkRWh9FY/statuses.png',
+    screenshot: 'screenshots/homepage.png',
   },
   {
     featureTitle: 'Valuation',
@@ -88,7 +88,7 @@ export const features = [
       'Track purchase price, renewal costs, and current valuation.',
       'Manage upcoming payments and monitor profit/loss trends.',
     ],
-    screenshot: 'https://i.postimg.cc/5yq1mgMK/valuation.png',
+    screenshot: 'screenshots/homepage.png',
   },
   {
     featureTitle: 'Organize',
@@ -97,7 +97,7 @@ export const features = [
       'Categorise domains in your portfolio with tags.',
       'Keep track of links, with all domain-related resources in one place.',
     ],
-    screenshot: 'https://i.postimg.cc/4NsXxDzD/tags.png',
+    screenshot: 'screenshots/homepage.png',
   },
   {
     featureTitle: 'Toolbox',
@@ -123,7 +123,7 @@ export const features = [
       'Make the app yours, with customizable themes, fonts, layouts, and dark modes',
       'Multi-language support, with translations available for many languages.',
     ],
-    screenshot: 'https://i.postimg.cc/zXFXwzzD/display.png',
+    screenshot: 'screenshots/homepage.png',
   },
   {
     featureTitle: 'Private & Secure',
@@ -133,7 +133,7 @@ export const features = [
       'SSO (GitHub, Google) and 2FA for extra security.',
       'No unnecessary data collection, transparent privacy policy.',
     ],
-    screenshot: 'https://i.postimg.cc/TY63WLXH/privacy.png',
+    screenshot: 'screenshots/homepage.png',
   },
   {
     featureTitle: 'Open Source',
@@ -166,212 +166,212 @@ export interface Screenshot {
 
 export const screenshots: Screenshot[] = [
   {
-    screenshot: 'https://i.postimg.cc/GhXnhH3D/home-2.png',
+    screenshot: 'screenshots/homepage.png',
     title: 'Domain Dashboard',
     description: 'All your domain names, neatly organised.',
   },
   {
-    screenshot: 'https://i.postimg.cc/T1mhvnvn/home-viz.png',
+    screenshot: 'screenshots/homepage.png',
     title: 'Stats',
     description: 'And visual analytics for a quick glance at your portfolio.',
   },
   {
-    screenshot: 'https://i.postimg.cc/9M9cDVgh/change-history.png',
+    screenshot: 'screenshots/homepage.png',
     title: 'Change History',
     description:
       'View a history of changes to your domains, including security, host, SSL, DNS, WHOIS, and more.',
   },
   {
-    screenshot: 'https://i.postimg.cc/9XBvJr7k/assets.png',
+    screenshot: 'screenshots/homepage.png',
     title: 'Track Assets',
     description:
       'View all of your assets (like auto-fetchedSSL, hosts, registrars, IPs, DNS, subdomains).',
   },
   {
-    screenshot: 'https://i.postimg.cc/GhKd8XKH/add-link.png',
+    screenshot: 'screenshots/homepage.png',
     title: 'Add Links',
     description:
       'You can associate links with domains, so you never lose track of a specific URL for any of your domains.',
   },
   {
-    screenshot: 'https://i.postimg.cc/PqPXk1mN/bulk-add.png',
+    screenshot: 'screenshots/homepage.png',
     title: 'Bulk Add',
     description: 'Got a lot of domains? You can bulk add them to your account.',
   },
   {
-    screenshot: 'https://i.postimg.cc/d38QxvGB/developer.png',
+    screenshot: 'screenshots/homepage.png',
     title: 'Data Connectors',
     description:
       "Want to fetch all your domain data programmatically? We've got APIs for that.",
   },
   {
-    screenshot: 'https://i.postimg.cc/zXFXwzzD/display.png',
+    screenshot: 'screenshots/homepage.png',
     title: 'Display options',
     description:
       'Choose your own theme, fonts, language, layout, and more display options, to make Domain Locker yours.',
   },
   {
-    screenshot: 'https://i.postimg.cc/Bnvsx27N/domain.png',
+    screenshot: 'screenshots/homepage.png',
     title: 'Domain Details',
     description: 'See all technical data about any of your domains.',
   },
   {
-    screenshot: 'https://i.postimg.cc/y6XztLwv/domain-grid-open.png',
+    screenshot: 'screenshots/homepage.png',
     title: 'Compare Domains',
     description: 'Compare domain settings side-by-side',
   },
   {
-    screenshot: 'https://i.postimg.cc/m2LGsQ4R/domain-list.png',
+    screenshot: 'screenshots/homepage.png',
     title: 'Change Domain View',
     description: 'View in a list, or grid. Choose which fields to show',
   },
   {
-    screenshot: 'https://i.postimg.cc/7Y3bB1Vk/home-add.png',
+    screenshot: 'screenshots/homepage.png',
     title: 'Add Domain',
     description: 'Adding new domain names to your account is easy',
   },
   {
-    screenshot: 'https://i.postimg.cc/jddB9t6S/monitor.png',
+    screenshot: 'screenshots/homepage.png',
     title: 'Monitor Uptime and Performance',
     description: 'View the health and availability of each website',
   },
 
   {
-    screenshot: 'https://i.postimg.cc/L844Nc5t/notificiation-locations.png',
+    screenshot: 'screenshots/homepage.png',
     title: 'Notification Channels',
     description: 'Choose how you want to be notified of important events.',
   },
   {
-    screenshot: 'https://i.postimg.cc/13yXbgCN/settings-notifications-2.png',
+    screenshot: 'screenshots/homepage.png',
     title: 'Notification Events',
     description:
       'Pick which events (domain changes, expirations, etc) you want to be notified about',
   },
   {
-    screenshot: 'https://i.postimg.cc/wjFMz6Z4/notificiations.png',
+    screenshot: 'screenshots/homepage.png',
     title: 'View Notifications',
     description: 'And see a history of all notifications',
   },
 
   {
-    screenshot: 'https://i.postimg.cc/9fMMF6jm/export.png',
+    screenshot: 'screenshots/homepage.png',
     title: 'Export',
     description: 'Download all of your data, at any time.',
   },
   {
-    screenshot: 'https://i.postimg.cc/5yq1mgMK/valuation.png',
+    screenshot: 'screenshots/homepage.png',
     title: 'Valuation',
     description: 'Keep track of purchase and renewal prices.',
   },
   {
-    screenshot: 'https://i.postimg.cc/XJ90VLXN/registrars.png',
+    screenshot: 'screenshots/homepage.png',
     title: 'Registrars',
     description: 'Never forget where a domain is registered.',
   },
   {
-    screenshot: 'https://i.postimg.cc/6p1KzTDK/dns.png',
+    screenshot: 'screenshots/homepage.png',
     title: 'DNS',
     description: 'View DNS settings for all your domains in one place.',
   },
   {
-    screenshot: 'https://i.postimg.cc/R0kB5ySb/ips.png',
+    screenshot: 'screenshots/homepage.png',
     title: 'IP Addresses',
     description: 'Easily see which server each of your domains points to.',
   },
   {
-    screenshot: 'https://i.postimg.cc/yNgHGsHZ/hosts.png',
+    screenshot: 'screenshots/homepage.png',
     title: 'Hosts',
     description: 'And where each domain is hosted',
   },
   {
-    screenshot: 'https://i.postimg.cc/VsjY1fb9/subdomains.png',
+    screenshot: 'screenshots/homepage.png',
     title: 'Subdomains',
     description: 'See all subdomains for each domain name',
   },
   {
-    screenshot: 'https://i.postimg.cc/4NsXxDzD/tags.png',
+    screenshot: 'screenshots/homepage.png',
     title: 'Tags',
     description: 'Organise domains by tags and categories',
   },
   {
-    screenshot: 'https://i.postimg.cc/mkRWh9FY/statuses.png',
+    screenshot: 'screenshots/homepage.png',
     title: 'Statuses',
     description: 'Get an overview of all security statues enabled for each domain',
   },
   {
-    screenshot: 'https://i.postimg.cc/cCT2HbWW/vis-home.png',
+    screenshot: 'screenshots/homepage.png',
     title: 'Data Visualisations',
     description: 'Get pretty charts of everything about your domains',
   },
   {
-    screenshot: 'https://i.postimg.cc/4dkrFcPD/vis-providers.png',
+    screenshot: 'screenshots/homepage.png',
     title: 'Providers',
     description: 'Get a snapshot of which registrars, SSL, and hosts your domains use',
   },
   {
-    screenshot: 'https://i.postimg.cc/52GcLTCN/vis-changes.png',
+    screenshot: 'screenshots/homepage.png',
     title: 'Change Cart',
     description: 'Visually see how often each domain changes',
   },
   {
-    screenshot: 'https://i.postimg.cc/WzsxsPQS/vis-expirations.png',
+    screenshot: 'screenshots/homepage.png',
     title: 'Expirations',
     description: 'Get a timeline or calendar of upcoming expirations',
   },
   {
-    screenshot: 'https://i.postimg.cc/tT3L0gmY/vis-map.png',
+    screenshot: 'screenshots/homepage.png',
     title: 'Map',
     description: 'See where each domain is hosted geographically',
   },
   {
-    screenshot: 'https://i.postimg.cc/vm6Jzhr7/vis-statuses.png',
+    screenshot: 'screenshots/homepage.png',
     title: 'Statuses',
     description: 'Get a breakdown of which security statuses are enabled for each domain',
   },
   {
-    screenshot: 'https://i.postimg.cc/FH15fN1B/vis-timeline.png',
+    screenshot: 'screenshots/homepage.png',
     title: 'Timeline',
     description: 'See dates for your next domains due to expire soon',
   },
   {
-    screenshot: 'https://i.postimg.cc/fTnJjqYC/viz-cal.png',
+    screenshot: 'screenshots/homepage.png',
     title: 'Calendar',
     description: 'Or view all renewal dates in a calendar view',
   },
   {
-    screenshot: 'https://i.postimg.cc/HxFjNBRp/viz-tags.png',
+    screenshot: 'screenshots/homepage.png',
     title: 'Tags',
     description: 'See your most popular domain categories',
   },
   {
-    screenshot: 'https://i.postimg.cc/TY63WLXH/privacy.png',
+    screenshot: 'screenshots/homepage.png',
     title: 'Privacy',
     description:
       'You are in full control of data, choose what is shared (nothing is shared by default).',
   },
   {
-    screenshot: 'https://i.postimg.cc/P56XcSvB/profile.png',
+    screenshot: 'screenshots/homepage.png',
     title: 'Account',
     description: 'Manage your account settings and more',
   },
   {
-    screenshot: 'https://i.postimg.cc/dQd01Rgy/upgrade.png',
+    screenshot: 'screenshots/homepage.png',
     title: 'Upgrade',
     description: 'Manage your billing, upgrade or downgrade at anytime',
   },
   {
-    screenshot: 'https://i.postimg.cc/0jg2nrKj/delete.png',
+    screenshot: 'screenshots/homepage.png',
     title: 'Deletion',
     description:
       'You are free to delete your data, account, and all associated data at any time.',
   },
   {
-    screenshot: 'https://i.postimg.cc/tgMg1BXh/settings-db.png',
+    screenshot: 'screenshots/homepage.png',
     title: 'Database',
     description: 'Connect to third-party or self-hosted databases.',
   },
   {
-    screenshot: 'https://i.postimg.cc/Kz38ttzC/debug.png',
+    screenshot: 'screenshots/homepage.png',
     title: 'Debug',
     description:
       "For developers and power users, we've got comprehensive debugging tools.",
@@ -404,25 +404,25 @@ export const providerInfo: Record<Providers, ProviderInfo> = {
   domainLocker: {
     name: 'Domain Locker',
     url: 'https://domain-locker.com',
-    icon: 'https://domain-locker.com/icons/android-chrome-192x192.png',
+    icon: 'icons/android-chrome-192x192.png',
     summary: '',
   },
   domainMod: {
     name: 'Domain Mod',
     url: 'https://domainmod.org',
-    icon: 'https://github.com/homarr-labs/dashboard-icons/blob/a19b2ba31117a832e496777e863943802ff7fdc9/png/domainmod.png?raw=true',
+    icon: 'icons/android-chrome-192x192.png',
     summary: '',
   },
   domainWatchman: {
     name: 'Domain Watchman',
     url: 'https://domainwatchman.com',
-    icon: 'https://domainwatchman.com/android-chrome-192x192.png',
+    icon: 'icons/android-chrome-192x192.png',
     summary: '',
   },
   domainPunch: {
     name: 'Domain Punch',
     url: 'https://domainpunch.com',
-    icon: 'https://bcdn.domainpunch.com/images/icons/products/dppro.png',
+    icon: 'icons/android-chrome-192x192.png',
     summary: '',
   },
 };

@@ -137,7 +137,6 @@ export class SubdomainListComponent implements OnChanges {
   createMenuItems(): MenuItem[] {
     if (!this.selectedSubdomain) return [];
 
-    const subdomainUrl = `${this.selectedSubdomain.name}.${this.domain}`;
     return [
       {
         label: 'View Subdomain',
@@ -146,11 +145,6 @@ export class SubdomainListComponent implements OnChanges {
           this.navigateTo(
             `/assets/subdomains/${this.domain}/${this.selectedSubdomain!.name}`,
           ),
-      },
-      {
-        label: 'Visit Subdomain',
-        icon: 'pi pi-external-link',
-        command: () => window.open(`https://${subdomainUrl}`, '_blank'),
       },
       {
         label: 'Edit Subdomain',

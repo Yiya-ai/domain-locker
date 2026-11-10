@@ -27,19 +27,12 @@ describe('EnvService.isSelfHostedDatabase', () => {
     service = TestBed.inject(EnvService);
   });
 
-  it('uses Supabase on a managed instance', () => {
-    setEnv({ DL_ENV_TYPE: 'managed', ...supabase });
-    expect(service.isSelfHostedDatabase()).toBe(false);
-  });
-
-  it('uses Supabase in dev, where the server still reports a SQLite fallback', () => {
-    setEnv({ DL_ENV_TYPE: 'dev', DL_DB_BACKEND: 'sqlite', ...supabase });
-    expect(service.isSelfHostedDatabase()).toBe(false);
-  });
-
-  it('uses Supabase when self-hosted against it, rather than the local database', () => {
-    setEnv({ DL_ENV_TYPE: 'selfHosted', DL_DB_BACKEND: 'sqlite', ...supabase });
-    expect(service.isSelfHostedDatabase()).toBe(false);
+  it.each(['managed', 'dev', 'selfHosted'])('keeps %s data local with legacy cloud credentials', (mode) => {
+    setEnv({ DL_ENV_TYPE: mode, DL_DB_BACKEND: 'sqlite', ...supabase });
+    localStorage.setItem('DL_DOMAIN_INFO_API', 'https://example.invalid');
+    expect(service.isSelfHostedDatabase()).toBe(true);
+    expect(service.isSupabaseEnabled()).toBe(false);
+    expect(service.getEnvVar('DL_DOMAIN_INFO_API')).toBeNull();
   });
 
   it('uses the server when Postgres was configured, even with Supabase set', () => {

@@ -35,7 +35,6 @@ export default class AdvancedIndexPage implements OnInit {
   enableAdvancedInfo$ = this.featureService.isFeatureEnabled('enableAdvancedInfo');
 
   ngOnInit() {
-    this.metaTagsService.allowRobots(false);
     this.metaTagsService.setCustomMeta(
       'Advanced Developer Options',
       'Service status, error logs, debug info, diagnostic actions, ' +

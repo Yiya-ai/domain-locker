@@ -94,13 +94,6 @@ export class DomainCardComponent implements OnInit {
         icon: 'pi pi-copy',
         command: () => this.copyDomainUrl(),
       },
-      {
-        label: this.translate.instant(
-          'DOMAINS.DOMAIN_COLLECTION.GRID.CONTEXT_MENU.VISIT_URL',
-        ),
-        icon: 'pi pi-external-link',
-        command: () => this.visitDomainUrl(),
-      },
     ];
   }
 
@@ -184,11 +177,6 @@ export class DomainCardComponent implements OnInit {
     } catch (err) {
       clipboardCopyFailed(err);
     }
-  }
-
-  visitDomainUrl() {
-    const url = `https://${this.domain.domain_name}`;
-    window.open(url, '_blank');
   }
 
   private clickedOnLink(element: HTMLElement): boolean {

@@ -1,6 +1,5 @@
 import { currentBackend, getDb, selectedBackend, sqlitePath } from './client';
 import { migrateToLatest } from './migrations';
-import { usesSelfHostedData } from '../utils/client-env';
 import Logger from '../utils/logger';
 
 const log = new Logger('database');
@@ -42,9 +41,6 @@ function warnAboutPartialPostgres(): void {
 }
 
 async function runMigrations(): Promise<void> {
-  if (!usesSelfHostedData(process.env)) {
-    throw new Error('The self-hosted data core is not used on this instance');
-  }
   if (process.env['DL_SKIP_MIGRATIONS'] === 'true') {
     log.warn('DL_SKIP_MIGRATIONS is set, leaving the database untouched');
     status = 'ready';

@@ -26,7 +26,7 @@ import { PrimeNgModule } from '~/app/prime-ng.module';
               </p>
               <p class="m-0 mt-2">
                 When you're ready to get started, head back to
-                <a href="https://domain-locker.com">domain-locker.com</a>, and sign up!
+                <a>domain-locker.com</a>, and sign up!
               </p>
               <button
                 pButton
@@ -63,8 +63,8 @@ import { PrimeNgModule } from '~/app/prime-ng.module';
               </p>
               <p class="m-0 mt-2">
                 If you need any help, check out our
-                <a href="https://domain-locker.com/about/developing">Dev Docs</a> and
-                <a href="https://github.com/lissy93/domain-locker">GitHub</a>.
+                <a>Dev Docs</a> and
+                <a>GitHub</a>.
                 <br />
                 Have fun 🩷🚀
               </p>

@@ -458,8 +458,8 @@ export const sections = [
     title: 'AS93 Apps',
     description: `If you've enjoyed Domain Locker, you might be interested in
     checking out some of the other apps I've developed. I'm active on GitHub at
-    <a href="https://github.com/lissy93">@Lissy93</a>, and my full catalog of 50+ apps
-    is available at <a href="https://as93.net">as93.net</a>.`,
+    <a>@Lissy93</a>, and my full catalog of 50+ apps
+    is available at <a>as93.net</a>.`,
     links: as93Apps,
   },
 ];

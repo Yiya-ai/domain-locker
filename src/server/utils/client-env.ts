@@ -5,20 +5,7 @@
  */
 export const CLIENT_SAFE_ENV_VARS = [
   'DL_PORTFOLIO_CURRENCY',
-  'DL_SUPPORT_EMAIL',
-  'DL_BASE_URL',
-  'DL_ENV_TYPE',
-  'DL_DEBUG',
-  'DL_TURNSTILE_KEY',
-  'DL_DOMAIN_INFO_API',
-  'DL_DOMAIN_SUBS_API',
   'DL_DISABLE_WRITE_METHODS',
-  'DL_SUPABASE_PROJECT',
-  'DL_STRIPE_CHECKOUT_URL',
-  'DL_STRIPE_CANCEL_URL',
-  'DL_STRIPE_INFO_URL',
-  'SUPABASE_URL',
-  'SUPABASE_ANON_KEY',
 ] as const;
 
 /** Tells the client which database the server is using, never how to reach it */
@@ -30,13 +17,6 @@ export function isPostgresConfigured(env: Record<string, string | undefined>): b
   return PG_REQUIRED_VARS.every((name) => Boolean(env[name]));
 }
 
-/** True when this server holds the data. Supabase only wins if Postgres wasn't asked for */
-export function usesSelfHostedData(env: Record<string, string | undefined>): boolean {
-  if (env['DL_ENV_TYPE'] === 'managed') return false;
-  const supabaseConfigured = Boolean(env['SUPABASE_URL'] && env['SUPABASE_ANON_KEY']);
-  return !supabaseConfigured || isPostgresConfigured(env);
-}
-
 /** Picks the allowlisted variables out of an environment, plus the backend name */
 export function pickClientEnv(
   env: Record<string, string | undefined>,
@@ -45,8 +25,7 @@ export function pickClientEnv(
   for (const name of CLIENT_SAFE_ENV_VARS) {
     if (env[name] !== undefined) picked[name] = env[name] as string;
   }
-  if (env['DL_ENV_TYPE'] !== 'managed') {
-    picked[DB_BACKEND_VAR] = isPostgresConfigured(env) ? 'postgres' : 'sqlite';
-  }
+  picked['DL_ENV_TYPE'] = 'selfHosted';
+  picked[DB_BACKEND_VAR] = isPostgresConfigured(env) ? 'postgres' : 'sqlite';
   return picked;
 }

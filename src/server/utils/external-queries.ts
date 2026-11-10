@@ -3,8 +3,7 @@ import ipaddr from 'ipaddr.js';
 import { createError, type H3Event } from 'h3';
 import { verifyAuth } from './auth';
 
-export const externalQueriesEnabled = () =>
-  process.env['DL_ENABLE_EXTERNAL_QUERIES'] === 'true';
+export const externalQueriesEnabled = (): boolean => false;
 
 export async function requireExternalQueries(event: H3Event): Promise<void> {
   if (!(await verifyAuth(event)).success) {

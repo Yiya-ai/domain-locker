@@ -55,7 +55,7 @@ const styles = await build({
   legalComments: 'inline',
 });
 const html =
-  '<!doctype html><html><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><link rel="icon" href="data:,"><title>Domain Locker · 域名台账</title><style>' +
+  '<!doctype html><html><head><meta charset="utf-8"><meta http-equiv="Content-Security-Policy" content="default-src &apos;none&apos;; script-src &apos;unsafe-inline&apos; &apos;unsafe-eval&apos;; style-src &apos;unsafe-inline&apos;; img-src data: blob:; font-src data:; connect-src &apos;none&apos;; form-action &apos;none&apos;; base-uri &apos;none&apos;"><meta name="viewport" content="width=device-width,initial-scale=1"><link rel="icon" href="data:,"><title>Domain Locker · 域名台账</title><style>' +
   styles.outputFiles[0].text +
   'body{margin:0 auto;padding:clamp(.75rem,3vw,2rem);max-width:100rem;background:var(--surface-ground);color:var(--text-color);font-family:var(--font-family)}</style></head><body><form id="unlock" style="max-width:28rem;margin:10vh auto;display:grid;gap:1rem"><h1>Domain Locker</h1><p role="status"></p><label>Password · 密码 <input required type="password" name="password"></label><label hidden>Confirm · 确认密码 <input type="password" name="confirm" autocomplete="new-password"></label><button disabled>Unlock · 打开台账</button></form><app-portfolio></app-portfolio><script>' +
   js.outputFiles[0].text.replace(/<\/script/gi, '<\\/script') +

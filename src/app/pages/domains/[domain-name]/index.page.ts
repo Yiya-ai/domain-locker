@@ -18,7 +18,6 @@ import { DomainSparklineComponent } from '~/app/components/monitor/sparklines/sp
 import { UptimeHistoryComponent } from '~/app/components/monitor/uptime-history/uptime-history.component';
 import { FeatureService } from '~/app/services/features.service';
 import { LazyLoadDirective } from '~/app/utils/lazy.directive';
-import { AdditionalResourcesComponent } from '~/app/components/misc/external-links.component';
 import { DomainInfoComponent } from '~/app/components/domain-things/domain-info/domain-info.component';
 import { NotFoundComponent } from '~/app/components/misc/domain-not-found.component';
 import { SubdomainListComponent } from '~/app/pages/assets/subdomains/subdomain-list.component';
@@ -37,7 +36,6 @@ import { SubdomainListComponent } from '~/app/pages/assets/subdomains/subdomain-
     DomainSparklineComponent,
     UptimeHistoryComponent,
     LazyLoadDirective,
-    AdditionalResourcesComponent,
     DomainInfoComponent,
     NotFoundComponent,
     SubdomainListComponent,

@@ -8,11 +8,11 @@ import { emptyEntry, exportCsv, importCsv } from '../../src/shared/portfolio';
 describe('private ledger defaults', () => {
   afterEach(() => vi.unstubAllEnvs());
 
-  it('requires explicit opt-in for network lookups', () => {
+  it('blocks network lookups even when a legacy configuration enables them', () => {
     vi.stubEnv('DL_ENABLE_EXTERNAL_QUERIES', undefined);
     expect(externalQueriesEnabled()).toBe(false);
     vi.stubEnv('DL_ENABLE_EXTERNAL_QUERIES', 'true');
-    expect(externalQueriesEnabled()).toBe(true);
+    expect(externalQueriesEnabled()).toBe(false);
   });
 
   it('only accepts routable public addresses for connections', () => {

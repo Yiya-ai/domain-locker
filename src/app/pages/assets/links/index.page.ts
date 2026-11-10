@@ -65,7 +65,6 @@ export default class LinksIndexPageComponent implements OnInit {
     this.loadLinks();
 
     this.contextMenuItems = [
-      { label: 'Open Link', icon: 'pi pi-external-link', command: () => this.openLink() },
       { label: 'Edit Link', icon: 'pi pi-pencil', command: () => this.showEditLink() },
       {
         label: 'Linked Domains',
@@ -87,12 +86,6 @@ export default class LinksIndexPageComponent implements OnInit {
     if (changedTo && !this.fetchedExtraLinks) {
       this.autoLinksFromDomainData(this.domains);
       this.fetchedExtraLinks = true;
-    }
-  }
-
-  openLink() {
-    if (this.selectedLink) {
-      window.open(this.selectedLink.link_url, '_blank');
     }
   }
 
@@ -192,43 +185,6 @@ export default class LinksIndexPageComponent implements OnInit {
           })) || [];
       }
 
-      // Providers
-      const cleanName = (name: string) =>
-        name.replace(/,|Inc|[^a-zA-Z0-9\s-]/g, '').trim();
-      const providers: { type: string; name: string }[] = [];
-      if (eachDomain.host?.isp)
-        providers.push({ type: 'Host', name: eachDomain.host.isp });
-      if (eachDomain.registrar?.name)
-        providers.push({ type: 'Registrar', name: eachDomain.registrar.name });
-      if (eachDomain.ssl?.issuer)
-        providers.push({ type: 'SSL Issuer', name: eachDomain.ssl.issuer });
-
-      const providerNames = providers.map((provider) => cleanName(provider.name));
-
-      if (providerNames.length) {
-        try {
-          const providerLinks = await this.fetchProviders(providerNames);
-          if (providerLinks.length) {
-            this.customSections[eachDomain.domain_name]['providers'] = providerLinks
-              .filter((provider: { link: string }) => provider.link)
-              .map((provider: { name: string; link: string }) => ({
-                link_name: provider.name,
-                link_url: provider.link,
-                link_description:
-                  providers.find((p) => cleanName(p.name) === cleanName(provider.name))
-                    ?.type || '',
-              }));
-          }
-        } catch (error) {
-          this.errorHandlerService.handleError({
-            error,
-            message: `Failed to fetch providers for ${eachDomain.domain_name}`,
-            showToast: false,
-            location: 'Links',
-          });
-        }
-      }
-
       // Homepage
       this.customSections[eachDomain.domain_name]['homepage'] = [
         {
@@ -250,16 +206,6 @@ export default class LinksIndexPageComponent implements OnInit {
           ) || [];
       }
     }
-  }
-
-  async fetchProviders(
-    providerNames: string[],
-  ): Promise<{ name: string; link: string }[]> {
-    const response = await fetch(
-      `https://find-company-domain.as93.workers.dev/?names=${providerNames.join(',')}`,
-    );
-    if (!response.ok) throw new Error('Failed to fetch provider links.');
-    return await response.json();
   }
 
   onRightClick(event: MouseEvent, link: ModifiedLink) {

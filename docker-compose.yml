@@ -11,7 +11,6 @@ services:
     environment:
       DL_DB_KEY: ${DL_DB_KEY:?Set and back up the separate SQLite key}
       DL_AUTH_PASSWORD: ${DL_AUTH_PASSWORD:?Set the instance login password}
-      DL_ENABLE_EXTERNAL_QUERIES: ${DL_ENABLE_EXTERNAL_QUERIES:-false}
       DL_ENV_TYPE: selfHosted
 
 

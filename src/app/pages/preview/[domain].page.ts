@@ -19,7 +19,6 @@ import { LoadingComponent } from '~/app/components/misc/loading.component';
 import { GlobalMessageService } from '~/app/services/messaging.service';
 import { ErrorHandlerService } from '~/app/services/error-handler.service';
 import { FeatureService } from '~/app/services/features.service';
-import { AdditionalResourcesComponent } from '~/app/components/misc/external-links.component';
 import { DomainInfoComponent } from '~/app/components/domain-things/domain-info/domain-info.component';
 import { NotFoundComponent } from '~/app/components/misc/domain-not-found.component';
 import { HttpClient } from '@angular/common/http';
@@ -68,7 +67,6 @@ interface PreviewDomainInfo {
     CtaComponent,
     DlIconComponent,
     LoadingComponent,
-    AdditionalResourcesComponent,
     DomainInfoComponent,
     NotFoundComponent,
     FeatureNotEnabledComponent,

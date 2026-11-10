@@ -12,7 +12,6 @@ import { PrimeNgModule } from '~/app/prime-ng.module';
 import { MenuItem } from 'primeng/api';
 import { DomainFaviconComponent } from '~/app/components/misc/favicon.component';
 import { DlIconComponent } from '~/app/components/misc/svg-icon.component';
-import { MetaTagsService } from '~/app/services/meta-tags.service';
 import {
   statsLinks,
   settingsLinks,
@@ -70,7 +69,6 @@ import {
   ],
 })
 export class BreadcrumbsComponent implements OnInit, OnChanges {
-  private metaTagsService = inject(MetaTagsService);
 
   @Input() breadcrumbs?: MenuItem[];
   @Input() pagePath?: string;
@@ -80,27 +78,12 @@ export class BreadcrumbsComponent implements OnInit, OnChanges {
   ngOnInit(): void {
     this.flattenNavLinks();
     this.updateBreadcrumbs();
-    this.generateBreadcrumbSchema();
   }
 
   ngOnChanges(changes: SimpleChanges): void {
     if (changes['pagePath'] && !changes['pagePath'].firstChange) {
       this.updateBreadcrumbs();
-      this.generateBreadcrumbSchema();
     }
-  }
-
-  private generateBreadcrumbSchema() {
-    if (!this.breadcrumbs || this.breadcrumbs.length === 0) return;
-
-    const structuredData = this.breadcrumbs.map((breadcrumb, index) => ({
-      '@type': 'ListItem',
-      position: index + 1,
-      name: breadcrumb.label,
-      item: `https://domain-locker.com${breadcrumb['route']}`,
-    }));
-
-    this.metaTagsService.addStructuredData('breadcrumb', structuredData);
   }
 
   public isDomainPage(path: string): boolean {

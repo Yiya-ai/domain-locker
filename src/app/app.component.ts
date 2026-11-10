@@ -12,7 +12,7 @@ import { RouterOutlet, Router, NavigationStart, NavigationCancel, NavigationErro
 import { CommonModule, isPlatformBrowser } from '@angular/common';
 
 // Dependencies
-import { MessageService, ConfirmationService } from 'primeng/api';
+import { MessageService } from 'primeng/api';
 import { filter, Subscription } from 'rxjs';
 
 // PrimeNG module importing required components
@@ -87,7 +87,6 @@ export class AppComponent implements OnInit, OnDestroy {
   private cdr = inject(ChangeDetectorRef);
   private supabaseService = inject(SupabaseService);
   private messageService = inject(MessageService);
-  private confirmationService = inject(ConfirmationService);
   private globalMessageService = inject(GlobalMessageService);
   private errorHandler = inject(ErrorHandlerService);
   _themeService = inject(ThemeService);
@@ -118,8 +117,6 @@ export class AppComponent implements OnInit, OnDestroy {
 
   ngOnInit() {
     // Setup error handling, and pretty console
-    this.errorHandler.printInitialDetails();
-    this.errorHandler.initializeWindowCatching();
 
     // Set meta tags on route change
     this.router.events
@@ -155,9 +152,8 @@ export class AppComponent implements OnInit, OnDestroy {
       this.isBigFooter = route.startsWith('/about');
       this.isFullWidth = this.fullWidthRoutes.some((path) => route.includes(path));
       const isPublic = this.isPublicRoute(route);
-      this.metaTagsService.allowRobots(isPublic);
       if (isPublic) {
-        if (this.isBigFooter && isPlatformBrowser(this.platformId)) void this.checkIfDocsDisabled(route);
+        if (this.isBigFooter && isPlatformBrowser(this.platformId)) void this.checkIfDocsDisabled();
         approvedRoute = route;
         this.loading = false;
         this.cdr.markForCheck();
@@ -254,32 +250,15 @@ export class AppComponent implements OnInit, OnDestroy {
   }
 
   /* Check if documentation enabled before navigating to any /about page */
-  private async checkIfDocsDisabled(docsPath?: string): Promise<void> {
+  private async checkIfDocsDisabled(): Promise<void> {
     if (!(await this.featureService.isFeatureEnabledPromise('enableDocs'))) {
       // Docs disabled, show warning and navigate back to home
       this.globalMessageService.showWarn(
         'Docs Disabled',
-        'Documentation has not been enabled on this instance, you can view up-to-date content at domain-locker.com',
+        'Documentation has not been enabled on this instance.',
       );
       this.router.navigate(['/']);
 
-      // Give user option to view on domain-locker.com
-      if (docsPath) {
-        this.confirmationService.confirm({
-          header: 'Documentation not Enabled',
-          message: 'Would you want to view this page on the Domain Locker website?',
-          icon: 'pi pi-book',
-          acceptIcon: 'pi pi-reply mr-2',
-          rejectIcon: 'pi pi-arrow-left mr-2',
-          acceptButtonStyleClass: 'p-button-sm p-button-primary p-button-text',
-          rejectButtonStyleClass:
-            'p-button-sm p-button-secondary p-button-text p-button-text',
-          closeOnEscape: true,
-          accept: () => {
-            window.open(`https://domain-locker.com/${docsPath}`, '_blank');
-          },
-        });
-      }
     }
   }
 }

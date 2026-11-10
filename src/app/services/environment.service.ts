@@ -53,6 +53,10 @@ export class EnvService {
     fallback: string | null = null,
     throwError = false,
   ): string | null {
+    if (key === 'DL_ENV_TYPE') return 'selfHosted';
+    if (!['DL_DB_BACKEND', 'DL_PORTFOLIO_CURRENCY', 'DL_DISABLE_WRITE_METHODS'].includes(key)) {
+      return fallback;
+    }
     // Build-time environmental variable (e.g. from .env)
     const buildtimeValue =
       BUILD_ENV[key] || this.environmentFile[this.mapKeyToVarName(key)];

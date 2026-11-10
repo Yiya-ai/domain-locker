@@ -76,12 +76,6 @@ export class ApiClient {
     if (isPlatformBrowser(this.platformId)) return '';
     const env = (globalThis as { process?: { env?: Record<string, string | undefined> } })
       .process?.env;
-    if (env?.['DL_INTERNAL_BASE_URL']) return env['DL_INTERNAL_BASE_URL'];
-
-    const host = this.request?.headers?.['host'];
-    if (env?.['NODE_ENV'] === 'development' && host) {
-      return `http://${host.replace(/^0\.0\.0\.0/, '127.0.0.1')}`;
-    }
     return `http://localhost:${env?.['NITRO_PORT'] || env?.['PORT'] || '3000'}`;
   }
 }
