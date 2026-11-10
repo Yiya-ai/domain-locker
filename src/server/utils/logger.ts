@@ -26,11 +26,14 @@ class Logger {
     return true;
   }
 
-  private write(level: LogLevel, _msg: string) {
+  private write(level: LogLevel, message: string) {
     // Never write free-form messages containing user data, even when logging is enabled.
     // Lookup diagnostics may contain domain names, IPs or provider URLs.
     if (['[whois]', '[domain-info]', '[domain-subs]'].includes(this.prefix)) return;
-    const line = `${COLORS[level]} ${this.prefix} ${level}`;
+    const job = this.prefix === '[scheduler]'
+      ? /^Scheduled (cleanup-monitor-data|expiration-reminders|domain-monitor|domain-updater) every \d+ minutes$/.exec(message)?.[1]
+      : undefined;
+    const line = `${COLORS[level]} ${this.prefix} ${job ? 'Scheduled ' + job : level}`;
     if (!this.shouldLog(level)) return;
 
     try {

@@ -29,3 +29,8 @@ export function pickClientEnv(
   picked[DB_BACKEND_VAR] = isPostgresConfigured(env) ? 'postgres' : 'sqlite';
   return picked;
 }
+
+/** Reject retired managed deployments so they cannot silently create a second ledger. */
+export function legacyManagedMode(): boolean {
+  return process.env['DL_ENV_TYPE'] === 'managed';
+}

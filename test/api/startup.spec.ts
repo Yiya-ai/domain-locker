@@ -17,7 +17,7 @@ describe.skipIf(!built)('server startup', () => {
   let server: RunningServer;
 
   beforeAll(async () => {
-    server = await startServer({ NODE_ENV: 'production' });
+    server = await startServer({ NODE_ENV: 'production', DL_DISABLE_LOGGING: 'false' });
   }, 60_000);
 
   afterAll(() => server?.stop());

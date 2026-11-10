@@ -1,3 +1,4 @@
+import { legacyManagedMode } from '../utils/client-env';
 import { ensureMigrated } from '../db/ready';
 import { startScheduler } from '../jobs/schedule';
 import Logger from '../utils/logger';
@@ -6,6 +7,7 @@ const log = new Logger('startup');
 
 /* Sets the database up as the server boots, then starts the scheduled jobs */
 export default function initialiseDatabase() {
+  if (legacyManagedMode()) return;
   if (process.env['DL_BUILDING'] === 'true') return;
 
   void ensureMigrated().catch((err: unknown) => {

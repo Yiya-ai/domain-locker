@@ -1,3 +1,4 @@
+import { legacyManagedMode } from '../utils/client-env';
 import {
   defineEventHandler,
   getQuery,
@@ -56,6 +57,9 @@ export function defineApiRoute<Result, Body = undefined, Query = undefined>(
 ) {
   return defineEventHandler(async (event): Promise<Result | ApiErrorBody> => {
     try {
+      if (legacyManagedMode()) {
+        throw new ApiError('forbidden', 'Managed deployments are disabled');
+      }
       if (!isSameOrigin(event)) {
         throw new ApiError('forbidden', 'Cross-origin requests are not allowed');
       }

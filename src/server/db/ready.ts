@@ -1,3 +1,4 @@
+import { legacyManagedMode } from '../utils/client-env';
 import { currentBackend, getDb, selectedBackend, sqlitePath } from './client';
 import { migrateToLatest } from './migrations';
 import Logger from '../utils/logger';
@@ -41,6 +42,7 @@ function warnAboutPartialPostgres(): void {
 }
 
 async function runMigrations(): Promise<void> {
+  if (legacyManagedMode()) throw new Error('Managed deployments are disabled');
   if (process.env['DL_SKIP_MIGRATIONS'] === 'true') {
     log.warn('DL_SKIP_MIGRATIONS is set, leaving the database untouched');
     status = 'ready';
