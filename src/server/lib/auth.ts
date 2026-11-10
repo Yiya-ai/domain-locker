@@ -5,7 +5,7 @@ import { apiError } from './errors';
 const SESSION_COOKIE = 'dl_session';
 const SESSION_TTL_MS = 30 * 24 * 60 * 60 * 1000;
 
-/** Optional: self-hosted instances stay open unless a password is configured */
+/** Credentials are configured at runtime, never embedded in the client. */
 export function authPassword(): string | null {
   return process.env['DL_AUTH_PASSWORD'] || null;
 }
@@ -64,7 +64,7 @@ export function endSession(event: H3Event): void {
 
 export function hasValidSession(event: H3Event): boolean {
   const cookie = getCookie(event, SESSION_COOKIE);
-  if (!cookie || !isAuthEnabled()) return false;
+  if (!cookie || !authPassword()) return false;
 
   const parts = cookie.split('.');
   if (parts.length !== 3) return false;
@@ -91,9 +91,9 @@ export function hasValidApiKey(event: H3Event): boolean {
   return Boolean(header) && safeEquals(header as string, expected);
 }
 
-/** Whether the caller may use the API. Always true when auth is not configured */
+/** Fail closed even when the administrator has not configured credentials. */
 export function isAuthorised(event: H3Event): boolean {
-  return !isAuthEnabled() || hasValidSession(event) || hasValidApiKey(event);
+  return hasValidSession(event) || hasValidApiKey(event);
 }
 
 /** Throws unless the caller may use the API */
@@ -101,11 +101,6 @@ export function requireAuth(event: H3Event): void {
   if (!isAuthorised(event)) throw apiError('unauthorized', 'Authentication required');
 }
 
-/**
- * Job routes are protected by either credential, so a key on its own still
- * closes the cron endpoints without password-gating the whole UI
- */
 export function jobAuthMissing(event: H3Event): boolean {
-  if (!isAuthEnabled() && !isApiKeyConfigured()) return false;
-  return !hasValidApiKey(event) && !hasValidSession(event);
+  return !isAuthorised(event);
 }

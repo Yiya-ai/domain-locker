@@ -48,6 +48,8 @@ function flatten(domain: DomainRecord): Record<string, unknown> {
     ].join('; '),
     statuses: domain.statusCodes.join(', '),
     sub_domains: domain.sub_domains.map((sub) => sub.name).join(', '),
+    target_price: domain.domain_costings?.target_price ?? null,
+    actual_price: domain.domain_costings?.actual_price ?? null,
     purchase_price: domain.domain_costings?.purchase_price ?? 0,
     current_value: domain.domain_costings?.current_value ?? 0,
     renewal_cost: domain.domain_costings?.renewal_cost ?? 0,

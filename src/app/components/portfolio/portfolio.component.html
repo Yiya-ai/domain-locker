@@ -1,0 +1,308 @@
+<header class="actions">
+  <h1>{{ t('Domain ledger', '域名台账') }}</h1>
+  <div class="buttons">
+    @if (store.portable) {
+      <button pButton class="p-button-outlined" (click)="lock()">
+        {{ t('Lock', '锁定') }}
+      </button>
+    }
+    <button
+      pButton
+      class="p-button-outlined"
+      [disabled]="busy || !loaded"
+      (click)="file.click()"
+    >
+      {{ t('Import CSV', '导入 CSV') }}
+    </button>
+    <input #file hidden type="file" accept=".csv,text/csv" (change)="readFile(file)" />
+    <button
+      pButton
+      class="p-button-outlined"
+      [disabled]="busy || !rows.length"
+      (click)="askExport()"
+    >
+      {{ t('Export CSV', '导出 CSV') }}
+    </button>
+    <button pButton [disabled]="busy || !loaded" (click)="edit(null)">
+      {{ t('Add domain', '添加域名') }}
+    </button>
+  </div>
+</header>
+@if (!dialog && error) {
+  <p role="alert" class="error">
+    {{ error }}
+    <button pButton class="p-button-text" (click)="run(refresh.bind(this))">
+      {{ t('Reload', '重新加载') }}
+    </button>
+  </p>
+}
+@if (notice) {
+  <p role="status">{{ notice }}</p>
+}
+<section class="metrics">
+  <div class="p-card">
+    <span>{{ t('Domains', '域名数') }}</span
+    ><strong>{{ summary.count }}</strong>
+  </div>
+  <div class="p-card">
+    <span>{{ stateLabels['Due within 30 days'] }}</span
+    ><strong>{{ summary.due }}</strong>
+  </div>
+  @for (k of ['registerPrice', 'targetPrice', 'actualPrice']; track k) {
+    <div class="p-card">
+      <span>{{
+        k === 'registerPrice'
+          ? t('Total invested', '注册总投入')
+          : k === 'targetPrice'
+            ? t('Total asking price', '意向售价合计')
+            : t('Sale proceeds', '成交收入合计')
+      }}</span
+      ><strong>{{
+        amount(
+          k === 'registerPrice'
+            ? summary.registerPrice
+            : k === 'targetPrice'
+              ? summary.targetPrice
+              : summary.actualPrice
+        )
+      }}</strong>
+    </div>
+  }
+</section>
+<div class="filters">
+  <label
+    >{{ t('Search', '搜索')
+    }}<input
+      pInputText
+      type="search"
+      [(ngModel)]="search"
+      (ngModelChange)="filter()"
+      [placeholder]="t('Domain, registrar or notes', '域名、注册商或备注')"
+  /></label>
+  <label
+    >{{ t('Expiry status', '到期状态')
+    }}<select class="p-inputtext" [(ngModel)]="state" (ngModelChange)="filter()">
+      <option value="">{{ t('All', '全部') }}</option>
+      @for (s of states; track s) {
+        <option [value]="s">{{ stateLabels[s] }}</option>
+      }
+    </select></label
+  >
+</div>
+<p-table
+  [value]="filtered"
+  dataKey="id"
+  styleClass="p-datatable-striped"
+  [loading]="busy && !dialog"
+  [paginator]="filtered.length > 5"
+  [(first)]="first"
+  [rows]="pageSize"
+  [rowsPerPageOptions]="[5, 10, 20, 50]"
+  (onPage)="pageSize = $event.rows"
+  responsiveLayout="scroll"
+>
+  <ng-template pTemplate="header"
+    ><tr>
+      <th pSortableColumn="domainFull">{{ t('Domain / notes', '域名 / 备注') }}</th>
+      <th pSortableColumn="registrar">{{ t('Registrar', '注册商') }}</th>
+      @for (k of prices; track k) {
+        <th [pSortableColumn]="k">{{ moneyLabels[k] }}</th>
+      }
+      <th pSortableColumn="expireDate">{{ t('Expiry', '到期日') }}</th>
+      <th>{{ t('Actions', '操作') }}</th>
+    </tr></ng-template
+  >
+  <ng-template pTemplate="body" let-row
+    ><tr>
+      <td>
+        @if (store.portable) {
+          <strong>{{ row.domainFull }}</strong>
+        } @else {
+          <a [href]="'/domains/' + row.domainFull">{{ row.domainFull }}</a>
+        }
+        <small class="memo">{{ row.notes }}</small>
+      </td>
+      <td [attr.data-label]="t('Registrar', '注册商')">{{ row.registrar || '—' }}</td>
+      @for (k of prices; track k) {
+        <td class="num" [attr.data-label]="moneyLabels[k]">{{ amount(row[k]) }}</td>
+      }
+      <td [attr.data-label]="t('Expiry', '到期日')">
+        {{ row.expireDate || '—'
+        }}<small
+          >{{ stateLabels[status(row.expireDate)] }}
+          @if (row.expireDate) {
+            · {{ days(row.expireDate) }} {{ t('days', '天') }}
+          }
+        </small>
+      </td>
+      <td class="row-actions">
+        <div class="buttons">
+          <button pButton class="p-button-text" [disabled]="busy" (click)="edit(row)">
+            {{ t('Edit', '编辑') }}</button
+          ><button
+            pButton
+            class="p-button-text p-button-danger"
+            [disabled]="busy"
+            (click)="askDelete(row)"
+          >
+            {{ t('Delete', '删除') }}
+          </button>
+        </div>
+      </td>
+    </tr></ng-template
+  >
+  <ng-template pTemplate="emptymessage"
+    ><tr>
+      <td colspan="8">
+        {{
+          search || state
+            ? t('No matching domains.', '没有符合条件的域名。')
+            : t('Add a domain or import a MiPanel CSV.', '添加域名，或导入 MiPanel CSV。')
+        }}
+      </td>
+    </tr></ng-template
+  >
+</p-table>
+<p-dialog
+  [visible]="!!dialog"
+  (visibleChange)="!$event && (dialog = null)"
+  [modal]="true"
+  [closable]="!busy"
+  [closeOnEscape]="!busy"
+  [draggable]="false"
+  [resizable]="false"
+  [style]="{ width: 'min(38rem, 94vw)' }"
+  [header]="
+    dialog === 'edit'
+      ? selected
+        ? t('Edit domain', '编辑域名')
+        : t('Add domain', '添加域名')
+      : dialog === 'delete'
+        ? t('Delete domain', '删除域名')
+        : dialog === 'import'
+          ? t('Import MiPanel CSV', '导入 MiPanel CSV')
+          : t('Export MiPanel CSV', '导出 MiPanel CSV')
+  "
+>
+  @if (dialog === 'edit') {
+    <form id="ledger-entry" class="fields" (ngSubmit)="save()">
+      <label
+        >{{ t('Domain', '域名')
+        }}<input
+          pInputText
+          name="domain"
+          required
+          [readonly]="!!selected"
+          [(ngModel)]="entry.domainFull"
+          placeholder="example.com"
+      /></label>
+      <label
+        >{{ t('Registrar', '注册商')
+        }}<input pInputText name="registrar" [(ngModel)]="entry.registrar"
+      /></label>
+      <label
+        >{{ t('Registration date', '注册日')
+        }}<input
+          pInputText
+          type="date"
+          name="registered"
+          [(ngModel)]="entry.registerDate"
+      /></label>
+      <label
+        >{{ t('Expiry date', '到期日')
+        }}<input pInputText type="date" name="expiry" [(ngModel)]="entry.expireDate"
+      /></label>
+      @for (k of prices; track k) {
+        <label
+          >{{ moneyLabels[k] }} ({{ store.currency }})<input
+            pInputText
+            type="number"
+            min="0"
+            step="0.01"
+            [name]="k"
+            [(ngModel)]="entry[k]"
+        /></label>
+      }
+      <label class="wide"
+        >{{ t('Notes', '备注')
+        }}<textarea
+          pInputTextarea
+          rows="4"
+          name="notes"
+          [(ngModel)]="entry.notes"
+        ></textarea>
+      </label>
+    </form>
+  } @else if (dialog === 'delete') {
+    <p>
+      {{
+        t(
+          'Permanently delete this domain and its associated records?',
+          '永久删除此域名及其关联记录？'
+        )
+      }}
+      <strong>{{ selected?.domainFull }}</strong>
+    </p>
+  } @else if (dialog === 'import' || dialog === 'export') {
+    @if (dialog === 'import') {
+      <p>
+        {{ t('Records in file', '文件记录') }}: {{ batch.length }} ·
+        {{ t('Duplicates skipped', '将跳过重复域名') }}: {{ duplicates }}
+      </p>
+    } @else {
+      <label
+        ><input type="checkbox" [(ngModel)]="spreadsheetSafe" />
+        {{ t('Protect spreadsheet cells from formulas', '防止电子表格执行公式') }}</label
+      >
+      <p>
+        {{
+          t(
+            'CSV includes your notes and prices in plain text.',
+            'CSV 含明文备注和价格，请妥善保存。'
+          )
+        }}
+      </p>
+      <p>{{ t('Export all domains', '导出全部域名') }} · {{ rows.length }}</p>
+    }
+    @if (store.currency !== 'CNY') {
+      <label
+        >{{
+          t(
+            'MiPanel uses CNY. Enter your conversion rate.',
+            'MiPanel 使用人民币，请输入本次换算汇率。'
+          )
+        }}
+        (1 CNY = ? {{ store.currency }})
+        <input pInputText type="number" min="0" step="any" [(ngModel)]="rate"
+      /></label>
+    }
+  }
+  @if (error) {
+    <p class="error" role="alert">{{ error }}</p>
+  }
+  <ng-template pTemplate="footer">
+    <button pButton class="p-button-text" [disabled]="busy" (click)="dialog = null">
+      {{ t('Cancel', '取消') }}
+    </button>
+    @if (dialog === 'edit') {
+      <button pButton type="submit" form="ledger-entry" [disabled]="busy">
+        {{ t('Save', '保存') }}
+      </button>
+    }
+    @if (dialog === 'delete') {
+      <button pButton class="p-button-danger" [disabled]="busy" (click)="remove()">
+        {{ t('Delete', '删除') }}
+      </button>
+    }
+    @if (dialog === 'import') {
+      <button pButton [disabled]="busy || !rate" (click)="importRows()">
+        {{ t('Import', '导入') }}
+      </button>
+    }
+    @if (dialog === 'export') {
+      <button pButton [disabled]="busy || !rate" (click)="download()">
+        {{ t('Download CSV', '下载 CSV') }}
+      </button>
+    }
+  </ng-template>
+</p-dialog>

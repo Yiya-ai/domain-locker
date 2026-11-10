@@ -26,7 +26,6 @@ import { GlobalMessageService } from '~/app/services/messaging.service';
 import { ErrorHandlerService } from '~/app/services/error-handler.service';
 import { FeatureService } from '~/app/services/features.service';
 import { EnvService } from '~/app/services/environment.service';
-import { HitCountingService } from '~/app/services/hit-counting.service';
 import { LogoComponent } from '~/app/components/home-things/logo/logo.component';
 import { NgxTurnstileModule, NgxTurnstileComponent } from 'ngx-turnstile';
 import { SelfHostedLoginComponent } from '~/app/components/misc/self-hosted-login.component';
@@ -67,7 +66,6 @@ export default class LoginPageComponent implements OnInit, OnDestroy {
   private errorHandlerService = inject(ErrorHandlerService);
   private featureService = inject(FeatureService);
   private environmentService = inject(EnvService);
-  private hitCountingService = inject(HitCountingService);
   private platformId = inject<object>(PLATFORM_ID);
 
   isLogin = true;
@@ -257,13 +255,7 @@ export default class LoginPageComponent implements OnInit, OnDestroy {
     if (environmentType === 'demo') {
       this.isDemoInstance = true;
     }
-    if (environmentType === 'demo' || environmentType === 'dev') {
-      // Pre-fill demo/dev credentials if they exist
-      const demoUser = this.environmentService.getEnvVar('DL_DEMO_USER') || '';
-      const demoPass = this.environmentService.getEnvVar('DL_DEMO_PASS') || '';
-      this.form.get('email')?.setValue(demoUser);
-      this.form.get('password')?.setValue(demoPass);
-    }
+
   }
 
   passwordMatchValidator(control: AbstractControl): Record<string, boolean> | null {
@@ -273,7 +265,6 @@ export default class LoginPageComponent implements OnInit, OnDestroy {
   }
 
   signOut() {
-    this.hitCountingService.trackEvent('auth_logout', { location: 'login' });
     this.supabaseService.signOut();
   }
 
@@ -284,10 +275,6 @@ export default class LoginPageComponent implements OnInit, OnDestroy {
 
   async loginWithGitHub(): Promise<void> {
     try {
-      this.hitCountingService.trackEvent('auth_login_start', {
-        method: 'social',
-        provider: 'github',
-      });
       await this.supabaseService.signInWithGitHub();
     } catch (error) {
       this.errorHandlerService.handleError({
@@ -301,10 +288,6 @@ export default class LoginPageComponent implements OnInit, OnDestroy {
 
   async loginWithGoogle(): Promise<void> {
     try {
-      this.hitCountingService.trackEvent('auth_login_start', {
-        method: 'social',
-        provider: 'google',
-      });
       await this.supabaseService.signInWithGoogle();
     } catch (error) {
       this.errorHandlerService.handleError({
@@ -318,10 +301,6 @@ export default class LoginPageComponent implements OnInit, OnDestroy {
 
   async loginWithFacebook(): Promise<void> {
     try {
-      this.hitCountingService.trackEvent('auth_login_start', {
-        method: 'social',
-        provider: 'facebook',
-      });
       await this.supabaseService.signInWithFacebook();
     } catch (error) {
       this.errorHandlerService.handleError({
@@ -336,7 +315,6 @@ export default class LoginPageComponent implements OnInit, OnDestroy {
   async sendPasswordResetEmail() {
     this.resetMessages();
     this.showLoader = true;
-    this.hitCountingService.trackEvent('auth_password_reset_start');
     try {
       const email = this.form.get('email')?.value;
       if (!email) {
@@ -392,7 +370,6 @@ export default class LoginPageComponent implements OnInit, OnDestroy {
     password: string;
     mfaCode?: string;
   }): Promise<void> {
-    this.hitCountingService.trackEvent('auth_login_start', { method: 'email' });
     if (this.requireMFA && credentials.mfaCode) {
       await this.verifyMFACode(credentials.mfaCode);
     } else {
@@ -444,7 +421,6 @@ export default class LoginPageComponent implements OnInit, OnDestroy {
     email: string;
     password: string;
   }): Promise<void> {
-    this.hitCountingService.trackEvent('auth_signup_start', { method: 'email' });
     const delayTimeout = 15000;
     const authPromise = this.supabaseService.signUp(
       credentials.email,
@@ -472,11 +448,9 @@ export default class LoginPageComponent implements OnInit, OnDestroy {
       this.successMessage =
         '2FA verification is enabled. Please enter your code when prompted.';
     } else if (this.isLogin) {
-      this.hitCountingService.trackEvent('auth_login_done', { method: 'email' });
       this.successMessage = 'Login successful! Redirecting...';
       this.router.navigate(['/']);
     } else {
-      this.hitCountingService.trackEvent('auth_signup_done', { method: 'email' });
       this.messagingService.showSuccess(
         'Sign Up Successful',
         'Awaiting account confirmation...',

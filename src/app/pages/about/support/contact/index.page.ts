@@ -1,3 +1,4 @@
+import { EnvService } from '~/app/services/environment.service';
 import { Component, OnInit, inject } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { PrimeNgModule } from '~/app/prime-ng.module';
@@ -28,6 +29,7 @@ type QueryInfo = Record<
   templateUrl: './index.page.html',
 })
 export default class ContactPageComponent implements OnInit {
+  readonly recipient = inject(EnvService).getEnvVar('DL_SUPPORT_EMAIL');
   private fb = inject(FormBuilder);
   private supabaseService = inject(SupabaseService);
   private errorHandler = inject(ErrorHandlerService);

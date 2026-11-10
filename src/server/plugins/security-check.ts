@@ -9,7 +9,6 @@ export default function warnIfUnprotected() {
   if (isAuthEnabled() || isApiKeyConfigured()) return;
 
   log.warn(
-    'No DL_AUTH_PASSWORD or DL_API_KEY is set, so anyone who can reach this ' +
-      'instance can read your domains and trigger the scheduled jobs',
+    'No runtime credentials are configured. The ledger and manual jobs are locked.',
   );
 }

@@ -14,6 +14,7 @@ on:
 
 jobs:
   build-and-deploy:
+    if: github.repository == 'Lissy93/domain-locker'
     runs-on: ubuntu-latest
 
     steps:

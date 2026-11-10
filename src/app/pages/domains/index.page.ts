@@ -5,13 +5,18 @@ import DatabaseService from '~/app/services/database.service';
 import { DbDomain } from '~/app/../types/Database';
 import { DomainCollectionComponent } from '~/app/components/domain-things/domain-collection/domain-collection.component';
 import { ErrorHandlerService } from '~/app/services/error-handler.service';
+import { EnvService } from '~/app/services/environment.service';
+import { RouterLink } from '@angular/router';
 import { Subscription } from 'rxjs';
 
 @Component({
   standalone: true,
   selector: 'app-domains-page',
-  imports: [DomainCollectionComponent, PrimeNgModule],
+  imports: [DomainCollectionComponent, PrimeNgModule, RouterLink],
   template: `
+    @if (env.isSelfHostedDatabase()) {
+      <a pButton class="p-button-outlined mb-3" routerLink="/domains/ledger">Domain ledger · 域名台账</a>
+    }
     @if (!loading) {
       <app-domain-view
         [loading]="loading"
@@ -22,6 +27,7 @@ import { Subscription } from 'rxjs';
   `,
 })
 export default class DomainAllPageComponent implements OnInit, OnDestroy {
+  env = inject(EnvService);
   private databaseService = inject(DatabaseService);
   private errorHandlerService = inject(ErrorHandlerService);
   private cdr = inject(ChangeDetectorRef);

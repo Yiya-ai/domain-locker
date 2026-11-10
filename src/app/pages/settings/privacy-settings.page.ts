@@ -14,9 +14,6 @@ export default class PrivacyPageComponent {
   private fb = inject(FormBuilder);
 
   form: FormGroup = this.fb.group({
-    hitCounting: [true],
-    errorTracking: [false],
-    performanceMonitoring: [false],
     cookies: [{ value: false, disabled: true }],
     localStorage: [{ value: true, disabled: true }],
   });

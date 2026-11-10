@@ -1,4 +1,5 @@
-import { ChangeDetectorRef, Component, OnInit, inject } from '@angular/core';
+import { isPlatformBrowser } from '@angular/common';
+import { ChangeDetectorRef, Component, OnInit, PLATFORM_ID, inject } from '@angular/core';
 import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
 import { RouterLink } from '@angular/router';
 import { PrimeNgModule } from '~/app/prime-ng.module';
@@ -6,6 +7,7 @@ import { LogoComponent } from '~/app/components/home-things/logo/logo.component'
 import { AuthService } from '~/app/services/auth.service';
 import { ErrorHandlerService } from '~/app/services/error-handler.service';
 import { ApiRequestError } from '~/app/services/db-query-services/api/api-client';
+import { loginDestination } from '~/shared/login-destination';
 
 /** Password sign-in for a self-hosted instance running with DL_AUTH_PASSWORD */
 @Component({
@@ -23,17 +25,6 @@ import { ApiRequestError } from '~/app/services/db-query-services/api/api-client
 
       @if (checking) {
         <p class="m-0 opacity-70">Checking whether this instance needs a password...</p>
-      } @else if (!authRequired) {
-        <p class="m-0">
-          This instance isn't password protected, so there's nothing to sign in to. Set
-          <code>DL_AUTH_PASSWORD</code> to require one.
-        </p>
-        <p-button
-          label="Go to my domains"
-          icon="pi pi-arrow-right"
-          routerLink="/domains"
-          styleClass="mt-3"
-        />
       } @else if (authenticated) {
         <p class="m-0">You're signed in.</p>
         <div class="flex gap-2 mt-3">
@@ -82,6 +73,7 @@ import { ApiRequestError } from '~/app/services/db-query-services/api/api-client
 })
 export class SelfHostedLoginComponent implements OnInit {
   private fb = inject(FormBuilder);
+  private platform = inject(PLATFORM_ID);
   private auth = inject(AuthService);
   private errorHandler = inject(ErrorHandlerService);
   private cdr = inject(ChangeDetectorRef);
@@ -91,15 +83,14 @@ export class SelfHostedLoginComponent implements OnInit {
   });
 
   checking = true;
-  authRequired = false;
   authenticated = false;
   submitting = false;
   errorMessage = '';
 
   async ngOnInit(): Promise<void> {
+    if (!isPlatformBrowser(this.platform)) return;
     try {
       const status = await this.auth.status();
-      this.authRequired = status.authRequired;
       this.authenticated = status.authenticated;
     } catch (error) {
       this.errorHandler.handleError({
@@ -119,7 +110,10 @@ export class SelfHostedLoginComponent implements OnInit {
     this.errorMessage = '';
     this.auth.login(this.form.getRawValue().password).subscribe({
       // A reload lets every service pick the session up, rather than half the app
-      next: () => window.location.assign('/domains'),
+      next: () => {
+        const location = new URL(window.location.href);
+        window.location.replace(loginDestination(location.searchParams.get('returnUrl'), location));
+      },
       error: (error: unknown) => {
         this.submitting = false;
         this.errorMessage =

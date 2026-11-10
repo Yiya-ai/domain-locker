@@ -1,3 +1,4 @@
+import { externalQueriesEnabled } from '../utils/external-queries';
 import { runJob, type JobName } from './runner';
 import { runMonitor } from './monitor';
 import { runCleanup } from './cleanup';
@@ -63,6 +64,7 @@ export function startScheduler(): void {
   }
 
   for (const schedule of schedules()) {
+    if ((schedule.job === 'domain-monitor' || schedule.job === 'domain-updater') && !externalQueriesEnabled()) continue;
     const interval = schedule.everyMinutes * MINUTE;
     const timer = setInterval(() => {
       // runJob hits the database before its own try, so a tick can reject

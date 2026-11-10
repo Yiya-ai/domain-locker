@@ -25,7 +25,9 @@ export default defineEventHandler(async (event) => {
     return { statusCode: 401, body: { error: authResult.error } };
   }
 
-  const RESEND_API_KEY = import.meta.env['RESEND_KEY'];
+  const RESEND_API_KEY = process.env['RESEND_KEY'];
+  const recipient = process.env['DL_SUPPORT_EMAIL'];
+  if (!recipient) return { error: 'Support email is not configured.' };
 
   if (!RESEND_API_KEY) {
     return { error: 'Missing RESEND_KEY in environment variables.' };
@@ -58,7 +60,7 @@ export default defineEventHandler(async (event) => {
       },
       body: JSON.stringify({
         from: 'noreply@domain-locker.com',
-        to: ['support@as93.net'],
+        to: [recipient],
         reply_to: email,
         subject: `Support Request: ${sanitiseHeader(queryType)} from ${sanitiseHeader(name)}`,
         html: emailContent,

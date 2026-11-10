@@ -1,4 +1,4 @@
-import { lookup } from 'node:dns/promises';
+import { publicAddress } from '../utils/external-queries';
 import { connect, type TLSSocket } from 'node:tls';
 import { request } from 'node:https';
 import { performance } from 'node:perf_hooks';
@@ -16,8 +16,8 @@ const TIMEOUT_MS = numberFromEnv('DL_MONITOR_TIMEOUT', 10_000, { min: 1 });
 
 /** Times each stage separately, so a slow DNS or TLS step is visible on its own */
 export async function checkDomain(domainName: string): Promise<UptimeCheck> {
-  const dns = await time(() => lookup(domainName));
-  if (!dns.ok) {
+  const dns = await time(() => publicAddress(domainName));
+  if (!dns.ok || !dns.value) {
     return {
       is_up: false,
       response_code: null,
@@ -27,8 +27,9 @@ export async function checkDomain(domainName: string): Promise<UptimeCheck> {
     };
   }
 
-  const tls = await time(() => handshake(domainName));
-  const http = await time(() => head(domainName));
+  const address = dns.value;
+  const tls = await time(() => handshake(domainName, address));
+  const http = await time(() => head(domainName, address));
 
   return {
     is_up: http.ok && (http.value ?? 0) < 400,
@@ -51,14 +52,14 @@ async function time<T>(
   }
 }
 
-function handshake(domainName: string): Promise<void> {
+function handshake(domainName: string, address: string): Promise<void> {
   return new Promise((resolve, reject) => {
     const fail = (err: Error) => {
       socket.destroy();
       reject(err);
     };
     const socket: TLSSocket = connect(
-      { host: domainName, port: 443, servername: domainName, timeout: TIMEOUT_MS },
+      { host: address, port: 443, servername: domainName, timeout: TIMEOUT_MS },
       () => {
         socket.end();
         resolve();
@@ -69,10 +70,17 @@ function handshake(domainName: string): Promise<void> {
   });
 }
 
-function head(domainName: string): Promise<number> {
+function head(domainName: string, address: string): Promise<number> {
   return new Promise((resolve, reject) => {
     const req = request(
-      { hostname: domainName, path: '/', method: 'HEAD', timeout: TIMEOUT_MS },
+      {
+        hostname: address,
+        servername: domainName,
+        headers: { Host: domainName },
+        path: '/',
+        method: 'HEAD',
+        timeout: TIMEOUT_MS,
+      },
       (res) => {
         res.resume();
         resolve(res.statusCode ?? 0);

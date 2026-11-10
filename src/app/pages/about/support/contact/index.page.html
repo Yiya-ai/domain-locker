@@ -1,45 +1,9 @@
 <p-card header="Contact">
-  <p class="mt-0 text-lg italic opacity-70">
-    We're here to help! If you have any questions or need assistance, please don't
-    hesitate to reach out.
-  </p>
-  <p>
-    Users on the hobby plan or above, can reach out to us at
-    <a href="mailto:support&#64;domain-locker.com"
-      ><code>support&#64;domain-locker.com</code></a
-    >. If your running Domain Locker on your own servers, please see
-    <a routerLink="/about/support/self-hosted-support">Self-Hosted Support Portal</a>. If
-    referencing a bug, please attach the
-    <a routerLink="/advanced/debug-info">this debug info</a>
-    as well as include the steps to reproduce, expected behavior, and actual behavior.
-  </p>
-
-  <div class="flex gap-2 justify-end flex-wrap">
-    <a href="mailto:support&#64;domain-locker.com">
-      <p-button
-        size="small"
-        severity="success"
-        label="Contact Support"
-        icon="pi pi-envelope"
-      ></p-button>
-    </a>
-    <a routerLink="/advanced/debug-info">
-      <p-button
-        size="small"
-        severity="warning"
-        label="Debug Info"
-        icon="pi pi-play"
-      ></p-button>
-    </a>
-    <a routerLink="/about/support/self-hosted-support">
-      <p-button
-        size="small"
-        severity="info"
-        label="Self-Hosted Support"
-        icon="pi pi-server"
-      ></p-button>
-    </a>
-  </div>
+  @if (recipient) {
+    <p>Support email: <a [href]="'mailto:' + recipient">{{ recipient }}</a></p>
+  } @else {
+    <p>Support email is not configured for this instance.</p>
+  }
 </p-card>
 
 <p-divider class="my-4" />

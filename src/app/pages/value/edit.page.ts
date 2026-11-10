@@ -5,7 +5,7 @@ import { PrimeNgModule } from '~/app/prime-ng.module';
 import { RouterModule } from '@angular/router';
 import { FormsModule } from '@angular/forms';
 import { isPlatformBrowser } from '@angular/common';
-import { localeToCurrency } from '~/app/constants/currencies';
+import { CurrencyService } from '~/app/services/currency.service';
 import { TableModule } from 'primeng/table';
 import { DbDomain } from '~/app/../types/Database';
 
@@ -16,6 +16,7 @@ import { DbDomain } from '~/app/../types/Database';
   imports: [PrimeNgModule, RouterModule, FormsModule, TableModule],
 })
 export default class EditDomainValuePage implements OnInit {
+  private currencyService = inject(CurrencyService);
   private databaseService = inject(DatabaseService);
   private messageService = inject(MessageService);
   private platformId = inject(PLATFORM_ID);
@@ -120,7 +121,7 @@ export default class EditDomainValuePage implements OnInit {
     if (isPlatformBrowser(this.platformId)) {
       try {
         const userLocale = navigator.language || 'en-US';
-        const currencyCode = localeToCurrency[userLocale] || 'USD';
+        const currencyCode = this.currencyService.getCurrencyCode();
         this.locale = userLocale;
         this.currency = currencyCode;
       } catch {

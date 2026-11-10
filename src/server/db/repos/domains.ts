@@ -29,6 +29,8 @@ export interface DomainRecord {
   registrar: { name: string; url: string | null } | null;
   whois: Record<string, string | null> | null;
   domain_costings: {
+    target_price?: number | null;
+    actual_price?: number | null;
     purchase_price: number | null;
     current_value: number | null;
     renewal_cost: number | null;
@@ -79,6 +81,8 @@ export function domainsRepo(db: Kysely<Database>) {
         'domains.registrar_id',
         'registrars.name as registrar_name',
         'registrars.url as registrar_url',
+        'domain_costings.target_price',
+        'domain_costings.actual_price',
         'domain_costings.purchase_price',
         'domain_costings.current_value',
         'domain_costings.renewal_cost',
@@ -629,16 +633,24 @@ function whoisOf(
 }
 
 function costingsOf(row: {
+  target_price: number | null;
+  actual_price: number | null;
   purchase_price: number | null;
   current_value: number | null;
   renewal_cost: number | null;
   auto_renew: boolean | null;
 }) {
-  const hasCostings = [row.purchase_price, row.current_value, row.renewal_cost].some(
-    (value) => value !== null,
-  );
+  const hasCostings = [
+    row.purchase_price,
+    row.current_value,
+    row.renewal_cost,
+    row.target_price,
+    row.actual_price,
+  ].some((value) => value !== null);
   if (!hasCostings && row.auto_renew === null) return null;
   return {
+    ...(row.target_price == null ? {} : { target_price: toNumber(row.target_price) }),
+    ...(row.actual_price == null ? {} : { actual_price: toNumber(row.actual_price) }),
     purchase_price: toNumber(row.purchase_price),
     current_value: toNumber(row.current_value),
     renewal_cost: toNumber(row.renewal_cost),

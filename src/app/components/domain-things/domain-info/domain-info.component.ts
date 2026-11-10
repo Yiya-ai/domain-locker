@@ -10,13 +10,15 @@ import {
   makeEppArrayFromLabels,
 } from '~/app/constants/security-categories';
 import { SafeDatePipe } from '~/app/utils/safe-date.pipe';
+import { EnvService } from '~/app/services/environment.service';
+import { RouterModule } from '@angular/router';
 import { CurrencyService } from '~/app/services/currency.service';
 
 @Component({
   standalone: true,
   selector: 'app-domain-info',
   imports: [
-    CommonModule,
+    RouterModule, CommonModule,
     PrimeNgModule,
     DlIconComponent,
     DomainFaviconComponent,
@@ -26,6 +28,7 @@ import { CurrencyService } from '~/app/services/currency.service';
   styleUrls: ['./domain-info.component.scss'],
 })
 export class DomainInfoComponent implements OnInit {
+  env = inject(EnvService);
   domainUtils = inject(DomainUtils);
   currencyService = inject(CurrencyService);
 

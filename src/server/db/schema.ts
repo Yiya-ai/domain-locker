@@ -132,6 +132,8 @@ export interface DnsRecordsTable {
 export interface DomainCostingsTable {
   id: Generated<string>;
   domain_id: string;
+  target_price: number | null;
+  actual_price: number | null;
   purchase_price: number | null;
   current_value: number | null;
   renewal_cost: number | null;

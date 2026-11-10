@@ -1,3 +1,4 @@
+import { requireExternalQueries } from '../utils/external-queries';
 import { defineEventHandler } from 'h3';
 import Parser from 'rss-parser';
 
@@ -206,10 +207,11 @@ function getServiceSummary(pastItems: FeedItem[]): {
 }
 
 export default defineEventHandler(async (event) => {
+  await requireExternalQueries(event);
   // Caching and headers
   event.node.res.setHeader(
     'Cache-Control',
-    'public, max-age=900, stale-while-revalidate=30',
+    'private, no-store',
   );
   event.node.res.setHeader('Content-Type', 'application/json');
 

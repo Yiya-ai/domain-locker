@@ -1,3 +1,4 @@
+import { isPublicIp, publicAddress } from './external-queries';
 import dns from 'dns';
 import tls, { PeerCertificate } from 'tls';
 import type { DomainInfo } from '../../types/DomainInfo';
@@ -85,9 +86,10 @@ const getNameServers = (domain: string) =>
   });
 
 /* Uses TLS to get certificate info of a given host/domain, if https enabled */
-const getSslCertificateDetails = (domain: string): Promise<Partial<PeerCertificate>> =>
-  new Promise((resolve, reject) => {
-    const socket = tls.connect(443, domain, { servername: domain }, () => {
+const getSslCertificateDetails = async (domain: string): Promise<Partial<PeerCertificate>> => {
+  const address = await publicAddress(domain);
+  return new Promise((resolve, reject) => {
+    const socket = tls.connect(443, address, { servername: domain }, () => {
       const cert = socket.getPeerCertificate();
       socket.end();
       if (cert) resolve(cert);
@@ -100,10 +102,17 @@ const getSslCertificateDetails = (domain: string): Promise<Partial<PeerCertifica
     socket.on('error', reject);
   });
 
+};
+
 /* Uses the wonderful ip-api to find host location and org of a given IP */
 const getHostData = async (ip: string): Promise<Host | undefined> => {
   try {
-    const res = await fetch(`http://ip-api.com/json/${ip}?fields=12249`, {
+    const key = process.env['DL_IP_API_KEY'];
+    if (!key || !isPublicIp(ip)) return;
+    const url = new URL('https://pro.ip-api.com/json/' + encodeURIComponent(ip));
+    url.searchParams.set('key', key);
+    url.searchParams.set('fields', '12249');
+    const res = await fetch(url, {
       signal: AbortSignal.timeout(SECONDARY_LOOKUP_TIMEOUT_MS),
     });
     if (!res.ok) return;
@@ -128,7 +137,7 @@ export async function lookupDomainInfo(
 
   // A registry that withholds WHOIS shouldn't cost the domain its DNS, SSL
   // and host data too, so a failure here is recorded and the rest continues
-  log.info(`Resolving domain info for: ${domain}`);
+
   const whoisData = await safeExecute(
     () => getWhoisInfo(domain),
     'WHOIS lookup failed',

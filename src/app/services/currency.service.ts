@@ -1,4 +1,5 @@
-import { Injectable } from '@angular/core';
+import { EnvService } from './environment.service';
+import { inject, Injectable } from '@angular/core';
 
 @Injectable({
   providedIn: 'root',
@@ -11,6 +12,8 @@ export class CurrencyService {
     const { code, symbol } = this.detectCurrency();
     this.currencyCode = code;
     this.currencySymbol = symbol;
+    const fixed = inject(EnvService).getEnvVar('DL_PORTFOLIO_CURRENCY');
+    if (fixed && /^[A-Z]{3}$/.test(fixed)) this.setCurrency(fixed);
   }
 
   private detectCurrency(): { code: string; symbol: string } {
@@ -73,7 +76,7 @@ export class CurrencyService {
 
   setCurrency(currencyCode: string): void {
     try {
-      const formatter = new Intl.NumberFormat(navigator.language, {
+      const formatter = new Intl.NumberFormat(typeof navigator === 'undefined' ? 'en-US' : navigator.language, {
         style: 'currency',
         currency: currencyCode,
       });

@@ -33,6 +33,8 @@ class Logger {
   }
 
   private write(level: LogLevel, msg: string) {
+    // Lookup diagnostics may contain domain names, IPs or provider URLs.
+    if (['[whois]', '[domain-info]', '[domain-subs]'].includes(this.prefix)) return;
     const timestamp = new Date().toISOString();
     const line = `${COLORS[level]} ${this.prefix} ${msg}`;
     this.logs.push({ level, message: msg, timestamp });

@@ -9,17 +9,23 @@ WORKDIR /app
 RUN apk add --no-cache python3 make g++
 
 # Copy manifests + npm config for reproducible installs
-COPY package.json package-lock.json .npmrc ./
+COPY vendor/deepmerge ./vendor/deepmerge
+COPY package.json package-lock.json ./
+ENV npm_config_legacy_peer_deps=true
 
 # Install deps with a BuildKit cache mount so re-runs reuse the npm cache
 RUN --mount=type=cache,target=/root/.npm \
     npm ci --no-audit --no-fund
 
 # Copy source and build the production bundle
-COPY . .
+COPY angular.json tsconfig*.json vite.config.ts index.html postcss.config.js tailwind.config.js start.sh ./
+COPY src ./src
+COPY public ./public
+COPY db/schema.sql ./db/schema.sql
+COPY scripts/verify-package.mjs ./scripts/verify-package.mjs
 ENV NODE_OPTIONS="--max-old-space-size=8192"
 ENV DL_ENV_TYPE="selfHosted"
-RUN npm run build && test -f dist/analog/server/index.mjs
+RUN npm run build && test -f dist/analog/server/index.mjs && node scripts/verify-package.mjs dist/analog
 
 # Drop devDependencies in place so node_modules can be copied to runner as-is
 RUN --mount=type=cache,target=/root/.npm \
@@ -44,6 +50,7 @@ WORKDIR /app
 # Pull build output and pruned deps from builder
 COPY --chown=appuser:appgroup --from=builder /app/dist/analog   ./dist/analog
 COPY --chown=appuser:appgroup --from=builder /app/node_modules  ./node_modules
+COPY --chown=appuser:appgroup --from=builder /app/vendor       ./vendor
 COPY --chown=appuser:appgroup --from=builder /app/package.json  ./package.json
 COPY --chown=appuser:appgroup --from=builder /app/db/schema.sql ./schema.sql
 COPY --chown=appuser:appgroup --from=builder /app/start.sh      ./start.sh

@@ -1,22 +1,22 @@
+import { requireExternalQueries } from '../utils/external-queries';
 import { defineEventHandler } from 'h3';
 
 const timeout = 5000;
 
 export default defineEventHandler(async (event) => {
+  await requireExternalQueries(event);
   event.node.res.setHeader(
     'Cache-Control',
-    'public, max-age=900, stale-while-revalidate=30',
+    'private, no-store',
   );
   event.node.res.setHeader('Content-Type', 'application/json');
-  event.node.res.setHeader('Access-Control-Allow-Origin', '*');
-  event.node.res.setHeader('Access-Control-Allow-Methods', 'GET, OPTIONS');
 
-  const authHeader = event.node.req.headers['authorization'] as string | undefined;
+
 
   const [scheduledCrons, databaseStatus, supabaseStatus, uptimeStatus, ghActions] =
     await Promise.all([
       fetchHealthchecks(),
-      fetchDatabaseHealth(authHeader),
+      fetchDatabaseHealth(),
       fetchSupabaseHealth(),
       fetchUptimeStatus(),
       fetchGitHubCIStatus(),
@@ -35,35 +35,22 @@ async function fetchHealthchecks(): Promise<unknown[]> {
     });
     if (!res.ok) return [];
     const body = (await res.json()) as { checks?: Record<string, unknown>[] };
-    return (body.checks || []).map(
-      ({ name, desc, status, last_ping, last_duration, next_ping, n_pings }) => ({
-        name,
-        desc,
-        status,
-        last_ping,
-        last_duration,
-        next_ping,
-        n_pings,
-      }),
-    );
+    return (body.checks || []).map(({ status }) => ({ status }));
   } catch (err) {
     console.error('[external-checks] Healthchecks error:', err);
     return [];
   }
 }
 
-async function fetchDatabaseHealth(authHeader?: string): Promise<unknown> {
+async function fetchDatabaseHealth(): Promise<unknown> {
   const supabaseUrl = import.meta.env['SUPABASE_URL'];
   if (!supabaseUrl) return {};
   try {
     const url = `${supabaseUrl}/functions/v1/health`;
     const res = await fetch(url, {
-      headers: {
-        ...(authHeader ? { Authorization: authHeader } : {}),
-      },
       signal: AbortSignal.timeout(timeout),
     });
-    return res.ok ? (await res.json()) || { up: false } : { up: false };
+    return { up: res.ok };
   } catch (err) {
     console.error('[external-checks] Database health error:', err);
     return {};
@@ -97,7 +84,7 @@ async function fetchUptimeStatus(): Promise<unknown | undefined> {
       headers: { 'Content-Type': 'application/json' },
       signal: AbortSignal.timeout(timeout),
     });
-    return res.ok ? await res.json() : undefined;
+    return { up: res.ok };
   } catch (err) {
     console.error('[external-checks] Uptime error:', err);
     return {};
@@ -111,7 +98,7 @@ async function fetchGitHubCIStatus(): Promise<unknown | undefined> {
       headers: { 'Content-Type': 'application/json' },
       signal: AbortSignal.timeout(timeout),
     });
-    return res.ok ? await res.json() : undefined;
+    return { up: res.ok };
   } catch (err) {
     console.error('[external-checks] github actions error:', err);
     return {};

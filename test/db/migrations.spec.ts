@@ -118,6 +118,8 @@ describe.skipIf(!pgAvailable)('migration runner (postgres)', () => {
   it('upgrades an existing install without disturbing its rows', async () => {
     const config = await resetTestDatabase('dl_test_migrate_existing');
     db = createPostgresTestDb(config);
+    // Recreate the pre-ledger schema inside this disposable test database.
+    await sql`ALTER TABLE domain_costings DROP COLUMN target_price, DROP COLUMN actual_price`.execute(db);
     await db
       .insertInto('domains')
       .values({
@@ -131,6 +133,7 @@ describe.skipIf(!pgAvailable)('migration runner (postgres)', () => {
     expect(applied).toEqual(versionsFor('postgres'));
     const kept = await db.selectFrom('domains').select('domain_name').execute();
     expect(kept).toEqual([{ domain_name: 'kept.com' }]);
+    await expect(db.selectFrom('domain_costings').select(['actual_price', 'target_price']).execute()).resolves.toEqual([]);
   });
 
   it('is idempotent across restarts', async () => {

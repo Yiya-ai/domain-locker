@@ -258,19 +258,7 @@ export class ThemeService {
   }
 
   private applyFont(font: FontOption): void {
-    // Load font dynamically
-    if (font.url) {
-      const fontLinkId = 'app-font';
-      let fontLinkElement = this.document.getElementById(fontLinkId) as HTMLLinkElement;
-      if (!fontLinkElement) {
-        fontLinkElement = this.renderer.createElement('link');
-        this.renderer.setAttribute(fontLinkElement, 'rel', 'stylesheet');
-        this.renderer.setAttribute(fontLinkElement, 'id', fontLinkId);
-        this.renderer.appendChild(this.document.head, fontLinkElement);
-      }
-      this.renderer.setAttribute(fontLinkElement, 'href', font.url);
-    }
-
+    // Use installed fonts and the bundled theme fallback.
     // Apply fonts to body and headings
     this.document.documentElement.style.setProperty('--body-font', font.bodyFont);
     this.document.documentElement.style.setProperty('--heading-font', font.headingFont);

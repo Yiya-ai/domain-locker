@@ -1,3 +1,4 @@
+import { spreadsheetText } from '../../../../shared/portfolio';
 import { Component, inject } from '@angular/core';
 import DatabaseService from '~/app/services/database.service';
 import { GlobalMessageService } from '~/app/services/messaging.service';
@@ -117,7 +118,7 @@ export default class ExportPageComponent {
 
   private escapeCSV(value: unknown): string {
     if (value === null || value === undefined) return '';
-    const str = String(value);
+    const str = spreadsheetText(String(value));
     if (
       str.includes(',') ||
       str.includes('"') ||

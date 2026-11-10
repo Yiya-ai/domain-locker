@@ -1,5 +1,6 @@
 <div class="w-full flex justify-between flex-wrap">
   <h1>Domain Valuation</h1>
+  @if (env.isSelfHostedDatabase()) { <a pButton routerLink="/domains/ledger" class="p-button-outlined">Domain ledger · 域名台账</a> }
   <a routerLink="/value/edit">
     <button pButton label="Edit" aria-label="Edit" icon="pi pi-pencil"></button>
   </a>

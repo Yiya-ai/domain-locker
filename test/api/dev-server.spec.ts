@@ -18,7 +18,7 @@ describe('/v1 API on the dev server', () => {
 
   it('serves reads as JSON rather than the app 404 page', async () => {
     const response = await fetch(`${server.url}/v1/domains`, {
-      headers: { Origin: server.url },
+      headers: { Origin: server.url, 'x-api-key': server.apiKey! },
     });
     expect(response.status).toBe(200);
     expect(response.headers.get('content-type')).toContain('application/json');

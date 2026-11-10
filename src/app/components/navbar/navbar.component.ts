@@ -79,11 +79,10 @@ export class NavbarComponent implements OnInit, AfterViewInit {
   public isSupabaseEnabled = this.databaseService.serviceType === 'supabase';
 
   ngOnInit() {
-    // Set contents of menubar items
-    this.initializeMenuItems();
-
-    // Check auth status, listen for changes and fetch user plan
-    this.setAuthState();
+    void this.setAuthState().then(() => {
+      this.initializeMenuItems();
+      this.loadUnreadNotificationCount();
+    });
 
     // Get user plan (for navbar badge, later)
     this.billingService.fetchUserPlan();
@@ -99,7 +98,6 @@ export class NavbarComponent implements OnInit, AfterViewInit {
   }
 
   ngAfterViewInit() {
-    this.loadUnreadNotificationCount();
     this.loadUserPlanEnvironment();
   }
 
@@ -162,14 +160,14 @@ export class NavbarComponent implements OnInit, AfterViewInit {
 
   async setAuthState() {
     if (!this.environmentService.isSupabaseEnabled()) {
-      this.isAuthenticated = true;
+      this.isAuthenticated = isPlatformBrowser(this.platformId) && await this.authService.isAuthenticated().catch(() => false);
       return;
     }
     this.isAuthenticated = await this.supabaseService.isAuthenticated();
     this.subscriptions.add(
       this.supabaseService.authState$.subscribe((isAuthenticated) => {
-        this.initializeMenuItems();
         this.isAuthenticated = isAuthenticated;
+        this.initializeMenuItems();
       }),
     );
   }
@@ -179,10 +177,7 @@ export class NavbarComponent implements OnInit, AfterViewInit {
     if (!isPlatformBrowser(this.platformId)) {
       return;
     }
-    if (
-      this.isAuthenticated ||
-      this.environmentService.getEnvironmentType() === 'selfHosted'
-    ) {
+    if (this.isAuthenticated) {
       // User is logged in, show authenticated nav links
       this.items = authenticatedNavLinks as MenuItem[];
       this.itemsWithSettings = [

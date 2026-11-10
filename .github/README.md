@@ -1,3 +1,23 @@
+# Domain Locker 域名台账
+
+本仓库基于 [Lissy93/domain-locker](https://github.com/Lissy93/domain-locker)，保留 MIT 许可证。支持密码登录、加密 SQLite 台账和 MiPanel CSV 导入导出。完整版的外部域名查询默认关闭，离线版可在浏览器中独立使用。[中文使用指南](../README.zh-CN.md)
+
+This fork adds a password-protected self-hosted ledger, encrypted SQLite storage, MiPanel CSV import and export, and a standalone offline edition. External lookups are disabled by default.
+
+## Build and run
+
+Use the Node.js version in `.nvmrc`. From the repository root, run:
+
+```sh
+npm ci
+npm run build
+npm run build:portable
+```
+
+On Windows, open `启动域名台账.cmd` and sign in at `http://127.0.0.1:43973/domains/ledger`. For the offline edition, open `dist/portable/domain-ledger.html` and set a separate password. CSV exports contain readable ledger data and should be stored privately.
+
+## Upstream project
+
 <h1 align="center">Domain Locker</h1>
 <p align="center">
 	<i>The Central Hub for all your Domain Names</i>

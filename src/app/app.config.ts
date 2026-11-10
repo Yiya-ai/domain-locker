@@ -12,7 +12,7 @@ import {
   withFetch,
   withInterceptorsFromDi,
 } from '@angular/common/http';
-import { provideClientHydration } from '@angular/platform-browser';
+import { provideClientHydration, withNoHttpTransferCache } from '@angular/platform-browser';
 import { provideFileRouter } from '@analogjs/router';
 import { withShikiHighlighter } from '@analogjs/content/shiki-highlighter';
 import { provideContent, withMarkdownRenderer } from '@analogjs/content';
@@ -52,7 +52,7 @@ export const appConfig: ApplicationConfig = {
     },
     // Core Providers
     provideHttpClient(withFetch()),
-    provideClientHydration(),
+    provideClientHydration(withNoHttpTransferCache()),
     provideContent(withMarkdownRenderer(), withShikiHighlighter()),
     provideAnimations(),
     provideFileRouter(

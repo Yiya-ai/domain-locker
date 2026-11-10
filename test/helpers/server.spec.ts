@@ -24,7 +24,8 @@ describe('stopProcess', () => {
 
     await stopProcess(child, 300);
 
-    expect(child.signalCode).toBe('SIGKILL');
+    // Windows terminates the child immediately even if it installed a SIGTERM handler.
+    expect(child.signalCode).toBe(process.platform === 'win32' ? 'SIGTERM' : 'SIGKILL');
     expect(Date.now() - startedAt).toBeLessThan(5_000);
   });
 

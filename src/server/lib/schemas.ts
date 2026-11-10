@@ -1,3 +1,4 @@
+import { portfolioEntry } from '../../shared/portfolio';
 import { z } from 'zod';
 
 const optionalText = z.string().trim().max(2000).nullish();
@@ -5,7 +6,7 @@ const optionalNotes = z.string().trim().max(65_536).nullish();
 
 export const saveDomainSchema = z.object({
   domain: z.object({
-    domain_name: z.string().trim().min(1).max(253),
+    domain_name: portfolioEntry.shape.domainFull,
     expiry_date: optionalText,
     registration_date: optionalText,
     updated_date: optionalText,

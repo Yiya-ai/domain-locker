@@ -46,6 +46,27 @@ export const MIGRATIONS: Migration[] = [
       postgres: () => POSTGRES_DOMAIN_DATES,
     },
   },
+  {
+    version: '004_portfolio_prices',
+    statements: {
+      sqlite: () =>
+        ['target_price', 'actual_price'].map(
+          (name) =>
+            'ALTER TABLE domain_costings ADD COLUMN ' +
+            name +
+            ' REAL CHECK (' +
+            name +
+            ' >= 0)',
+        ),
+      postgres: () => ['target_price', 'actual_price'].map(name => `
+        DO $$ BEGIN
+          IF NOT EXISTS (SELECT 1 FROM information_schema.columns
+            WHERE table_schema = 'public' AND table_name = 'domain_costings' AND column_name = '${name}') THEN
+            ALTER TABLE public.domain_costings ADD COLUMN ${name} NUMERIC CHECK (${name} >= 0);
+          END IF;
+        END $$`),
+    },
+  },
 ];
 
 /** Mirrors start.sh, which copies db/schema.sql to the image root */

@@ -1,3 +1,4 @@
+import { requireExternalQueries } from '../utils/external-queries';
 import { defineEventHandler, getQuery } from 'h3';
 import { verifyAuth } from '../utils/auth';
 import { isValidDomain, lookupDomainInfo } from '../utils/domain-info';
@@ -6,6 +7,7 @@ import Logger from '../utils/logger';
 const log = new Logger('domain-info');
 
 export default defineEventHandler(async (event) => {
+  await requireExternalQueries(event);
   const authResult = await verifyAuth(event);
   if (!authResult.success) {
     return { statusCode: 401, body: { error: authResult.error } };

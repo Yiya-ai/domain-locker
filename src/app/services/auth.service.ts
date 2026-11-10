@@ -9,31 +9,19 @@ export interface AuthStatus {
   authenticated: boolean;
 }
 
-/**
- * Sign-in for self-hosted instances, which use a single instance password set
- * with DL_AUTH_PASSWORD. Without one the instance stays open, which is the
- * zero-config default. Sign-out covers both deployment modes.
- */
+/** Runtime password authentication for the self-hosted ledger. */
 @Injectable({ providedIn: 'root' })
 export class AuthService {
   private api = inject(ApiClient);
   private envService = inject(EnvService);
   private supabaseService = inject(SupabaseService);
 
-  // Derived from an env var, so it cannot change while the app is running
-  private authRequired?: boolean;
-
-  async status(): Promise<AuthStatus> {
-    const status = await firstValueFrom(this.api.get<AuthStatus>('/v1/auth/status'));
-    this.authRequired = status.authRequired;
-    return status;
+  status(): Promise<AuthStatus> {
+    return firstValueFrom(this.api.get<AuthStatus>('/v1/auth/status'));
   }
 
-  /** True when this instance has no password, or the visitor has signed in */
   async isAuthenticated(): Promise<boolean> {
-    if (this.authRequired === false) return true;
-    const status = await this.status();
-    return !status.authRequired || status.authenticated;
+    return (await this.status()).authenticated;
   }
 
   login(password: string): Observable<void> {

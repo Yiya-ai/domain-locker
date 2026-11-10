@@ -28,7 +28,6 @@ import { BreadcrumbsComponent } from '~/app/components/misc/breadcrumbs.componen
 import { ThemeService } from '~/app/services/theme.service';
 import { GlobalMessageService } from '~/app/services/messaging.service';
 import { SupabaseService } from '~/app/services/supabase.service';
-import { HitCountingService } from '~/app/services/hit-counting.service';
 import {
   ErrorHandlerService,
   GlobalErrorHandler,
@@ -102,7 +101,6 @@ export class AppComponent implements OnInit, OnDestroy {
   private globalMessageService = inject(GlobalMessageService);
   private errorHandler = inject(ErrorHandlerService);
   _themeService = inject(ThemeService);
-  hitCountingService = inject(HitCountingService);
   private accessibilityService = inject(AccessibilityService);
   private environmentService = inject(EnvService);
   private featureService = inject(FeatureService);
@@ -131,7 +129,6 @@ export class AppComponent implements OnInit, OnDestroy {
   ngOnInit() {
     // Setup error handling, and pretty console
     this.errorHandler.printInitialDetails();
-    this.errorHandler.initializeGlitchTip();
     this.errorHandler.initializeWindowCatching();
 
     // Set meta tags on route change
@@ -141,8 +138,6 @@ export class AppComponent implements OnInit, OnDestroy {
         const navEndEvent = event as NavigationEnd;
         // Set meta tags for the current route
         this.metaTagsService.setRouteMeta(navEndEvent.urlAfterRedirects);
-        // Track page view for analytics
-        this.hitCountingService.trackPageView(navEndEvent.urlAfterRedirects);
       });
 
     // Check auth state
@@ -179,8 +174,8 @@ export class AppComponent implements OnInit, OnDestroy {
           // Auth needed for current route, check if user authenticated
           this.checkAuthentication()
             .then((isAuthenticated) => {
-              if (!isAuthenticated) {
-                this.redirectToLogin();
+              if (!isAuthenticated && this.router.url === currentRoute) {
+                this.redirectToLogin(currentRoute);
                 return;
               }
             })
@@ -282,8 +277,8 @@ export class AppComponent implements OnInit, OnDestroy {
     }
   }
 
-  private redirectToLogin() {
-    this.router.navigate(['/login']).then(() => {
+  private redirectToLogin(returnUrl: string) {
+    this.router.navigate(['/login'], { queryParams: { returnUrl }, replaceUrl: true }).then(() => {
       this.loading = false;
     });
   }

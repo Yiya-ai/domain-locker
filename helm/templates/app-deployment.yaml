@@ -14,7 +14,7 @@ spec:
     spec:
       containers:
         - name: app
-          image: {{ .Values.app.image }}
+          image: {{ required "Set app.image to your hardened Domain Locker image" .Values.app.image | quote }}
           command: ["./start.sh"]
           
           ports:

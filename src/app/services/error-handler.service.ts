@@ -1,6 +1,5 @@
-import { ErrorHandler, Injectable, isDevMode, PLATFORM_ID, inject } from '@angular/core';
+import { ErrorHandler, Injectable, PLATFORM_ID, inject } from '@angular/core';
 import { isPlatformBrowser } from '@angular/common';
-import * as Sentry from '@sentry/angular';
 import { EnvService } from '~/app/services/environment.service';
 
 import { GlobalMessageService } from '~/app/services/messaging.service';
@@ -12,7 +11,6 @@ export class GlobalErrorHandler implements ErrorHandler {
   private printToConsole = printToConsole;
   handleError(error: unknown): void {
     this.printToConsole('Something unexpected happened', 'the core app', error);
-    Sentry.captureException(error);
   }
 }
 
@@ -53,7 +51,6 @@ interface ErrorParams {
  * Global error handler service.
  * Called whenever an error is caught in the app.
  * If running in dev or debug mode, logs to console.
- * If server has GT configured, and user has enabled logging, sends to GlitchTip.
  * If user-triggered, shows a toast message to the user.
  */
 @Injectable({
@@ -64,9 +61,6 @@ export class ErrorHandlerService {
   private globalMessageService = inject(GlobalMessageService);
   private envService = inject(EnvService);
 
-  private glitchTipEnabled = false; // Don't log errors, unless enabled
-
-  private lsKey = 'PRIVACY_disable-error-tracking';
   private printToConsole = printToConsole;
 
   /* Shows a popup toast message to the user (if user-triggered) */
@@ -75,67 +69,6 @@ export class ErrorHandlerService {
       severity: 'error',
       summary: title,
       detail: message,
-    });
-  }
-
-  /* Determines whether to enable GlitchTip (if enabled at server-level, and not disabled by user) */
-  private shouldEnableGlitchTip(): boolean {
-    if (!isPlatformBrowser(this.platformId)) return false; // Don't run on server-side
-    const glitchTipDsn = this.envService.getGlitchTipDsn(); // Get DSN from environment service
-    const disabledByUser = localStorage.getItem(this.lsKey) !== null; // Check if user disabled error tracking
-    const isLocal = isDevMode(); // Check if we are running in development mode
-    // Return false if no DSN, disabled by user, or running locally
-    return !glitchTipDsn || disabledByUser || isLocal ? false : true;
-  }
-
-  /* Initializes GlitchTip error tracking (if not disabled by user or admin) */
-  public initializeGlitchTip(): void {
-    this.glitchTipEnabled = this.shouldEnableGlitchTip();
-    if (!this.glitchTipEnabled) return;
-    const glitchTipDsn = this.envService.getGlitchTipDsn() || undefined;
-    try {
-      Sentry.init({
-        dsn: glitchTipDsn,
-        integrations: [Sentry.browserTracingIntegration()],
-        tracesSampleRate: 1.0,
-        release: __APP_VERSION__,
-        environment: this.envService.getEnvironmentType(),
-        denyUrls: ['localhost'],
-      });
-    } catch (e) {
-      this.handleError({
-        error: e,
-        message:
-          "Unable to initialize GlitchTip. Possibly due to adblock, invalid DSN, or user's privacy preferences",
-        location: 'ErrorHandlerService.initializeGlitchTip',
-        showToast: false,
-      });
-      this.glitchTipEnabled = false;
-    }
-  }
-
-  /* Gets the user ID from local storage (if available) */
-  private getUserId(): string | null {
-    const projectName = this.envService.getProjectId() || 'domain-locker';
-    let userId: string | null = null;
-    if (projectName && typeof localStorage !== 'undefined') {
-      const authObject = localStorage.getItem(`sb-${projectName}-auth-token`);
-      if (authObject) {
-        const user = JSON.parse(authObject)?.user;
-        userId = user?.id || null;
-      }
-    }
-    return userId;
-  }
-
-  /* Logs an error to GlitchTip with user context */
-  private logToGlitchTip(message: string, location: string, error: unknown): void {
-    if (!this.glitchTipEnabled) return;
-    const userId = this.getUserId();
-    Sentry.setUser(userId ? { id: userId } : null);
-    Sentry.withScope((scope) => {
-      scope.setContext('context', { message, location });
-      Sentry.captureException(error);
     });
   }
 
@@ -164,11 +97,6 @@ export class ErrorHandlerService {
       } else {
         this.showToast('Error', message);
       }
-    }
-
-    // Log error to Glitchtip (if enabled) with user context
-    if (this.glitchTipEnabled && error) {
-      this.logToGlitchTip(message || 'mystery error', location || '-', error);
     }
 
     // Save to recent error log in localstorage

@@ -219,6 +219,8 @@ CREATE TABLE IF NOT EXISTS "public"."domain_costings" (
     id uuid DEFAULT gen_random_uuid() NOT NULL,
     domain_id uuid NOT NULL,
     purchase_price numeric(10, 2) DEFAULT 0,
+    target_price numeric CHECK (target_price >= 0),
+    actual_price numeric CHECK (actual_price >= 0),
     current_value numeric(10, 2) DEFAULT 0,
     renewal_cost numeric(10, 2) DEFAULT 0,
     auto_renew boolean DEFAULT false,

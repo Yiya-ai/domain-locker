@@ -201,6 +201,18 @@ describe.skipIf(!built)('/v1 API with a password set', () => {
     });
   });
 
+  it('preserves the requested ledger entry when a document requires login', async () => {
+    const path = '/domains/ledger?domain=example.invalid';
+    const response = await fetch(server.url + path, {
+      headers: { Accept: 'text/html' },
+      redirect: 'manual',
+    });
+    expect(response.status).toBe(302);
+    const redirect = new URL(response.headers.get('location')!, server.url);
+    expect(redirect.pathname).toBe('/login');
+    expect(redirect.searchParams.get('returnUrl')).toBe(path);
+  });
+
   it('refuses anonymous access', async () => {
     const { status, body } = await api<{ error: { code: string } }>(
       server,
@@ -246,6 +258,17 @@ describe.skipIf(!built)('/v1 API with a password set', () => {
     });
     expect(status).toBe(200);
   });
+  it('temporarily throttles repeated failed sign-ins', async () => {
+    for (let i = 0; i < 8; i++) {
+      expect((await api(server, '/v1/auth/login', {
+        method: 'POST', body: JSON.stringify({ password: 'invalid-test-value' }),
+      })).status).toBe(401);
+    }
+    expect((await api(server, '/v1/auth/login', {
+      method: 'POST', body: JSON.stringify({ password: 'invalid-test-value' }),
+    })).status).toBe(429);
+  });
+
 });
 
 describe.skipIf(!built)('job routes with only an api key set', () => {
@@ -257,12 +280,12 @@ describe.skipIf(!built)('job routes with only an api key set', () => {
 
   afterAll(() => server?.stop());
 
-  it('leaves the app itself open, since no password was configured', async () => {
+  it('keeps the ledger private when only the scheduler key is configured', async () => {
     expect((await api(server, '/v1/auth/status')).body).toEqual({
-      authRequired: false,
-      authenticated: true,
+      authRequired: true,
+      authenticated: false,
     });
-    expect((await api(server, '/v1/domains')).status).toBe(200);
+    expect((await api(server, '/v1/domains')).status).toBe(401);
   });
 
   it('closes the scheduled job routes to anyone without the key', async () => {
@@ -290,14 +313,14 @@ describe.skipIf(!built)('job routes with no credentials set', () => {
   let server: RunningServer;
 
   beforeAll(async () => {
-    server = await startServer({ DL_DISABLE_SCHEDULER: 'true' });
+    server = await startServer({ DL_DISABLE_SCHEDULER: 'true', DL_API_KEY: '' });
   }, 60_000);
 
   afterAll(() => server?.stop());
 
-  it('stays open, which is the zero-config default', async () => {
+  it('refuses anonymous jobs without credentials', async () => {
     const { status } = await api(server, '/api/cleanup-monitor-data', { method: 'POST' });
-    expect(status).toBe(200);
+    expect(status).toBe(401);
   });
 });
 

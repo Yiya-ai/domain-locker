@@ -1,0 +1,9 @@
+{
+  "name": "@domain-locker/deepmerge",
+  "version": "4.3.1-patched.1",
+  "private": true,
+  "main": "index.cjs",
+  "types": "index.d.ts",
+  "license": "MIT",
+  "description": "Upstream deepmerge 4.3.1 with prototype keys filtered on both sides of every recursive object merge (GHSA-gcqx-w48m-w2h4)."
+}

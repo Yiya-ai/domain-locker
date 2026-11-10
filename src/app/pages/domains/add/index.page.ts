@@ -25,7 +25,6 @@ import { Registrar } from '~/app/../types/common';
 import { subdomainsReadyForSave } from '~/app/pages/assets/subdomains/subdomain-utils';
 import { EnvService } from '~/app/services/environment.service';
 import { ErrorHandlerService } from '~/app/services/error-handler.service';
-import { HitCountingService } from '~/app/services/hit-counting.service';
 import { RegistrarAutocompleteService } from '~/app/services/registrar-autocomplete.service';
 
 @Component({
@@ -46,7 +45,6 @@ export default class AddDomainComponent implements OnInit, OnDestroy {
   private route = inject(ActivatedRoute);
   private envService = inject(EnvService);
   private errorHandler = inject(ErrorHandlerService);
-  private hitCountingService = inject(HitCountingService);
   private cdr = inject(ChangeDetectorRef);
   registrarAutocomplete = inject(RegistrarAutocompleteService);
 
@@ -421,7 +419,6 @@ export default class AddDomainComponent implements OnInit, OnDestroy {
 
         await firstValueFrom(this.databaseService.instance.saveDomain(domainData));
         const name = domainData.domain.domain_name;
-        this.hitCountingService.trackEvent('add_domain', { location: 'full' });
         this.messageService.add({
           severity: 'success',
           summary: 'Success',

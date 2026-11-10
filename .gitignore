@@ -151,3 +151,26 @@ dist
 
 # SQLite database, where DL_SQLITE_PATH defaults to
 /data
+
+# Local browser acceptance traces
+.playwright-cli/
+
+**/*.pem
+**/*.key
+**/*.p12
+**/*.pfx
+**/*.dpapi
+**/*.sqlite*
+**/*.db-*
+**/domains_export*.csv
+
+# Private ledger files and local credentials
+.env.*
+!.env.sample
+*.db
+*.db.*
+*.csv
+*.kdbx
+*.cookies.txt
+*.session
+*.bak

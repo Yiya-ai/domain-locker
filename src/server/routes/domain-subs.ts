@@ -1,3 +1,4 @@
+import { requireExternalQueries } from '../utils/external-queries';
 /**
  * API endpoint for getting subdomains, along with associated data for a given hostname.
  * Expects use of my custom Cloudflare worker, but also supports fallback to Shodan.
@@ -295,6 +296,7 @@ function fail(
 }
 
 export default defineEventHandler(async (event) => {
+  await requireExternalQueries(event);
   const authResult = await verifyAuth(event);
 
   if (!authResult.success) {

@@ -1,3 +1,4 @@
+import { externalQueriesEnabled } from '../utils/external-queries';
 import {
   defineEventHandler,
   setResponseHeader,
@@ -35,6 +36,10 @@ export function defineJobRoute(job: JobName, work: () => Promise<unknown>) {
 
     if (jobAuthMissing(event)) {
       return fail(event, 'unauthorized', 'Authentication required');
+    }
+
+    if ((job === 'domain-monitor' || job === 'domain-updater') && !externalQueriesEnabled()) {
+      return fail(event, 'forbidden', 'External queries are disabled');
     }
 
     if (!warned.has(job) && process.env['DL_DISABLE_SCHEDULER'] !== 'true') {

@@ -136,7 +136,7 @@ export default defineConfig( ({ command, mode, isSsrBuild }) => {
       sourcemap: mode === 'development' ? 'inline' : false,
       outDir: 'dist/client',
       assetsDir: 'assets',
-      minify: 'terser',
+      minify: 'esbuild',
     },
     resolve: {
       alias: {
@@ -150,9 +150,10 @@ export default defineConfig( ({ command, mode, isSsrBuild }) => {
         prerender: {
           routes: [ // Unauthenticated SSG routes
             '/',
-            '/login',
             '/about',
-            '/about/*',
+            ...readdirSync('src/app/pages/about', { withFileTypes: true })
+              .filter(entry => entry.isDirectory() && existsSync(path.join('src/app/pages/about', entry.name, 'index.page.ts')))
+              .map(entry => '/about/' + entry.name),
             {
               contentDir: 'src/content/docs/developing',
               transform: (file: PrerenderContentFile) => {
@@ -180,7 +181,12 @@ export default defineConfig( ({ command, mode, isSsrBuild }) => {
           routeRules:
             nitroPreset === 'vercel'
               ? {}
-              : { '/**': { ssr: true, headers: { 'cache-control': 'no-cache' } } },
+              : { '/**': { ssr: true, headers: {
+              'cache-control': 'private, no-store',
+              'referrer-policy': 'no-referrer',
+              'x-content-type-options': 'nosniff',
+              'content-security-policy': "default-src 'self'; script-src 'self'; style-src 'self' 'unsafe-inline'; img-src 'self' data: blob:; font-src 'self' data:; connect-src 'self'; frame-src 'none'; frame-ancestors 'none'; object-src 'none'; base-uri 'self'; form-action 'self'",
+            } } },
         },
         content: {
           highlighter: 'prism',

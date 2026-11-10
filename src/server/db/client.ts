@@ -1,5 +1,5 @@
 import { Kysely, PostgresDialect, SqliteDialect, type Dialect } from 'kysely';
-import { mkdirSync } from 'node:fs';
+import { closeSync, mkdirSync, openSync, readSync } from 'node:fs';
 import { dirname, resolve } from 'node:path';
 import pg from 'pg';
 import type { Database } from './schema';
@@ -84,7 +84,46 @@ function sqliteDialect(path = sqlitePath()): Dialect {
   return new SqliteDialect({
     database: async () => {
       const { default: SqliteDatabase } = await import('better-sqlite3');
-      const database = openSqliteFile(SqliteDatabase, path);
+      const secret = process.env['DL_DB_KEY'];
+      if (path !== ':memory:' && (!secret || secret.length < 16)) {
+        throw new Error('Set DL_DB_KEY (at least 16 characters) to unlock SQLite.');
+      }
+      const database = openSqliteFile(SqliteDatabase, path) as InstanceType<
+        typeof SqliteDatabase
+      > & {
+        key(value: Buffer): number;
+        rekey(value: Buffer): number;
+      };
+      if (path !== ':memory:') {
+        const key = Buffer.from(secret!, 'utf8');
+        try {
+          database.pragma("cipher='sqlcipher'");
+          const header = Buffer.alloc(16);
+          const fd = openSync(path, 'r');
+          try {
+            readSync(fd, header, 0, header.length, 0);
+          } finally {
+            closeSync(fd);
+          }
+          if (header.equals(Buffer.from('SQLite format 3\0'))) {
+            // Rekey is transactional. Refuse migration while another process uses the WAL.
+            database.pragma('locking_mode = EXCLUSIVE');
+            if (database.pragma('journal_mode = DELETE', { simple: true }) !== 'delete') {
+              throw new Error('Close other instances before encrypting this database.');
+            }
+            if (database.rekey(key) !== 0) throw new Error('SQLite encryption failed.');
+            database.pragma('locking_mode = NORMAL');
+          } else {
+            if (database.key(key) !== 0) throw new Error('SQLite key rejected.');
+          }
+          database.prepare('SELECT count(*) FROM sqlite_schema').get();
+        } catch (error) {
+          database.close();
+          throw error;
+        } finally {
+          key.fill(0);
+        }
+      }
       database.pragma('journal_mode = WAL');
       database.pragma('foreign_keys = ON');
       database.pragma('busy_timeout = 5000');

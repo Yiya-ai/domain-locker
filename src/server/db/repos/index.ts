@@ -12,9 +12,12 @@ import { subdomainsRepo } from './subdomains';
 import { tagsRepo } from './tags';
 import { uptimeRepo } from './uptime';
 
+import { portfolioRepo } from './portfolio';
+
 export function createRepos(db: Kysely<Database>, backend: Backend) {
   return {
     admin: adminRepo(db, backend),
+    portfolio: portfolioRepo(db),
     assets: assetsRepo(db),
     domains: domainsRepo(db),
     export: exportRepo(db),

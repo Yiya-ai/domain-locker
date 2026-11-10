@@ -1,3 +1,4 @@
+import { randomBytes } from 'node:crypto';
 import { spawn, type ChildProcess } from 'node:child_process';
 import { existsSync, mkdtempSync, rmSync } from 'node:fs';
 import { tmpdir } from 'node:os';
@@ -11,6 +12,7 @@ export const isBuilt = () => existsSync(SERVER_ENTRY);
 
 export interface RunningServer {
   url: string;
+  apiKey?: string;
   stop: () => Promise<void>;
   logs: () => string;
 }
@@ -63,11 +65,15 @@ export async function startServer(
   const dataDir = mkdtempSync(join(tmpdir(), 'dl-test-'));
   let output = '';
 
+  const apiKey = Object.hasOwn(env, 'DL_AUTH_PASSWORD') || Object.hasOwn(env, 'DL_API_KEY') ? undefined : randomBytes(24).toString('hex');
   const child: ChildProcess = spawn('node', [SERVER_ENTRY], {
     env: {
       ...process.env,
       DL_ENV_TYPE: 'selfHosted',
       DL_SQLITE_PATH: join(dataDir, 'test.db'),
+      DL_API_KEY: apiKey ?? '',
+      DL_AUTH_PASSWORD: '',
+      NITRO_HOST: '127.0.0.1',
       PORT: String(port),
       NITRO_PORT: String(port),
       // Never let a test pick up the developer's own database
@@ -94,7 +100,7 @@ export async function startServer(
     }
     try {
       const response = await fetch(`${url}/api/health`);
-      if (response.ok) return { url, stop, logs: () => output };
+      if (response.ok) return { url, apiKey, stop, logs: () => output };
     } catch {
       // Not listening yet
     }
@@ -115,15 +121,17 @@ export async function startDevServer(): Promise<RunningServer> {
   const dataDir = mkdtempSync(join(tmpdir(), 'dl-dev-test-'));
   let output = '';
 
+  const apiKey = randomBytes(24).toString('hex');
   const child: ChildProcess = spawn(
-    'node_modules/.bin/ng',
-    ['serve', '--port', String(port)],
+    process.execPath,
+    ['node_modules/@angular/cli/bin/ng.js', 'serve', '--port', String(port)],
     {
       env: {
         ...process.env,
         // Analog skips its Nitro dev server when it detects a test run, and
         // the API would then be missing for the very reason we are here
         VITEST: '',
+        DL_API_KEY: apiKey,
         NODE_ENV: 'development',
         DL_ENV_TYPE: 'selfHosted',
         DL_SQLITE_PATH: join(dataDir, 'test.db'),
@@ -152,7 +160,7 @@ export async function startDevServer(): Promise<RunningServer> {
     }
     try {
       const response = await fetch(`${url}/api/health`);
-      if (response.ok) return { url, stop, logs: () => output };
+      if (response.ok) return { url, apiKey, stop, logs: () => output };
     } catch {
       // Still compiling
     }
@@ -179,6 +187,7 @@ export async function api<T = unknown>(
     headers: {
       'Content-Type': 'application/json',
       Origin: server.url,
+      ...(server.apiKey ? { 'x-api-key': server.apiKey } : {}),
       ...(init.headers ?? {}),
     },
   });

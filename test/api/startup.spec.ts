@@ -26,8 +26,9 @@ describe.skipIf(!built)('server startup', () => {
     const logs = await waitForLog(server, 'Scheduled cleanup-monitor-data');
 
     expect(logs).toContain('[migrations]');
-    for (const job of ['domain-monitor', 'domain-updater', 'expiration-reminders']) {
-      expect(logs).toContain(`Scheduled ${job}`);
+    expect(logs).toContain('Scheduled expiration-reminders');
+    for (const job of ['domain-monitor', 'domain-updater']) {
+      expect(logs).not.toContain(`Scheduled ${job}`);
     }
   });
 

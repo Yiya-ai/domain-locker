@@ -29,7 +29,6 @@ import { notificationTypes } from '~/app/constants/notification-types';
 import { ErrorHandlerService } from '~/app/services/error-handler.service';
 import { GlobalMessageService } from '~/app/services/messaging.service';
 import { EnvService } from '~/app/services/environment.service';
-import { HitCountingService } from '~/app/services/hit-counting.service';
 
 /**
  * BulkAddComponent:
@@ -53,7 +52,6 @@ export default class BulkAddComponent implements OnDestroy {
   private databaseService = inject(DatabaseService);
   private router = inject(Router);
   private envService = inject(EnvService);
-  private hitCountingService = inject(HitCountingService);
 
   step = 1;
 
@@ -486,7 +484,6 @@ export default class BulkAddComponent implements OnDestroy {
       .subscribe({
         next: ({ domain, success }) => {
           if (success) {
-            this.hitCountingService.trackEvent('add_domain', { location: 'bulk' });
             this.savedDomains.push(domain);
             this.messageService.showSuccess(
               'Success',

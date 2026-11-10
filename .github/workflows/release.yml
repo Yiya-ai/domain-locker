@@ -81,7 +81,9 @@ jobs:
         env:
           NODE_OPTIONS: --max-old-space-size=8192
           DL_ENV_TYPE: selfHosted
-        run: npm run build
+        run: |
+          npm run build
+          npm run build:portable
 
       - name: ✅ Verify build output
         if: steps.tag.outputs.skip != 'true'
@@ -101,13 +103,19 @@ jobs:
           STAGING="domain-locker-${TAG}"
           rm -rf "$STAGING"
           mkdir -p "$STAGING"
-          cp -r dist "$STAGING/"
-          cp package.json package-lock.json .npmrc .nvmrc start.sh "$STAGING/"
+          mkdir -p "$STAGING/dist" "$STAGING/scripts"
+          cp -r dist/analog dist/portable "$STAGING/dist/"
+          cp -r vendor "$STAGING/"
+          cp scripts/verify-package.mjs "$STAGING/scripts/"
+          cp scripts/start-private.ps1 "$STAGING/scripts/"
+          cp 启动域名台账.cmd "$STAGING/"
+          cp package.json package-lock.json .nvmrc start.sh "$STAGING/"
           cp db/schema.sql "$STAGING/schema.sql"
-          for f in .env.sample docker-compose.yml LICENSE README.md; do
+          for f in LICENSE README.zh-CN.md; do
             [ -f "$f" ] && cp "$f" "$STAGING/"
           done
 
+          node scripts/verify-package.mjs "$STAGING"
           TARBALL="${STAGING}.tar.gz"
           ZIPFILE="${STAGING}.zip"
           tar -czf "$TARBALL" "$STAGING"

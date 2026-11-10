@@ -1,5 +1,9 @@
 # Contributing
 
+For this fork, open issues and pull requests in Yiya-ai/domain-locker. Use synthetic domains and remove credentials, private ledgers and identifiable screenshots from attachments. Run `npm run lint` and `npm run typecheck` before submitting.
+
+请在本仓库提交问题和改动。复现时使用虚构域名，清除附件中的密钥、真实台账和可识别截图。提交前运行 `npm run lint` 和 `npm run typecheck`。
+
 ## Opening an Issue
 
 > [!IMPORTANT]

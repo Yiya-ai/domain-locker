@@ -1,5 +1,6 @@
 export type ApiErrorCode =
   | 'bad_request'
+  | 'rate_limited'
   | 'unauthorized'
   | 'forbidden'
   | 'not_found'
@@ -11,6 +12,7 @@ export type ApiErrorCode =
 export const STATUS_BY_CODE: Record<ApiErrorCode, number> = {
   bad_request: 400,
   unauthorized: 401,
+  rate_limited: 429,
   forbidden: 403,
   not_found: 404,
   method_not_allowed: 405,

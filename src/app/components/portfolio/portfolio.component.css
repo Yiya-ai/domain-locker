@@ -1,0 +1,132 @@
+:host {
+  display: block;
+  min-width: 0;
+}
+.actions,
+.buttons,
+.filters {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+  flex-wrap: wrap;
+}
+.actions {
+  justify-content: space-between;
+}
+.metrics {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(min(10rem, 100%), 1fr));
+  gap: 0.75rem;
+  margin: 1rem 0;
+}
+.metrics .p-card {
+  padding: 1rem;
+  min-width: 0;
+}
+.metrics strong,
+td small {
+  display: block;
+}
+.metrics strong {
+  font-size: 1.45rem;
+  margin-top: 0.35rem;
+  overflow-wrap: anywhere;
+}
+.filters {
+  align-items: end;
+  margin: 1rem 0;
+}
+label {
+  display: grid;
+  gap: 0.35rem;
+}
+label input,
+label textarea,
+label select {
+  width: 100%;
+  min-width: 0;
+}
+.fields {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 0.8rem;
+}
+.wide {
+  grid-column: 1/-1;
+}
+.num {
+  font-variant-numeric: tabular-nums;
+  white-space: nowrap;
+}
+.memo {
+  max-width: 24rem;
+  white-space: pre-wrap;
+  overflow-wrap: anywhere;
+}
+td small,
+.metrics span {
+  color: var(--text-color-secondary);
+}
+.error {
+  color: var(--red-500);
+}
+@media (max-width: 38rem) {
+  .fields {
+    grid-template-columns: 1fr;
+  }
+  .filters label,
+  .filters {
+    width: 100%;
+  }
+  .metrics {
+    grid-template-columns: 1fr 1fr;
+  }
+  .buttons {
+    gap: 0.25rem;
+  }
+  .actions h1 {
+    margin-bottom: 0.35rem;
+  }
+}
+
+@media (max-width: 48rem) {
+  :host ::ng-deep .p-datatable-thead {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    overflow: hidden;
+    clip-path: inset(50%);
+  }
+  :host ::ng-deep .p-datatable-table {
+    display: block;
+    width: 100%;
+  }
+  :host ::ng-deep .p-datatable-tbody {
+    display: grid;
+    gap: 0.75rem;
+  }
+  :host ::ng-deep .p-datatable-tbody > tr {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    background: var(--surface-card);
+    border: 1px solid var(--surface-border);
+    border-radius: var(--border-radius);
+    padding: 0.6rem;
+  }
+  :host ::ng-deep .p-datatable-tbody > tr > td {
+    display: block;
+    border: 0;
+    padding: 0.4rem;
+    overflow-wrap: anywhere;
+  }
+  :host ::ng-deep td:first-child,
+  :host ::ng-deep .row-actions {
+    grid-column: 1/-1;
+  }
+  td[data-label]::before {
+    content: attr(data-label);
+    display: block;
+    color: var(--text-color-secondary);
+    font-size: 0.8rem;
+  }
+}

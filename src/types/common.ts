@@ -47,6 +47,8 @@ export interface Subdomain {
 export interface Valuation {
   auto_renew: boolean;
   current_value: number;
+  target_price?: number | null;
+  actual_price?: number | null;
   purchase_price: number;
   renewal_cost: number;
 }

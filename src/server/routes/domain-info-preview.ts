@@ -1,7 +1,9 @@
+import { requireExternalQueries } from '../utils/external-queries';
 import { defineEventHandler, getQuery } from 'h3';
 import domainInfoHandler from './domain-info';
 
 export default defineEventHandler(async (event) => {
+  await requireExternalQueries(event);
   // Get the domain name from query params
   const domain = getQuery(event)['domain'] as string;
   if (!domain) {

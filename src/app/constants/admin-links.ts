@@ -87,18 +87,6 @@ export const serviceLinks: LinkItem[] = [
     description: 'HTTP server for client app and API',
   },
   {
-    purpose: 'Error Logs',
-    provider: 'Glitchtip',
-    url: 'https://glitch.as93.net',
-    description: 'Error logging, tracing and alerts',
-  },
-  {
-    purpose: 'Analytics',
-    provider: 'Plausible',
-    url: 'https://no-track.as93.net',
-    description: 'Hit counting and zero-tracking usage stats',
-  },
-  {
     purpose: 'Status',
     provider: 'Kuma',
     url: 'https://uptime.as93.net/',

@@ -2,6 +2,7 @@ import { Component, OnInit, PLATFORM_ID, ChangeDetectorRef, inject } from '@angu
 import DatabaseService from '~/app/services/database.service';
 import { MessageService } from 'primeng/api';
 import { PrimeNgModule } from '~/app/prime-ng.module';
+import { EnvService } from '~/app/services/environment.service';
 import { CurrencyService } from '~/app/services/currency.service';
 
 import { TableModule } from 'primeng/table';
@@ -18,6 +19,7 @@ import { DbDomain } from '~/app/../types/Database';
 export default class ValuationPageComponent implements OnInit {
   private databaseService = inject(DatabaseService);
   private messageService = inject(MessageService);
+  env = inject(EnvService);
   currencyService = inject(CurrencyService);
   private platformId = inject(PLATFORM_ID);
   private cdr = inject(ChangeDetectorRef);

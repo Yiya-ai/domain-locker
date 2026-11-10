@@ -141,18 +141,20 @@ export class DomainValuationChartComponent implements OnInit {
         }) => {
           const series = seriesIndex === 0 ? autoRenewData : noAutoRenewData;
           const info = series[dataPointIndex].tooltipInfo;
-          return info
-            ? `
-            <div style="padding: 10px;">
-              <strong>${series[dataPointIndex].domainName}</strong><br>
-              Purchase Price: $${info.purchasePrice}<br>
-              Current Value: $${info.currentValue ?? 'N/A'}<br>
-              Renewal Cost: $${info.renewalCost}<br>
-              Profit/Loss: $${info.profitLoss}<br>
-              Auto-Renew: ${info.autoRenew ? 'Yes' : 'No'}
-            </div>
-          `
-            : '';
+          if (!info) return '';
+          const box = document.createElement('div');
+          box.style.padding = '10px';
+          const title = document.createElement('strong');
+          title.textContent = series[dataPointIndex].domainName ?? '';
+          box.append(title);
+          for (const line of [
+            'Purchase Price: $' + info.purchasePrice,
+            'Current Value: $' + (info.currentValue ?? 'N/A'),
+            'Renewal Cost: $' + info.renewalCost,
+            'Profit/Loss: $' + info.profitLoss,
+            'Auto-Renew: ' + (info.autoRenew ? 'Yes' : 'No'),
+          ]) box.append(document.createElement('br'), document.createTextNode(line));
+          return box;
         },
       },
     };

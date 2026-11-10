@@ -7,6 +7,11 @@ import {
 } from '~/server/utils/client-env';
 
 const SECRETS = [
+  'DL_AUTH_PASSWORD',
+  'DL_AUTH_SECRET',
+  'DL_DB_KEY',
+  'DL_IP_API_KEY',
+  'DL_DEMO_PASS',
   'DL_PG_PASSWORD',
   'DL_PG_USER',
   'DL_PG_HOST',

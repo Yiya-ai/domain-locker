@@ -27,7 +27,6 @@ import { Registrar } from '~/app/../types/common';
 import type { DomainInfo } from '~/app/../types/DomainInfo';
 import { EnvService } from '~/app/services/environment.service';
 import { FeatureService } from '~/app/services/features.service';
-import { HitCountingService } from '~/app/services/hit-counting.service';
 
 @Component({
   selector: 'app-quick-add-domain',
@@ -44,7 +43,6 @@ export default class QuickAddDomain {
   private messagingService = inject(GlobalMessageService);
   private envService = inject(EnvService);
   private featureService = inject(FeatureService);
-  private hitCountingService = inject(HitCountingService);
 
   @Input() isInModal = false;
   @Input() afterSave: (p?: string) => void = () => {
@@ -151,7 +149,6 @@ export default class QuickAddDomain {
       }
 
       // Track the event
-      this.hitCountingService.trackEvent('add_domain', { location: 'quick' });
 
       // Redirect or emit event
       if (this.isInModal) {

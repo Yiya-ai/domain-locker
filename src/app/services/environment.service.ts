@@ -8,19 +8,16 @@ export type EnvironmentType = 'dev' | 'managed' | 'selfHosted' | 'demo';
 
 /** Every variable the browser may read. Server-only secrets are deliberately absent */
 export const KNOWN_ENV_VARS = [
+  'DL_PORTFOLIO_CURRENCY',
+  'DL_SUPPORT_EMAIL',
   'DL_BASE_URL', // Hostname/URL or HOST:PORT where domain locker is running
   'SUPABASE_URL', // Supabase URL
   'SUPABASE_ANON_KEY', // Supabase public key
   'DL_ENV_TYPE', // EnvironmentType (dev, managed, selfHosted, demo)
   'DL_SUPABASE_PROJECT', // Supabase project ID
   'DL_DEBUG', // Enable debug mode, to show debug messages
-  'DL_GLITCHTIP_DSN', // GlitchTip DSN, for error tracking
-  'DL_PLAUSIBLE_URL', // URL to Plausible instance, for hit counting
-  'DL_PLAUSIBLE_SITE', // Plausible site ID /  URL, for hit counting
   'DL_TURNSTILE_KEY', // Cloudflare public site key for Turnstile captcha
   'DL_DB_BACKEND', // Which database the server uses, never how to reach it
-  'DL_DEMO_USER', // Demo user email (for auto-filling on demo instance)
-  'DL_DEMO_PASS', // Demo user password (for auto-filling on demo instance)
   'DL_DOMAIN_INFO_API', // API endpoint for /api/domain-info
   'DL_DOMAIN_SUBS_API', // API endpoint for /api/domain-subs
   'DL_STRIPE_CHECKOUT_URL', // Endpoint for creating a Stripe Checkout session
@@ -131,17 +128,6 @@ export class EnvService {
 
   getProjectId(): string | null {
     return this.getEnvVar('DL_SUPABASE_PROJECT');
-  }
-
-  getGlitchTipDsn(): string | null {
-    return this.getEnvVar('DL_GLITCHTIP_DSN');
-  }
-
-  getPlausibleConfig(): { site: string; url: string; isConfigured: boolean } {
-    const site = this.getEnvVar('DL_PLAUSIBLE_SITE', '') || '';
-    const url = this.getEnvVar('DL_PLAUSIBLE_URL', '') || '';
-    const isConfigured = Boolean(site && url);
-    return { site, url, isConfigured };
   }
 
   getValueFromLocalStorage(key: string): string | null {

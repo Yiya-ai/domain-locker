@@ -1,3 +1,4 @@
+import { randomBytes } from 'node:crypto';
 import { readFileSync } from 'node:fs';
 
 /** Load test/.env.test if present, without pulling in a dotenv dependency */
@@ -12,3 +13,6 @@ try {
 
 process.env['NODE_ENV'] ??= 'test';
 process.env['DL_ENV_TYPE'] ??= 'selfHosted';
+
+// Ephemeral key for temporary test files; never reuse runtime secrets.
+process.env['DL_DB_KEY'] = randomBytes(32).toString('hex');

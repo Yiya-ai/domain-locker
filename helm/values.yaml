@@ -1,15 +1,19 @@
 app:
-  image: lissy93/domain-locker:latest
+  image: "" # Set to the hardened image built from this checkout.
   port: 3000
   env:
     DL_ENV_TYPE: selfHosted
     DL_PG_HOST: domain-locker-postgres
     DL_PG_PORT: 5432
     DL_PG_USER: postgres
-    DL_PG_PASSWORD: changeme2420
+    DL_AUTH_PASSWORD: ""
+    DL_ENABLE_EXTERNAL_QUERIES: "false"
+    DL_PG_PASSWORD: ""
     DL_PG_NAME: domain_locker
     TZ: UTC
-  secretEnv: {}
+  secretEnv:
+    DL_AUTH_PASSWORD: {name: domain-locker, key: login-password}
+    DL_PG_PASSWORD: {name: domain-locker, key: postgres-password}
     # To source DL_PG_PASSWORD from a Kubernetes Secret, uncomment and configure below.
     # This will override the value in app.env for the specified key.
     # DL_PG_PASSWORD:
@@ -18,7 +22,7 @@ app:
     # Note: If DL_PG_PASSWORD is specified here, Postgres will also use the same Secret
     # unless postgres.passwordFromSecret is set.
   ingress:
-    enabled: true
+    enabled: false
     # ingressClassName: "nginx"
     annotations: # nginx.ingress.kubernetes.io/rewrite-target: /
     hosts:
@@ -40,7 +44,7 @@ postgres:
   env:
     POSTGRES_DB: domain_locker
     POSTGRES_USER: postgres
-    POSTGRES_PASSWORD: changeme2420
+    POSTGRES_PASSWORD: ""
     TZ: UTC
   # Optionally source the POSTGRES_PASSWORD from a Kubernetes Secret.
   # When set, this will override env.POSTGRES_PASSWORD.
